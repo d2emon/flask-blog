@@ -30,7 +30,7 @@ def create_app(debug=False, config_name='production'):
 
     # Loading config
     app.config.from_object(app_config[config_name])
-    app.config.from_pyfile('config.py')
+    app.config.from_pyfile('confg.py')
     # app.config.from_envvar('FLASK_CONFIG_FILE')
     app.static_folder = app.config.get('STATIC_FOLDER', 'static')
     app.template_folder = app.config.get('TEMPLATE_FOLDER', 'templates')
