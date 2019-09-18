@@ -1,7 +1,7 @@
 {
   "name": "flask-blog",
   "description": "Flask-based blog",
-  "main": "src/manage.py",
+  "main": "src/__manage/__init__.py",
   "authors": [
     "Dmitry Kutsenko <d2emonium@gmail.com>"
   ],
