@@ -2,12 +2,12 @@
   "name": "flask-blog",
   "version": "0.1.0",
   "description": "Flask-based blog",
-  "main": "src-old/manage.py",
+  "main": "src/__manage/manage.py",
   "scripts": {
     "preinstall": "git pull",
     "install": "node scripts/install.js",
     "prestart": "gulp",
-    "start": "python src-old/manage.py runserver",
+    "start": "python src/__manage/manage.py runserver",
     "test": "python src-old/test.py"
   },
   "repository": {
