@@ -7,12 +7,28 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-# instantiate the app
+# Instantiate the app
 app = Flask(__name__)
+# app = Flask(__name__, instance_relative_config=True)
+
+# Loading config
 app.config.from_object(Config)
+# app.config.from_object(app_config[config_name])
+# app.config.from_pyfile('config.py')
+# # app.config.from_envvar('FLASK_CONFIG_FILE')
+# app.static_folder = app.config.get('STATIC_FOLDER', 'static')
+# app.template_folder = app.config.get('TEMPLATE_FOLDER', 'templates')
+
+# log_config = app.config.get("LOG", dict())
+# app.logger.addHandler(create_logger(log_config))
+
 
 # Modules
 bootstrap = Bootstrap(app)
+
+# cache = Cache(app)
+
+# toolbar = DebugToolbarExtension(app)
 
 CORS(app)
 
@@ -22,9 +38,33 @@ login.login_message = "Пожалуйста, войдите, чтобы откр
 
 mail = Mail(app)
 
+# manager = Manager(app)
+
 db = SQLAlchemy(app)
+# db.create_all()
 
 migrate = Migrate(app, db)
 
+# # Session(app)
 
+
+# Models
+# # from execom import models
+# from blog import models
+
+
+# Blueprints
+# # from .admin import admin as admin_blueprint
+# # app.register_blueprint(admin_blueprint, url_prefix='/admin')
+
+# # from .auth import auth as auth_blueprint
+# # app.register_blueprint(auth_blueprint)
+
+# # from .home import home as home_blueprint
+# # app.register_blueprint(home_blueprint)
+
+
+# Views
 from app import handlers, routes, models, errors
+# from app.views import *
+# from blog.views import *
