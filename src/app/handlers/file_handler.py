@@ -1,12 +1,12 @@
 import os
 from logging.handlers import RotatingFileHandler
+from .handler import handler_factory
 
 
+@handler_factory
 def file_handler(config):
-    path = config.get('LOG_PATH')
-    if not os.path.exists(path):
-        # os.mkdir(path)
-        return None
-    if not config.get('LOG_FILE'):
-        return None
-    return RotatingFileHandler(config.get('LOG_FILE'), maxBytes=10240, backupCount=10)
+    return RotatingFileHandler(
+        config['LOG_FILENAME'],
+        maxBytes=config['LOG_FILE_MAX_BYTES'],
+        backupCount=config['LOG_FILE_BACKUP_COUNT'],
+    )

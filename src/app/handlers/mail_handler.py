@@ -1,12 +1,11 @@
 from logging.handlers import SMTPHandler
+from .handler import handler_factory
 
 
+@handler_factory
 def mail_handler(config):
-    if config['MAIL_SERVER']:
-        return None
-
-    if config['MAIL_USERNAME'] or config['MAIL_PASSWORD']:
-        credentials = (config['MAIL_USERNAME'], config['MAIL_PASSWORD'])
+    if config.get('MAIL_USERNAME') or config.get('MAIL_PASSWORD'):
+        credentials = (config.get('MAIL_USERNAME'), config.get('MAIL_PASSWORD'))
     else:
         credentials = None
 
@@ -14,7 +13,7 @@ def mail_handler(config):
         mailhost=(config['MAIL_SERVER'], config['MAIL_PORT']),
         fromaddr="no-reply@{}".format(config['MAIL_SERVER']),
         toaddrs=config['ADMINS'],
-        subject="Blog Failure",
+        subject=config.get('LOG_MAIL_SUBJECT'),
         credentials=credentials,
-        secure=config['MAIL_USE_TLS'] and (),
+        secure=config.get('MAIL_USE_TLS') and (),
     )

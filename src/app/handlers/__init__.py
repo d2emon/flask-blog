@@ -1,48 +1,22 @@
-import logging
 from app import app
 from .file_handler import file_handler
 from .mail_handler import mail_handler
 
 
-handlers = (
-    app.debug and {
-        'handler': file_handler,
-        'formatter': logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'),
-        'level': logging.INFO,
-    },
-    app.debug and {
-        'handler': mail_handler,
-        # 'level': logging.ERROR,
-        'level': logging.INFO,
-    },
-)
+handlers = {
+    'FILE': file_handler,
+    'MAIL': mail_handler,
+}
 
 
-for handler_data in handlers:
-    if not handler_data or not handler_data.get('handler'):
-        continue
-
-    handler = handler_data.get('handler')
-    if not handler:
-        continue
-
-    handler = handler(app.config)
-    if not handler:
-        continue
-
-    formatter = handler_data.get('formatter')
-    if formatter:
-        handler.setFormatter(formatter)
-
-    level = handler_data.get('level')
-    if level:
-        handler.setLevel(level)
-
-    app.logger.addHandler(handler)
+for key, config in app.config.get('LOG_HANDLERS', {}).items():
+    if config:
+        app.logger.addHandler(handlers[key](app.config, **config))
 
 
-if not app.debug:
-    app.logger.setLevel(logging.INFO)
+level = app.config.get('LOG_LEVEL')
+if level:
+    app.logger.setLevel(level)
 
 
 app.logger.info('Blog startup')

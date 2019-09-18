@@ -1,5 +1,14 @@
+import logging
+import os
 from .base import Config
 
 
 class ProductionConfig(Config):
-    pass
+    LOG_HANDLERS = {
+        'FILE': {
+            'level': logging.INFO,
+        },
+        'MAIL': {
+            'level': logging.ERROR,
+        },
+    }
