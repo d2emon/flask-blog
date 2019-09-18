@@ -20,7 +20,7 @@
   ],
   "author": "Dmitry Kutsenko <d2emonium@gmail.com>",
   "license": "GPL-3.0",
-  "private": "True",
+  "private": true,
   "bugs": {
     "url": "https://github.com/d2emon/flask-blog/issues"
   },
