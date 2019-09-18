@@ -1,6 +1,5 @@
 #! /usr/bin/env python
-from app import manager
-from app.commands import *
+from app import *
 
 
 if __name__ == '__main__':

@@ -65,6 +65,5 @@ migrate = Migrate(app, db)
 
 
 # Views
-from app import handlers, routes, models, errors
 # from app.views import *
 # from blog.views import *
