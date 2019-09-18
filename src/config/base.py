@@ -3,7 +3,7 @@ import os
 
 
 class Config:
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
     ADMINS = ['admin@example.com']
 
@@ -16,7 +16,7 @@ class Config:
     LOG_FILENAME = os.environ.get('LOG_FILENAME') or os.path.join(BASE_DIR, 'log', 'blog.log')
     LOG_HANDLERS = {
         'FILE': {
-            'formatter': "%(asctime)s[%(levelname)s]:\t%(message)s\tin %(module)s at %(lineno)d",
+            'formatter': logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'),
         },
         'MAIL': {},
     }

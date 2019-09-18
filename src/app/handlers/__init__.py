@@ -9,15 +9,14 @@ handlers = {
 }
 
 
-for key, config in app.config.get('LOG_HANDLERS', {}).items():
-    if config:
-        app.logger.addHandler(handlers[key](app.config, **config))
-
-
 level = app.config.get('LOG_LEVEL')
 if level:
     app.logger.setLevel(level)
 
 
-app.logger.info('Blog startup')
-app.logger.debug(app.config)
+for key, config in app.config.get('LOG_HANDLERS', {}).items():
+    if config:
+        try:
+            handlers[key](app, **config)
+        except Exception as e:
+            app.logger.error(e)

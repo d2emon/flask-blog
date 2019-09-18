@@ -1,4 +1,3 @@
-import os
 from logging.handlers import RotatingFileHandler
 from .handler import handler_factory
 

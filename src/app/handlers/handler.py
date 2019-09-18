@@ -1,13 +1,15 @@
+import logging
+
+
 def handler_factory(f):
     def wrapped(
-        config,
+        app,
         formatter=None,
         level=None,
     ):
-        handler = f(config)
+        handler = f(app.config)
         if formatter:
             handler.setFormatter(formatter)
-        if level:
-            handler.setLevel(level)
-        return handler
+        handler.setLevel(level or app.logger.level)
+        app.logger.addHandler(handler)
     return wrapped

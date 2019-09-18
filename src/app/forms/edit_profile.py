@@ -1,4 +1,4 @@
-from app import User
+from app.models import User
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Length

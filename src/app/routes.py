@@ -1,7 +1,7 @@
 import uuid
 from app import app, db
-from app import send_password_reset_email
-from app import Post, User
+from app.mail import send_password_reset_email
+from app.models import Post, User
 from datetime import datetime
 from flask import flash, jsonify, render_template, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required

@@ -7,6 +7,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+
 # Instantiate the app
 app = Flask(__name__)
 # app = Flask(__name__, instance_relative_config=True)
@@ -16,9 +17,6 @@ app.config.from_object(Config)
 # app.config.from_pyfile('config.py')
 # app.static_folder = app.config.get('STATIC_FOLDER', 'static')
 # app.template_folder = app.config.get('TEMPLATE_FOLDER', 'templates')
-
-# log_config = app.config.get("LOG", dict())
-# app.logger.addHandler(create_logger(log_config))
 
 
 # Modules
@@ -65,3 +63,7 @@ migrate = Migrate(app, db)
 # Views
 # from app.views import *
 # from blog.views import *
+
+
+# All
+from app import handlers, routes, models, errors
