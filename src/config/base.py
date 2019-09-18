@@ -20,7 +20,7 @@ class Config:
         },
         'MAIL': {},
     }
-    LOG_LEVEL = logging.INFO,
+    LOG_LEVEL = logging.INFO
     LOG_MAIL_SUBJECT = "Blog Failure"
 
     # Mail
