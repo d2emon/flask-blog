@@ -20,3 +20,6 @@ for key, config in app.config.get('LOG_HANDLERS', {}).items():
             handlers[key](app, **config)
         except Exception as e:
             app.logger.error(e)
+
+
+app.logger.debug(app.config)

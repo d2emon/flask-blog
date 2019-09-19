@@ -1,0 +1,20 @@
+version: '2'
+services:
+  mail:
+    image: mailhog/mailhog:v1.0.0
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+  blog:
+    build: .
+    environment:
+      - FLASK_DEBUG=1
+      - FLASK_ENV=development
+    links:
+      - mail
+    ports:
+      - "5000:5000"
+    volumes:
+      - "./src:/app"
+      - "./db:/db"
+      - "./log:/log"
