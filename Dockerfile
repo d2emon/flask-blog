@@ -1,7 +1,6 @@
 FROM python:3-alpine
 
 COPY ./src /app
-COPY ./babel.cfg /babel.cfg
 COPY ./db /db
 COPY ./log /log
 COPY ./requirements.txt /requirements.txt
@@ -23,5 +22,5 @@ ENV MAIL_PORT=1025
 ENTRYPOINT ["flask"]
 
 CMD ["db", "upgrade"]
-
+CMD ["translate", "compile"]
 CMD ["run", "--host=0.0.0.0", "--port=80"]

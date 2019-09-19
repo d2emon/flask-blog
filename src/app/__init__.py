@@ -70,4 +70,4 @@ def get_locale():
 
 
 # All
-from app import handlers, routes, models, errors
+from app import cli, handlers, routes, models, errors
