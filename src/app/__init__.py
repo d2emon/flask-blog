@@ -37,7 +37,7 @@ migrate = Migrate(app, db)
 
 
 # Config modules
-login.login_view = 'login'
+login.login_view = 'auth.login'
 login.login_message = _l('Please log in to access this page.')
 
 # db.create_all()
@@ -54,11 +54,14 @@ def get_locale():
 
 
 # Blueprints
+from .errors import blueprint as errors_blueprint
+app.register_blueprint(errors_blueprint)
+
+from .auth import blueprint as auth_blueprint
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
 # # from .admin import admin as admin_blueprint
 # # app.register_blueprint(admin_blueprint, url_prefix='/admin')
-
-# # from .auth import auth as auth_blueprint
-# # app.register_blueprint(auth_blueprint)
 
 # # from .home import home as home_blueprint
 # # app.register_blueprint(home_blueprint)
@@ -70,4 +73,4 @@ def get_locale():
 
 
 # All
-from app import cli, handlers, routes, models, errors
+from app import cli, handlers, routes, models
