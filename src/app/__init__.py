@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
+from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -21,27 +22,23 @@ app.config.from_object(Config)
 
 # Modules
 bootstrap = Bootstrap(app)
-
 # cache = Cache(app)
-
 # toolbar = DebugToolbarExtension(app)
-
 CORS(app)
-
 login = LoginManager(app)
+mail = Mail(app)
+# manager = Manager(app)
+moment = Moment(app)
+db = SQLAlchemy(app)
+# # Session(app)
+migrate = Migrate(app, db)
+
+
+# Config modules
 login.login_view = 'login'
 login.login_message = "Пожалуйста, войдите, чтобы открыть эту страницу."
 
-mail = Mail(app)
-
-# manager = Manager(app)
-
-db = SQLAlchemy(app)
 # db.create_all()
-
-migrate = Migrate(app, db)
-
-# # Session(app)
 
 
 # Models

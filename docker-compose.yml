@@ -18,3 +18,4 @@ services:
       - "./src:/app"
       - "./db:/db"
       - "./log:/log"
+      - "./requirements.txt:/requirements.txt"
