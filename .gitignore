@@ -109,3 +109,4 @@ ENV/
 /gulpfile.js
 
 *.db
+docker-compose.override.yml
