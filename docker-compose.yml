@@ -13,9 +13,10 @@ services:
     links:
       - mail
     ports:
-      - "5000:5000"
+      - "5000:80"
     volumes:
       - "./src:/app"
+      - "./babel.cfg:/babel.cfg"
       - "./db:/db"
       - "./log:/log"
       - "./requirements.txt:/requirements.txt"

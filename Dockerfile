@@ -1,11 +1,9 @@
 FROM python:3-alpine
 
 COPY ./src /app
-
+COPY ./babel.cfg /babel.cfg
 COPY ./db /db
-
 COPY ./log /log
-
 COPY ./requirements.txt /requirements.txt
 
 WORKDIR /app
@@ -18,12 +16,12 @@ RUN pip install -r /requirements.txt
 
 EXPOSE 5000
 
-ENV FLASK_APP=run.py
+ENV FLASK_APP=app
 ENV MAIL_SERVER=mail
 ENV MAIL_PORT=1025
 
-ENTRYPOINT ["python"]
+ENTRYPOINT ["flask"]
 
-CMD flask db upgrade
+CMD ["db", "upgrade"]
 
-CMD ["run.py"]
+CMD ["run", "--host=0.0.0.0", "--port=80"]

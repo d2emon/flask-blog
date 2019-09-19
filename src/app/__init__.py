@@ -1,5 +1,6 @@
 from config import Config
-from flask import Flask
+from flask import Flask, request
+from flask_babel import Babel, lazy_gettext as _l
 from flask_bootstrap import Bootstrap
 from flask_cors import CORS
 from flask_login import LoginManager
@@ -21,6 +22,7 @@ app.config.from_object(Config)
 
 
 # Modules
+babel = Babel(app)
 bootstrap = Bootstrap(app)
 # cache = Cache(app)
 # toolbar = DebugToolbarExtension(app)
@@ -36,9 +38,14 @@ migrate = Migrate(app, db)
 
 # Config modules
 login.login_view = 'login'
-login.login_message = "Пожалуйста, войдите, чтобы открыть эту страницу."
+login.login_message = _l('Please log in to access this page.')
 
 # db.create_all()
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 # Models

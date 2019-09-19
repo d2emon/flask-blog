@@ -10,6 +10,9 @@ class Config:
     # Old -> DEBUG = False
     # Old -> TESTING = False
 
+    # Language
+    LANGUAGES = ['en', 'ru']
+
     # Log
     LOG_FILE_BACKUP_COUNT = os.environ.get('LOG_FILE_BACKUP_COUNT') or 10
     LOG_FILE_MAX_BYTES = os.environ.get('LOG_FILE_MAX_BYTES') or 1024 * 1024
