@@ -60,17 +60,12 @@ app.register_blueprint(errors_blueprint)
 from .auth import blueprint as auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+from .main import blueprint as main_blueprint
+app.register_blueprint(main_blueprint)
+
 # # from .admin import admin as admin_blueprint
 # # app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
-# # from .home import home as home_blueprint
-# # app.register_blueprint(home_blueprint)
-
-
-# Views
-# from app.views import *
-# from blog.views import *
-
 
 # All
-from app import cli, handlers, routes, models
+from app import cli, handlers, models, routes
