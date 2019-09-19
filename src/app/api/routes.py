@@ -1,22 +1,24 @@
 import uuid
-from app import app, db
+from app import db
 from app.models import User
 from app.auth.forms import LoginForm, RegistrationForm
 from flask import jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_wtf.csrf import generate_csrf
+from . import blueprint
+
 
 # API
 
 
-@app.route('/api')
+@blueprint.route('/api')
 def api():
     return jsonify({
         'csrf_token': generate_csrf(),
     })
 
 
-@app.route('/api/index')
+@blueprint.route('/api/index')
 @login_required
 def api_index():
     posts = [
@@ -81,7 +83,7 @@ def api_index():
     })
 
 
-@app.route('/api/login', methods=['GET', 'POST'])
+@blueprint.route('/api/login', methods=['GET', 'POST'])
 def api_login():
     if current_user.is_authenticated:
         return jsonify({'authenticated': True})
@@ -109,13 +111,13 @@ def api_login():
     })
 
 
-@app.route('/api/logout')
+@blueprint.route('/api/logout')
 def api_logout():
     logout_user()
     return jsonify({'authenticated': False})
 
 
-@app.route('/api/register', methods=['GET', 'POST'])
+@blueprint.route('/api/register', methods=['GET', 'POST'])
 def api_register():
     if current_user.is_authenticated:
         return jsonify({'registered': False})

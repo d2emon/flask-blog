@@ -1,11 +1,21 @@
-from app import app, db
+from app import db
 from app.models import Post, User
-from flask import flash, jsonify, render_template, redirect, request, url_for
-from flask_babel import _
+from datetime import datetime
+from flask import current_app, flash, g, render_template, redirect, request, url_for
+from flask_babel import _, get_locale
 from flask_login import current_user, login_required
 from guess_language import guess_language
 from . import blueprint
 from .forms import EditProfileForm, PostForm
+
+
+@blueprint.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+
+    g.locale = str(get_locale())
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
@@ -30,7 +40,7 @@ def index():
     page = request.args.get('page', 1, type=int)
     posts = current_user.followed_posts().paginate(
         page,
-        app.config['POSTS_PER_PAGE'],
+        current_app.config['POSTS_PER_PAGE'],
         False,
     )
     prev_url = url_for('main.index', page=posts.prev_num) if posts.has_prev else None
@@ -54,7 +64,7 @@ def user_profile(username):
         Post.timestamp.desc(),
     ).paginate(
         page,
-        app.config['POSTS_PER_PAGE'],
+        current_app.config['POSTS_PER_PAGE'],
         False,
     )
     prev_url = url_for('main.user_profile', page=posts.prev_num) if posts.has_prev else None
@@ -135,7 +145,7 @@ def explore():
         Post.timestamp.desc(),
     ).paginate(
         page,
-        app.config['POSTS_PER_PAGE'],
+        current_app.config['POSTS_PER_PAGE'],
         False,
     )
     prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
