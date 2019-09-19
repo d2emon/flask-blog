@@ -6,7 +6,6 @@ from flask_login import current_user, login_required
 from guess_language import guess_language
 from . import blueprint
 from .forms import EditProfileForm, PostForm
-from .translate import translate
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
@@ -148,13 +147,3 @@ def explore():
         prev_url=prev_url,
         next_url=next_url,
     )
-
-
-@blueprint.route('/translate', methods=['POST'])
-@login_required
-def translate_text():
-    return jsonify({'text': translate(
-        request.form['text'],
-        request.form['source_language'],
-        request.form['dest_language'],
-    )})

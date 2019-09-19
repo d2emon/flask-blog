@@ -63,6 +63,9 @@ app.register_blueprint(auth_blueprint, url_prefix='/auth')
 from .main import blueprint as main_blueprint
 app.register_blueprint(main_blueprint)
 
+from .translate import blueprint as translate_blueprint
+app.register_blueprint(translate_blueprint, url_prefix='/translate')
+
 # # from .admin import admin as admin_blueprint
 # # app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
