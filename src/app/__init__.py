@@ -1,4 +1,5 @@
 from config import Config
+from elasticsearch import Elasticsearch
 from flask import Flask, current_app, request
 from flask_babel import Babel, lazy_gettext as _l
 from flask_bootstrap import Bootstrap
@@ -51,6 +52,10 @@ def create_app(config_class=Config):
     mail.init_app(app)
     migrate.init_app(app, db)
     moment.init_app(app)
+
+    # Elastic search
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) if app.config['ELASTICSEARCH_URL'] else None
+    app.logger.debug(app.elasticsearch)
 
     # Register blueprints
     from .errors import blueprint as errors_blueprint

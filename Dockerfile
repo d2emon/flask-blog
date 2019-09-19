@@ -16,6 +16,7 @@ RUN pip install -r /requirements.txt
 EXPOSE 5000
 
 ENV FLASK_APP=run
+ENV ELASTICSEARCH_URL=http://localhost:9200
 ENV MAIL_SERVER=mail
 ENV MAIL_PORT=1025
 ENV YANDEX_TRANSLATOR_KEY=enter-your-key

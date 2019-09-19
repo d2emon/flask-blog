@@ -10,6 +10,9 @@ class Config:
     # Old -> DEBUG = False
     # Old -> TESTING = False
 
+    # Elastic search
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
+
     # Language
     LANGUAGES = ['en', 'ru']
 
