@@ -53,3 +53,5 @@ class Config:
     # Old -> # ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
     # Old -> VIEW_CASE = "edit_case"
+
+    YANDEX_TRANSLATOR_KEY = os.environ.get('YANDEX_TRANSLATOR_KEY')

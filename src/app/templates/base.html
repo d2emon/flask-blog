@@ -12,6 +12,34 @@
   {{  super() }}
   {{ moment.include_moment() }}
   {{ moment.lang(g.locale) }}
+
+  <script>
+    function translate(sourceId, destId, sourceLang, destLang) {
+      var sourceElem = document.getElementById(sourceId);
+      var destElem = document.getElementById(destId);
+
+      destElem.innerHTML = '<img src="{{ url_for('static', filename='loading.gif') }}">';
+
+      var formData = new FormData();
+      formData.append('source_language', sourceLang);
+      formData.append('dest_language', destLang);
+      formData.append('text', sourceElem.textContent);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/translate', true);
+      xhr.send(formData);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+
+        if (xhr.status === 200) {
+          var responseJson = JSON.parse(xhr.responseText);
+          destElem.textContent = responseJson.text;
+        } else {
+          destElem.textContent = "{{ _('Error: Could not contact server.') }}";
+        }
+      }
+    }
+  </script>
 {% endblock %}
 
 {% block navbar %}
