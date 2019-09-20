@@ -25,20 +25,59 @@
       formData.append('dest_language', destLang);
       formData.append('text', sourceElem.textContent);
 
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '{{ url_for('translate.translate_text') }}', true);
-      xhr.send(formData);
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState !== 4) return;
-
-        if (xhr.status === 200) {
-          var responseJson = JSON.parse(xhr.responseText);
-          destElem.textContent = responseJson.text;
-        } else {
-          destElem.textContent = "{{ _('Error: Could not contact server.') }}";
+      fetch(
+        '{{ url_for('translate.translate_text') }}',
+        {
+          method: 'POST',
+          body: formData,
         }
-      }
+      )
+        .then(function (response) {
+          return (response.status === 200)
+            ? response.json()
+            : {text: "{{ _('Error: Could not contact server.') }}"};
+        })
+        .then(function (data) {
+          destElem.textContent = data.text;
+        });
     }
+
+    $(function () {
+      var timer =null;
+      $('.user_popup').hover(
+        function (event) {
+          var elem = $(event.currentTarget);
+          timer = setTimeout(function () {
+            timer = null;
+            username = elem.first().text().trim();
+            url = '/user/' + username + '/popup';
+            fetch(url)
+              .then(function (response) {
+                return response.text();
+              })
+              .then(function (data) {
+                elem.popover({
+                  trigger: 'manual',
+                  html: true,
+                  animation: false,
+                  container: elem,
+                  content: data
+                }).popover('show');
+                flask_moment_render_all();
+              });
+          }, 1000)
+        },
+        function (event) {
+          var elem = $(event.currentTarget);
+          if (timer) {
+            clearTimeout(timer);
+            timer = null;
+          } else {
+            elem.popover('destroy');
+          }
+        }
+      )
+    })
   </script>
 {% endblock %}
 
