@@ -82,7 +82,26 @@
           }
         }
       )
-    })
+    });
+    {% if current_user.is_authenticated %}
+    $(function() {
+      var since = 0;
+      setInterval(function () {
+        fetch('{{ url_for('main.notifications') }}?since=' + since)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (notifications) {
+            for(var i = 0; i < notifications.length; i++) {
+              if (notifications[i].name === 'unread_message_count')
+                setMessagesCount(notifications[i].data);
+              since = notifications[i].timestamp;
+            }
+          });
+      }, 10000)
+
+    });
+    {% endif %}
   </script>
 {% endblock %}
 

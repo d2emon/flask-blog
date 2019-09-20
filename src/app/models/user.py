@@ -1,3 +1,4 @@
+import json
 import jwt
 from app import db, login
 from datetime import datetime
@@ -7,6 +8,7 @@ from hashlib import md5
 from time import time
 from werkzeug.security import generate_password_hash, check_password_hash
 from .message import Message
+from .notification import Notification
 from .post import Post
 
 
@@ -50,6 +52,11 @@ class User(UserMixin, db.Model):
         lazy='dynamic',
     )
     last_message_read_time = db.Column(db.DateTime)
+    notifications = db.relationship(
+        'Notification',
+        backref='user',
+        lazy='dynamic',
+    )
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -116,6 +123,16 @@ class User(UserMixin, db.Model):
     def new_messages(self):
         last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
         return Message.query.filter_by(receiver=self).filter(Message.timestamp > last_read_time).count()
+
+    def add_notification(self, name, data):
+        self.notifications.filter_by(name=name).delete()
+        notification = Notification(
+            name=name,
+            payload=json.dumps(data),
+            user=self,
+        )
+        db.session.add(notification)
+        return notification
 
 
 @login.user_loader

@@ -1,7 +1,7 @@
 from app import db
-from app.models import Message, Post, User
+from app.models import Message, Notification, Post, User
 from datetime import datetime
-from flask import current_app, flash, g, render_template, redirect, request, url_for
+from flask import current_app, flash, g, jsonify, render_template, redirect, request, url_for
 from flask_babel import _, get_locale
 from flask_login import current_user, login_required
 from guess_language import guess_language
@@ -202,6 +202,7 @@ def send_message(receiver):
             body=form.message.data,
         )
         db.session.add(message)
+        user.add_notification('unread_messages_count', user.new_messages())
         db.session.commit()
 
         flash(_('Your message has been sent.'))
@@ -218,6 +219,7 @@ def send_message(receiver):
 @login_required
 def messages():
     current_user.last_message_read_time = datetime.utcnow()
+    current_user.add_notification('unread_message_count', 0)
     db.session.commit()
 
     page = request.args.get('page', 1, type=int)
@@ -237,3 +239,19 @@ def messages():
         prev_url=prev_url,
         next_url=next_url,
     )
+
+
+@blueprint.route('/notifications')
+@login_required
+def notifications():
+    since = request.args.get('since', 0.0, type=float)
+    items = current_user.notifications.filter(
+        Notification.timestamp > since
+    ).order_by(
+        Notification.timestamp.asc(),
+    )
+    return jsonify([{
+        'name': item.name,
+        'data': item.get_data(),
+        'timestamp': item.timestamp,
+    } for item in items])

@@ -1,5 +1,5 @@
 from app import cli, create_app, db
-from app.models import Post, User
+from app.models import Message, Notification, Post, User
 from config import Config
 
 
@@ -11,8 +11,10 @@ cli.register(app)
 def make_shell_context():
     return {
         'db': db,
-        'User': User,
+        'Message': Message,
+        'Notification': Notification,
         'Post': Post,
+        'User': User,
     }
 
 
