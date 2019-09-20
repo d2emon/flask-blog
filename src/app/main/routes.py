@@ -6,14 +6,15 @@ from flask_babel import _, get_locale
 from flask_login import current_user, login_required
 from guess_language import guess_language
 from . import blueprint
-from .forms import EditProfileForm, PostForm
+from .forms import EditProfileForm, PostForm, SearchForm
 
 
-@blueprint.before_request
+@blueprint.before_app_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+        g.search_form = SearchForm()
 
     g.locale = str(get_locale())
 
@@ -47,7 +48,7 @@ def index():
     next_url = url_for('main.index', page=posts.next_num) if posts.has_next else None
     return render_template(
         'main/index.html',
-        title="Home",
+        title=_("Home"),
         form=form,
         posts=posts.items,
         prev_url=prev_url,
@@ -95,7 +96,7 @@ def edit_profile():
 
     return render_template(
         'main/edit_profile.html',
-        title="Edit Profile",
+        title=_("Edit Profile"),
         form=form,
     )
 
@@ -152,8 +153,28 @@ def explore():
     next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
     return render_template(
         'main/index.html',
-        title="Explore",
+        title=_("Explore"),
         posts=posts.items,
+        prev_url=prev_url,
+        next_url=next_url,
+    )
+
+
+@blueprint.route('/search')
+@login_required
+def search():
+    if not g.search_form.validate():
+        return redirect(url_for('main.explore'))
+
+    page = request.args.get('page', 1, type=int)
+    posts, total = Post.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
+    last_item = page * current_app.config['POSTS_PER_PAGE']
+    prev_url = url_for('main.search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
+    next_url = url_for('main.search', q=g.search_form.q.data, page=page + 1) if total > last_item else None
+    return render_template(
+        'main/search.html',
+        title=_("Search"),
+        posts=posts,
         prev_url=prev_url,
         next_url=next_url,
     )

@@ -9,6 +9,7 @@ class Post(SearchableMixin, db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     language = db.Column(db.String(5))
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    __id_field__ = 'post_id'
     __searchable__ = ['body']
 
     def __repr__(self):

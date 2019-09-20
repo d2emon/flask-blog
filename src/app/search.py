@@ -11,7 +11,7 @@ def add_to_index(index, model):
     current_app.elasticsearch.index(
         index=index,
         doc_type=index,
-        id=model.id,
+        id=getattr(model, model.__id_field__),
         body=payload,
     )
 
@@ -23,7 +23,7 @@ def remove_from_index(index, model):
     current_app.elasticsearch.delete(
         index=index,
         doc_type=index,
-        id=model.id,
+        id=getattr(model, model.__id_field__),
     )
 
 
@@ -33,10 +33,9 @@ def query_index(index, query, page, per_page):
 
     search = current_app.elasticsearch.search(
         index=index,
-        doc_type=index,
         body={
             'query': {
-                'multi-match': {
+                'multi_match': {
                     'query': query,
                     'fields': ['*'],
                 },
@@ -46,4 +45,4 @@ def query_index(index, query, page, per_page):
         },
     )
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
-    return ids, search['hits']['total']
+    return ids, search['hits']['total']['value']

@@ -1,5 +1,6 @@
 import click
 import os
+from app.models import Post
 
 
 def register(app):
@@ -32,3 +33,13 @@ def register(app):
         """Compile all languages."""
         if os.system('pybabel compile -d app/translations'):
             raise RuntimeError('compile command failed')
+
+    @app.cli.group()
+    def search():
+        """Elasticsearch commands."""
+        pass
+
+    @search.command()
+    def reindex():
+        """Reindex all posts."""
+        Post.reindex()

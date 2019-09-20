@@ -7,12 +7,13 @@ class SearchableMixin:
     def search(cls, expression, page, per_page):
         ids, total = query_index(cls.__tablename__, expression, page, per_page)
         if total == 0:
-            return cls.query.filter_by(id=0), 0
+            return cls.query.filter_by(**{cls.__id_field__: 0}), 0
 
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
-        return cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)), total
+        model_id = getattr(cls, cls.__id_field__)
+        return cls.query.filter(model_id.in_(ids)).order_by(db.case(when, value=model_id)), total
 
     @classmethod
     def before_commit(cls, session):

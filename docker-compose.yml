@@ -5,13 +5,23 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+  search:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - "./searchdata:/usr/share/elasticsearch/data"
+    ports:
+      - "9200:9200"
   blog:
     build: .
     environment:
       - FLASK_DEBUG=1
       - FLASK_ENV=development
+      - ELASTICSEARCH_URL=search:9200
     links:
       - mail
+      - search
     ports:
       - "5000:80"
     volumes:

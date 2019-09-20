@@ -55,7 +55,6 @@ def create_app(config_class=Config):
 
     # Elastic search
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) if app.config['ELASTICSEARCH_URL'] else None
-    app.logger.debug(app.elasticsearch)
 
     # Register blueprints
     from .errors import blueprint as errors_blueprint
