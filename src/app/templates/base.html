@@ -42,6 +42,11 @@
         });
     }
 
+    function setMessagesCount(n) {
+      document.getElementById('messages_count').textContent = n;
+      document.getElementById('messages_count').style.visibility = n ? 'visible' : 'hidden';
+    }
+
     $(function () {
       var timer =null;
       $('.user_popup').hover(
@@ -109,6 +114,15 @@
           {% if current_user.is_anonymous %}
           <li><a href="{{ url_for('auth.login') }}">{{  _('Login') }}</a></li>
           {% else %}
+          <li>
+            <a href="{{ url_for('main.messages', username=current_user.username) }}">
+              {{ _('Messages') }}
+              {% set new_messages = current_user.new_messages() %}
+              <span id="message_count" class="badge" style="visibility: {% if new_messages %}visible{% else %}hidden{% endif %}">
+                  {{ new_messages }}
+              </span>
+            </a>
+          </li>
           <li><a href="{{ url_for('main.user_profile', username=current_user.username) }}">{{  _('Profile') }}</a></li>
           <li><a href="{{ url_for('auth.logout') }}">{{  _('Logout') }}</a></li>
           {% endif %}

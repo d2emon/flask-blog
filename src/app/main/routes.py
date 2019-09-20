@@ -212,3 +212,28 @@ def send_message(receiver):
         form=form,
         receiver=receiver,
     )
+
+
+@blueprint.route('/messages')
+@login_required
+def messages():
+    current_user.last_message_read_time = datetime.utcnow()
+    db.session.commit()
+
+    page = request.args.get('page', 1, type=int)
+    messages = current_user.messages_received.order_by(
+        Message.timestamp.desc(),
+    ).paginate(
+        page,
+        current_app.config['POSTS_PER_PAGE'],
+        False,
+    )
+    prev_url = url_for('main.messages', page=messages.prev_num) if messages.has_prev else None
+    next_url = url_for('main.messages', page=messages.next_num) if messages.has_next else None
+    return render_template(
+        'main/messages.html',
+        title=_("Messages"),
+        messages=messages.items,
+        prev_url=prev_url,
+        next_url=next_url,
+    )
