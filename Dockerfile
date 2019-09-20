@@ -1,24 +1,25 @@
 FROM python:3-alpine
 
-COPY ./src /app
-COPY ./db /db
-COPY ./log /log
-COPY ./requirements.txt /requirements.txt
+# RUN adduser -D blog
 
 WORKDIR /app
 
 # RUN apk add build-base python-dev py-pip jpeg-dev zlib-dev
-
 # ENV LIBRARY_PATH=/lib:/usr/lib
 
+COPY ./requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
-EXPOSE 5000
+COPY ./src /app
+COPY ./db /db
+COPY ./log /log
 
 ENV FLASK_APP=run
-ENV MAIL_SERVER=mail
-ENV MAIL_PORT=1025
-ENV YANDEX_TRANSLATOR_KEY=enter-your-key
+
+# RUN chown -R blog:blog ./
+# USER blog
+
+EXPOSE 5000
 
 ENTRYPOINT ["flask"]
 
