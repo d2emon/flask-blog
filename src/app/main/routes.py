@@ -1,12 +1,12 @@
 from app import db
-from app.models import Post, User
+from app.models import Message, Post, User
 from datetime import datetime
 from flask import current_app, flash, g, render_template, redirect, request, url_for
 from flask_babel import _, get_locale
 from flask_login import current_user, login_required
 from guess_language import guess_language
 from . import blueprint
-from .forms import EditProfileForm, PostForm, SearchForm
+from .forms import EditProfileForm, MessageForm, PostForm, SearchForm
 
 
 @blueprint.before_app_request
@@ -187,4 +187,28 @@ def user_popup(username):
     return render_template(
         'main/user_popup.html',
         user=user,
+    )
+
+
+@blueprint.route('/send_message/<receiver>', methods=['GET', 'POST'])
+@login_required
+def send_message(receiver):
+    user = User.query.filter_by(username=receiver).first_or_404()
+    form = MessageForm()
+    if form.validate_on_submit():
+        message = Message(
+            author=current_user,
+            receiver=user,
+            body=form.message.data,
+        )
+        db.session.add(message)
+        db.session.commit()
+
+        flash(_('Your message has been sent.'))
+        return redirect(url_for('main.user_profile', username=receiver))
+    return render_template(
+        'main/send_message.html',
+        title=_("Send Message"),
+        form=form,
+        receiver=receiver,
     )

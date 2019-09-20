@@ -6,6 +6,7 @@ from flask_login import UserMixin
 from hashlib import md5
 from time import time
 from werkzeug.security import generate_password_hash, check_password_hash
+from .message import Message
 from .post import Post
 
 
@@ -36,6 +37,19 @@ class User(UserMixin, db.Model):
         backref=db.backref('followers', lazy='dynamic'),
         lazy='dynamic',
     )
+    messages_sent = db.relationship(
+        'Message',
+        foreign_keys='Message.sender_id',
+        backref='author',
+        lazy='dynamic',
+    )
+    messages_received = db.relationship(
+        'Message',
+        foreign_keys='Message.receiver_id',
+        backref='receiver',
+        lazy='dynamic',
+    )
+    last_message_read_time = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -98,6 +112,10 @@ class User(UserMixin, db.Model):
         ).order_by(
             Post.timestamp.desc()
         )
+
+    def new_messages(self):
+        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
+        return Message.query.filter_by(receiver=self).filter(Message.timestamp > last_read_time).count()
 
 
 @login.user_loader
