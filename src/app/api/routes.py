@@ -2,15 +2,18 @@ from app import db
 from app.models import User
 from flask import jsonify, request, url_for
 from . import blueprint
+from .auth import token_auth
 from .errors import bad_request
 
 
 @blueprint.route('/users/<user_id>', methods=['GET'])
+@token_auth.login_required
 def get_user(user_id):
     return jsonify(User.query.get_or_404(user_id).to_dict())
 
 
 @blueprint.route('/users', methods=['GET'])
+@token_auth.login_required
 def get_users():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
@@ -19,6 +22,7 @@ def get_users():
 
 
 @blueprint.route('/users/<user_id>/followers', methods=['GET'])
+@token_auth.login_required
 def get_followers(user_id):
     user = User.query.get_or_404(user_id)
     page = request.args.get('page', 1, type=int)
@@ -28,6 +32,7 @@ def get_followers(user_id):
 
 
 @blueprint.route('/users/<user_id>/followed', methods=['GET'])
+@token_auth.login_required
 def get_followed(user_id):
     user = User.query.get_or_404(user_id)
     page = request.args.get('page', 1, type=int)
@@ -57,6 +62,7 @@ def create_user():
 
 
 @blueprint.route('/users/<user_id>', methods=['PUT'])
+@token_auth.login_required
 def update_user(user_id=None):
     user = User.query.get_or_404(user_id)
     data = request.get_json() or {}
