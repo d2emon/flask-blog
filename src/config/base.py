@@ -41,6 +41,8 @@ class Config:
     # Old -> RECORDS_ON_PAGE = 50
     # Old -> # PER_PAGE = 10
 
+    REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
+
     # Secret key
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'blog-secret-key'
 

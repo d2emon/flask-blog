@@ -9,10 +9,16 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
     environment:
       - discovery.type=single-node
-    volumes:
-      - "./searchdata:/usr/share/elasticsearch/data"
     ports:
       - "9200:9200"
+    volumes:
+      - "./searchdata:/usr/share/elasticsearch/data"
+  redis:
+    image: redis:3-alpine
+    ports:
+      - "6380:6379"
+    volumes:
+      - "./redis:/data"
   blog:
     build: .
     environment:
@@ -21,9 +27,11 @@ services:
       - ELASTICSEARCH_URL=search:9200
       - MAIL_SERVER=mail
       - MAIL_PORT=1025
+      - REDIS_URL=redis://redis:6379/0
     links:
       - mail
       - search
+      - redis
     ports:
       - "5000:80"
     volumes:

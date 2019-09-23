@@ -1,5 +1,5 @@
 from app import cli, create_app, db
-from app.models import Message, Notification, Post, User
+from app.models import Message, Notification, Post, Task, User
 from config import Config
 
 
@@ -14,6 +14,7 @@ def make_shell_context():
         'Message': Message,
         'Notification': Notification,
         'Post': Post,
+        'Task': Task,
         'User': User,
     }
 

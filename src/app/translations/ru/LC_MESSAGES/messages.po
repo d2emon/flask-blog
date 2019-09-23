@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-20 13:20+0000\n"
+"POT-Creation-Date: 2019-09-23 10:15+0000\n"
 "PO-Revision-Date: 2019-09-19 08:25+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: app/__init__.py:32
+#: app/__init__.py:34
 msgid "Please log in to access this page."
 msgstr "Пожалуйста авторизуйтесь, чтобы получить доступ к странице."
 
@@ -86,7 +86,7 @@ msgstr "Сброс пароля"
 msgid "Your post is now live!"
 msgstr "Ваша запись опубликована!"
 
-#: app/main/routes.py:51 app/templates/base.html:98
+#: app/main/routes.py:51 app/templates/base.html:135
 msgid "Home"
 msgstr "Главная"
 
@@ -121,7 +121,7 @@ msgstr "Вы не можете отписаться от себя!"
 msgid "You are not following %(username)s!"
 msgstr "Вы не подписаны на пользователя %(username)s!"
 
-#: app/main/routes.py:156 app/templates/base.html:99
+#: app/main/routes.py:156 app/templates/base.html:136
 msgid "Explore"
 msgstr "Читать"
 
@@ -129,18 +129,26 @@ msgstr "Читать"
 msgid "Search"
 msgstr "Поиск"
 
-#: app/main/routes.py:207
+#: app/main/routes.py:208
 msgid "Your message has been sent."
 msgstr "Ваше сообщение отправлено."
 
-#: app/main/routes.py:211
+#: app/main/routes.py:212
 msgid "Send Message"
 msgstr "Отправить сообщение"
 
-#: app/main/routes.py:235 app/templates/base.html:112
+#: app/main/routes.py:237 app/templates/base.html:151
 #: app/templates/main/messages.html:5
 msgid "Messages"
 msgstr "Сообщения"
+
+#: app/main/routes.py:264
+msgid "An export task is currently in progress"
+msgstr "Экспорт сообщений уже идет"
+
+#: app/main/routes.py:266
+msgid "Exporting posts..."
+msgstr "Сообщения экспортируются..."
 
 #: app/main/forms/edit_profile.py:10
 msgid "About me"
@@ -172,23 +180,23 @@ msgstr "Добро пожаловать в Микроблог!"
 msgid "Error: Could not contact server."
 msgstr "Ошибка: Не удается установить соединение с сервером."
 
-#: app/templates/base.html:89
+#: app/templates/base.html:126
 msgid "Toggle navigation"
 msgstr "Переключить навигацию"
 
-#: app/templates/base.html:94
+#: app/templates/base.html:131
 msgid "Microblog"
 msgstr "Микроблог"
 
-#: app/templates/base.html:110
+#: app/templates/base.html:147
 msgid "Login"
 msgstr "Вход"
 
-#: app/templates/base.html:113
+#: app/templates/base.html:158
 msgid "Profile"
 msgstr "Профиль"
 
-#: app/templates/base.html:114
+#: app/templates/base.html:159
 msgid "Logout"
 msgstr "Выход"
 
@@ -252,11 +260,11 @@ msgstr "Привет, %(username)s!"
 msgid "Welcome!"
 msgstr "Добро пожаловать!"
 
-#: app/templates/main/index.html:25 app/templates/main/user.html:41
+#: app/templates/main/index.html:25 app/templates/main/user.html:44
 msgid "Newer posts"
 msgstr "Новые записи"
 
-#: app/templates/main/index.html:30 app/templates/main/user.html:46
+#: app/templates/main/index.html:30 app/templates/main/user.html:49
 msgid "Older posts"
 msgstr "Старые записи"
 
@@ -305,14 +313,18 @@ msgid "Edit your profile"
 msgstr "Редактировать профиль"
 
 #: app/templates/main/user.html:21
+msgid "Export your posts"
+msgstr "Экспортировать ваши сообщения"
+
+#: app/templates/main/user.html:24
 msgid "Send private message"
 msgstr "Написать личное сообщение"
 
-#: app/templates/main/user.html:23 app/templates/main/user_popup.html:22
+#: app/templates/main/user.html:26 app/templates/main/user_popup.html:22
 msgid "Follow"
 msgstr "Подписаться"
 
-#: app/templates/main/user.html:25 app/templates/main/user_popup.html:24
+#: app/templates/main/user.html:28 app/templates/main/user_popup.html:24
 msgid "Unfollow"
 msgstr "Отписаться"
 

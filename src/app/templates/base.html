@@ -43,8 +43,12 @@
     }
 
     function setMessagesCount(n) {
-      document.getElementById('messages_count').textContent = n;
-      document.getElementById('messages_count').style.visibility = n ? 'visible' : 'hidden';
+      document.getElementById('message_count').textContent = n;
+      document.getElementById('message_count').style.visibility = n ? 'visible' : 'hidden';
+    }
+
+    function setTaskProgress(task_id, progress) {
+      document.getElementById(task_id + '-progress').textContent = progress;
     }
 
     $(function () {
@@ -93,8 +97,17 @@
           })
           .then(function (notifications) {
             for(var i = 0; i < notifications.length; i++) {
-              if (notifications[i].name === 'unread_message_count')
-                setMessagesCount(notifications[i].data);
+              switch (notifications[i].name) {
+                case 'unread_message_count':
+                  setMessagesCount(notifications[i].data);
+                  break;
+                case 'task_progress':
+                  setTaskProgress(
+                    notifications[i].data.task_id,
+                    notifications[i].data.progress,
+                  );
+                  break;
+              }
               since = notifications[i].timestamp;
             }
           });
@@ -153,12 +166,24 @@
 
 {% block content %}
   <div class="container">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-info" role="alert">{{ message }}</div>
-      {% endfor %}
+    {% if current_user.is_authenticated %}
+      {% with tasks = current_user.get_tasks_in_progress() %}
+        {% if tasks %}
+          {% for task in tasks %}
+            <div class="alert alert-success" role="alert">
+              {{ task.description }}
+              <span id="{{ task.task_id }}-progress">{{ task.get_progress() }}</span>%
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
     {% endif %}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
     {% endwith %}
 
     {% block app_content %}{% endblock %}

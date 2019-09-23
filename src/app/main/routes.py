@@ -255,3 +255,14 @@ def notifications():
         'data': item.get_data(),
         'timestamp': item.timestamp,
     } for item in items])
+
+
+@blueprint.route('/export_posts')
+@login_required
+def export_posts():
+    if current_user.get_task_in_progress('export_posts'):
+        flash(_("An export task is currently in progress"))
+    else:
+        current_user.launch_task('export_posts', _('Exporting posts...'))
+        db.session.commit()
+    return redirect(url_for('main.user_profile', username=current_user.username))

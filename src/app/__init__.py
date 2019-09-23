@@ -1,3 +1,4 @@
+import rq
 from config import Config
 from elasticsearch import Elasticsearch
 from flask import Flask, current_app, request
@@ -9,6 +10,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from redis import Redis
 from .logging_handlers import register_handlers
 
 
@@ -55,6 +57,10 @@ def create_app(config_class=Config):
 
     # Elastic search
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) if app.config['ELASTICSEARCH_URL'] else None
+
+    # RQ
+    app.redis = Redis.from_url(app.config['REDIS_URL'])
+    app.task_queue = rq.Queue('blog-tasks', connection=app.redis)
 
     # Register blueprints
     from .errors import blueprint as errors_blueprint
