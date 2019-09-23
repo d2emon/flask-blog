@@ -1,143 +1,71 @@
-import uuid
 from app import db
 from app.models import User
-from app.auth.forms import LoginForm, RegistrationForm
-from flask import jsonify
-from flask_login import current_user, login_user, logout_user, login_required
-from flask_wtf.csrf import generate_csrf
+from flask import jsonify, request, url_for
 from . import blueprint
+from .errors import bad_request
 
 
-# API
+@blueprint.route('/users/<user_id>', methods=['GET'])
+def get_user(user_id):
+    return jsonify(User.query.get_or_404(user_id).to_dict())
 
 
-@blueprint.route('/api')
-def api():
-    return jsonify({
-        'csrf_token': generate_csrf(),
-    })
+@blueprint.route('/users', methods=['GET'])
+def get_users():
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = User.to_collection_dict(User.query, page, per_page, 'api.get_users')
+    return jsonify(data)
 
 
-@blueprint.route('/api/index')
-@login_required
-def api_index():
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!',
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!',
-        },
-        {
-            'author': {'username': 'Hippolite'},
-            'body': 'People=shit!',
-        },
-        {
-            'id': uuid.uuid4(),
-            'slug': 'post-1',
-            'author': {
-                'firstName': 'First',
-                'lastName': 'Last',
-            },
-            'title': 'Post 1',
-            'date': '01 May 2017',
-            'summary': 'Post 1',
-            'body': 'Post',
-            'image': 'https://image.ibb.co/bF9iO5/1.jpg',
-        },
-        {
-            'id': uuid.uuid4(),
-            'slug': 'post-2',
-            'author': {
-                'firstName': 'First',
-                'lastName': 'Last',
-            },
-            'title': 'Post 2',
-            'date': '01 May 2017',
-            'summary': 'Post 2',
-            'body': 'Post',
-            'image': 'https://image.ibb.co/bF9iO5/1.jpg',
-        },
-        {
-            'id': uuid.uuid4(),
-            'slug': 'post-3',
-            'author': {
-                'firstName': 'First',
-                'lastName': 'Last',
-            },
-            'title': 'Post 3',
-            'date': '01 May 2017',
-            'summary': 'Post 3',
-            'body': 'Post',
-            'image': 'https://image.ibb.co/bF9iO5/1.jpg',
-        },
-    ]
-    return jsonify({
-        'csrf_token': generate_csrf(),
-        'title': 'Home',
-        'messages': [],
-        'user': current_user,
-        'posts': posts,
-    })
+@blueprint.route('/users/<user_id>/followers', methods=['GET'])
+def get_followers(user_id):
+    user = User.query.get_or_404(user_id)
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = User.to_collection_dict(user.followers, page, per_page, 'api.get_followers', user_id=user_id)
+    return jsonify(data)
 
 
-@blueprint.route('/api/login', methods=['GET', 'POST'])
-def api_login():
-    if current_user.is_authenticated:
-        return jsonify({'authenticated': True})
-
-    form = LoginForm()
-    authenticated = form.validate_on_submit()
-    messages = []
-    errors = form.errors
-
-    if authenticated:
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            errors['username'] = "Invalid username or password"
-            errors['password'] = "Invalid username or password"
-        else:
-            login_user(user, remember=form.remember_me.data)
-            messages.append(
-                "Login requested for user {username}, remember_me={remember_me}".format(**form.data)
-            )
-
-    return jsonify({
-        'authenticated': authenticated,
-        'errors': errors,
-        'messages': messages,
-    })
+@blueprint.route('/users/<user_id>/followed', methods=['GET'])
+def get_followed(user_id):
+    user = User.query.get_or_404(user_id)
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = User.to_collection_dict(user.followed, page, per_page, 'api.get_followed', user_id=user_id)
+    return jsonify(data)
 
 
-@blueprint.route('/api/logout')
-def api_logout():
-    logout_user()
-    return jsonify({'authenticated': False})
+@blueprint.route('/users', methods=['POST'])
+def create_user():
+    data = request.get_json() or {}
+    required = ('username', 'email', 'password')
+    if any(field not in data for field in required):
+        return bad_request('must include username, email and password fields')
+    if User.query.filter_by(username=data['username']).first():
+        return bad_request('please use a different username')
+    if User.query.filter_by(email=data['email']).first():
+        return bad_request('please use a different email address')
+    user = User()
+    user.from_dict(data, new_user=True)
+    db.session.add(user)
+    db.session.commit()
+    response = jsonify(user.to_dict())
+    response.status_code = 201
+    response.headers['Location'] = url_for('api.get_user', user_id=user.user_id)
+    return response
 
 
-@blueprint.route('/api/register', methods=['GET', 'POST'])
-def api_register():
-    if current_user.is_authenticated:
-        return jsonify({'registered': False})
-
-    form = RegistrationForm()
-    registered = form.validate_on_submit()
-    messages = []
-    if registered:
-        user = User(
-            username=form.username.data,
-            email=form.email.data,
-        )
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-
-        messages.append("Congratulations, you are now a registered user!")
-
-    return jsonify({
-        'registered': registered,
-        'errors': form.errors,
-        'messages': messages,
-    })
+@blueprint.route('/users/<user_id>', methods=['PUT'])
+def update_user(user_id=None):
+    user = User.query.get_or_404(user_id)
+    data = request.get_json() or {}
+    username_changed = 'username' in data and data['username'] != user.username
+    if username_changed and User.query.filter_by(username=data['username']).first():
+        return bad_request('please use a different username')
+    email_changed = 'email' in data and data['email'] != user.email
+    if username_changed and User.query.filter_by(email=data['email']).first():
+        return bad_request('please use a different email address')
+    user.from_dict(data, new_user=False)
+    db.session.commit()
+    return jsonify(user.to_dict())

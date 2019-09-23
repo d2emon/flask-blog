@@ -2,13 +2,14 @@ import json
 import jwt
 from app import db, login
 from datetime import datetime
-from flask import current_app
+from flask import current_app, url_for
 from flask_login import UserMixin
 from hashlib import md5
 from time import time
 from werkzeug.security import generate_password_hash, check_password_hash
 from .message import Message
 from .notification import Notification
+from .paginated import PaginatedAPIMixin
 from .post import Post
 from .task import Task
 
@@ -20,7 +21,7 @@ followers = db.Table(
 )
 
 
-class User(UserMixin, db.Model):
+class User(PaginatedAPIMixin, UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -160,6 +161,33 @@ class User(UserMixin, db.Model):
             user=self,
             complete=False,
         ).first()
+
+    def to_dict(self, include_email=False):
+        data = {
+            'id': self.user_id,
+            'username': self.username,
+            'last_seen': self.last_seen.isoformat() + 'Z',
+            'about_me': self.about_me,
+            'post_count': self.posts.count(),
+            'follower_count': self.followers.count(),
+            'followed_count': self.followed.count(),
+            '_links': {
+                'self': url_for('api.get_user', user_id=self.user_id),
+                'followers': url_for('api.get_followers', user_id=self.user_id),
+                'followed': url_for('api.get_followed', user_id=self.user_id),
+                'avatar': self.avatar(128),
+            },
+        }
+        if include_email:
+            data['email'] = self.email
+        return data
+
+    def from_dict(self, data, new_user=False):
+        fields = (field for field in data if field in ('username', 'email', 'about_me'))
+        for field in fields:
+            setattr(self, field, data[field])
+        if new_user and 'password' in data:
+            self.set_password(data['password'])
 
 
 @login.user_loader
