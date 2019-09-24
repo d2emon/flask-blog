@@ -1,11 +1,17 @@
 import logging
 import os
+# from datetime import timedelta
 
 
 class Config:
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
     ADMINS = ['admin@example.com']
+
+    # Backups
+    # BACKUP_TIME = timedelta(minutes=30)
+    # BACKUP_PATH = os.path.join(BASE_DIR, "db", "backup")
+    # BACKUP_FILENAME = "blog-%s.db"
 
     # Old -> DEBUG = False
     # Old -> TESTING = False
@@ -41,12 +47,19 @@ class Config:
     # Old -> RECORDS_ON_PAGE = 50
     # Old -> # PER_PAGE = 10
 
+    # Recaptcha
+    # RECAPTCHA_PUBLIC_KEY = '6Ld4rwITAAAAAKUD5AntlHi7HL36W2vHJQOIjQmA'
+    # RECAPTCHA_PRIVATE_KEY = '6Ld4rwITAAAAAFE8nTS852QbsqCBx1mN8D4BqenE'
+
+    # Redis
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
 
     # Secret key
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'blog-secret-key'
 
     # Database
+    # DB_PATH = os.path.join(BASE_DIR, "db")
+    # DB_FILENAME = "blog.db"
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -60,3 +73,6 @@ class Config:
     # Old -> VIEW_CASE = "edit_case"
 
     YANDEX_TRANSLATOR_KEY = os.environ.get('YANDEX_TRANSLATOR_KEY')
+
+    # USERNAME = 'admin'
+    # PASSWORD = 'admin'

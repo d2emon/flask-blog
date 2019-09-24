@@ -8,6 +8,12 @@ def wants_json_response():
     return request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']
 
 
+# @blueprint.app_errorhandler(403)
+# @cache.cached()
+# def error403(error):
+#     return render_template('errors/403.html', title='Forbidden'), 403
+
+
 @blueprint.app_errorhandler(404)
 def error404(error):
     if wants_json_response():

@@ -43,3 +43,28 @@ def register(app):
     def reindex():
         """Reindex all posts."""
         Post.reindex()
+
+    @app.cli.group()
+    def fill():
+        """Fill data."""
+        pass
+
+    @fill.command()
+    def categories():
+        """Add categories."""
+        categories = [
+            "PYTHON",
+            "cat1",
+            "cat2",
+            "cat3",
+            "cat4",
+            "cat5",
+        ]
+        # from model import Category
+        for category_id, category in enumerate(categories):
+            # item = Category()
+            # item.category_id = category_id
+            # item.category_name = category
+            # db.session.add(item)
+            pass
+        # db.session.commit()
