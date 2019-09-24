@@ -35,7 +35,7 @@ services:
     ports:
       - "5000:80"
     volumes:
-      - "./back:/app"
-      - "./db:/app/db"
-      - "./log:/app/log"
+      - "./back/src:/app"
+      - "./db:/db"
+      - "./log:/log"
       - "./back/requirements.txt:/requirements.txt"

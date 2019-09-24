@@ -1,4 +1,3 @@
-import json
 import redis
 import rq
 from app import db
