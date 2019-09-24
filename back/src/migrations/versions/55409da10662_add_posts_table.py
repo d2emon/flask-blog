@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '55409da10662'
-down_revision = '75cbe2e1cbd6'
+down_revision = 'f2c00d734356'
 branch_labels = None
 depends_on = None
 
@@ -21,10 +21,14 @@ def upgrade():
     op.create_table(
         'post',
         sa.Column('post_id', sa.Integer(), nullable=False),
-        sa.Column('body', sa.String(length=140), nullable=True),
+        sa.Column('title', sa.String(length=128), nullable=True),
+        sa.Column('body', sa.Text(), nullable=True),
         sa.Column('timestamp', sa.DateTime(), nullable=True),
         sa.Column('user_id', sa.Integer(), nullable=True),
+        sa.Column('category_id', sa.Integer(), nullable=True),
+        sa.Column('views', sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(['user_id'], ['user.user_id'], ),
+        sa.ForeignKeyConstraint(['category_id'], ['category.category_id'], ),
         sa.PrimaryKeyConstraint('post_id')
     )
     op.create_index(op.f('ix_post_timestamp'), 'post', ['timestamp'], unique=False)
