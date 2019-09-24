@@ -6,7 +6,7 @@ shell.exec("bower install");
 
 console.log("Updating pip modules");
 shell.exec("pip install -r requirements.txt");
-shell.exec("python ./src-old/manage.py db upgrade");
+shell.exec("python ./back-old/manage.py db upgrade");
 
 console.log("Setting up gulp");
 gulpfile = path.join('node_modules', 'gulpfile', 'result', 'gulpfile.js');

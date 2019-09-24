@@ -13,7 +13,7 @@ import sys
 
 
 here = path.abspath(path.dirname(__file__))
-parent_dir = path.abspath(path.join(here, 'src-old'))
+parent_dir = path.abspath(path.join(here, 'back-old'))
 sys.path.append(parent_dir)
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -89,8 +89,8 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
 
-    package_dir={'': 'src-old'},
-    packages=find_packages('./src-old', exclude=['tests']),
+    package_dir={'': 'back-old'},
+    packages=find_packages('./back-old', exclude=['tests']),
     py_modules=[
         "app",
         "config",

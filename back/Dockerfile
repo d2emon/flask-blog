@@ -7,12 +7,12 @@ WORKDIR /app
 # RUN apk add build-base python-dev py-pip jpeg-dev zlib-dev
 # ENV LIBRARY_PATH=/lib:/usr/lib
 
-COPY ./requirements.txt /requirements.txt
-RUN pip install -r /requirements.txt
+COPY requirements.txt /requirements.txt
+RUN ["pip", "install", "-r", "/requirements.txt"]
 
-COPY ./src /app
-COPY ./db /db
-COPY ./log /log
+COPY . /app
+# COPY ./db /db
+# COPY ./log /log
 
 ENV FLASK_APP=run
 
@@ -21,8 +21,9 @@ ENV FLASK_APP=run
 
 EXPOSE 5000
 
+RUN ["flask", "db", "upgrade"]
+RUN ["flask", "translate", "compile"]
+
 ENTRYPOINT ["flask"]
 
-CMD ["db", "upgrade"]
-CMD ["translate", "compile"]
 CMD ["run", "--host=0.0.0.0", "--port=80"]
