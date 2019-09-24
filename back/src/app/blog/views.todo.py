@@ -1,6 +1,5 @@
-from flask import render_template, url_for, redirect, request, flash, session, abort
-from app import app
-from model import Category, Post, Tag, Comment, pageby, db
+from flask import current_app, render_template, url_for, redirect, request, flash, session, abort
+from app.model import Category, Post, Tag, Comment, pageby, db
 from werkzeug import secure_filename
 from random import shuffle
 import json
@@ -8,8 +7,8 @@ import time
 from form import CommentForm
 
 
-@app.route('/')
-@app.route('/page/<int:pageid>')
+@current_app.route('/')
+@current_app.route('/page/<int:pageid>')
 # @cache.cached(timeout=300)
 def index(pageid=1):
     categorys = Category.query.getall()
@@ -45,7 +44,7 @@ def index(pageid=1):
                            )
 
 
-@app.route('/about')
+@current_app.route('/about')
 # @cache.cached(timeout=300)
 def about():
     categorys = Category.query.getall()
@@ -105,8 +104,8 @@ def category(cateid=1, pageid=1):
                            )
 
 
-@app.route('/tag/<int:tagid>')
-@app.route('/tag/<int:tagid>/page/<int:pageid>')
+@current_app.route('/tag/<int:tagid>')
+@current_app.route('/tag/<int:tagid>/page/<int:pageid>')
 # @cache.cached(timeout=300)
 def tag(tagid=1, pageid=1):
     categorys = Category.query.getall()
@@ -145,8 +144,8 @@ def tag(tagid=1, pageid=1):
                            )
 
 
-@app.route('/search')
-@app.route('/search/page/<int:pageid>')
+@current_app.route('/search')
+@current_app.route('/search/page/<int:pageid>')
 # @cache.cached(timeout=240)
 def search(pageid=1):
 
@@ -274,12 +273,12 @@ def addcomment():
     return render_template('/error.html', content=error)
 
 
-@app.route('/error')
+@current_app.route('/error')
 def error(content='404'):
     return render_template('/error.html', content=content)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@current_app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
@@ -352,7 +351,7 @@ def epost():
     return redirect(url_for('error_404'))
 
 
-@app.route('/apost', methods=['POST'])
+@current_app.route('/apost', methods=['POST'])
 def apost():
     if not session.get('logged_in'):
         abort(401)
@@ -365,7 +364,7 @@ def apost():
     return redirect(url_for('newpost'))
 
 
-@app.route('/rss_lastnews')
+@current_app.route('/rss_lastnews')
 @cache.cached(timeout=86400)
 def rss_last():
     feed = PostFeed("pythonpub - lastnews",

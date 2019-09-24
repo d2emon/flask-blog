@@ -1,5 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, session, g, abort
-from myapp import app
+from flask import current_app, Flask, render_template, url_for, redirect, request, flash, session, g, abort
 from model import article_tags, Category, Post, Tag, Comment, pageby, db
 from werkzeug import secure_filename
 from random import shuffle
@@ -75,7 +74,7 @@ def dehtml(text):
 def html2textile(html):
     return dehtml(html)
 
-app.jinja_env.filters['html2textile'] = html2textile
+current_app.jinja_env.filters['html2textile'] = html2textile
 
 
 def is_chinese(text):

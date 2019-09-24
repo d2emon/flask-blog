@@ -1,8 +1,8 @@
-from flask import g, request, render_template, redirect, flash, url_for
+from flask import current_app, g, request, render_template, redirect, flash, url_for
 from flask_login import login_required, current_user, login_user, logout_user
-from app import app, db, login_manager
-from .models import Category, Tag, Post, User
-from .forms import PostForm, EForm
+from app import db
+from __blog.models import Category, Tag, Post, User
+from app.blog.forms import PostForm, EForm
 
 
 import random
@@ -17,12 +17,12 @@ def page():
     return page
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User()
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User()
 
 
-@app.before_request
+@current_app.before_request
 def load_sidebar():
     g.user = current_user
 
@@ -42,12 +42,12 @@ def load_sidebar():
     # comments = Comment.query.newcomment()[:20]
 
 
-@app.route('/')
-@app.route('/page/<int:page_id>')
+@current_app.route('/')
+@current_app.route('/page/<int:page_id>')
 def index(page_id=1):
     # post = Post.query.getpost_perpage(page_id, app.config.PER_PAGE)
     post = Post.query  # filter_by(id=page_id, app.config.PER_PAGE)
-    articles = post.paginate(page(), app.config.get('RECORDS_ON_PAGE'))
+    articles = post.paginate(page(), current_app.config.get('RECORDS_ON_PAGE'))
 
     return render_template(
         '/index/index.html',
@@ -56,20 +56,20 @@ def index(page_id=1):
     )
 
 
-@app.route('/about')
+@current_app.route('/about')
 def about():
     return render_template(
         '/index/about.html',
     )
 
 
-@app.route('/category/<int:cat_id>')
-@app.route('/category/<int:cat_id>/page/<int:page_id>')
+@current_app.route('/category/<int:cat_id>')
+@current_app.route('/category/<int:cat_id>/page/<int:page_id>')
 def category(cat_id, page_id=1):
     cat = Category.query.get_or_404(cat_id)
 
     # p = pageby(cat.posts, page_id, per_page, Post.created_at.desc())
-    articles = cat.posts.paginate(page(), app.config.get('RECORDS_ON_PAGE'))
+    articles = cat.posts.paginate(page(), current_app.config.get('RECORDS_ON_PAGE'))
 
     return render_template(
         '/index/category.html',
@@ -79,14 +79,14 @@ def category(cat_id, page_id=1):
     )
 
 
-@app.route('/tag/<int:tag_id>')
-@app.route('/tag/<int:tag_id>/page/<int:page_id>')
+@current_app.route('/tag/<int:tag_id>')
+@current_app.route('/tag/<int:tag_id>/page/<int:page_id>')
 def tag(tag_id, page_id=1):
     tagall = Tag.query.get_or_404(tag_id)
     name = tagall.name
     # p = Post.query.search_tag(name)
     p = Post.query
-    articles = p.paginate(page(), app.config.get('RECORDS_ON_PAGE'))
+    articles = p.paginate(page(), current_app.config.get('RECORDS_ON_PAGE'))
 
     return render_template(
         '/index/tag.html',
@@ -96,7 +96,7 @@ def tag(tag_id, page_id=1):
     )
 
 
-@app.route('/article/<int:post_id>')
+@current_app.route('/article/<int:post_id>')
 def article(post_id):
     # articles = Post.query.getall()
     articles = Post.query.all()
@@ -120,7 +120,7 @@ def article(post_id):
     )
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@current_app.route('/login', methods=['GET', 'POST'])
 def login():
     if g.user is not None and g.user.is_authenticated:
         return redirect(url_for('index'))
@@ -138,14 +138,14 @@ def login():
     return render_template('/index/login.html')
 
 
-@app.route('/logout')
+@current_app.route('/logout')
 def logout():
     logout_user()
     flash('You were logged out')
     return redirect(url_for('index'))
 
 
-@app.route('/addpost', methods=['GET', 'POST'])
+@current_app.route('/addpost', methods=['GET', 'POST'])
 @login_required
 def addpost():
     if request.method == 'POST':
