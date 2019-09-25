@@ -1,34 +1,31 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
+    <main-toolbar />
 
-    <v-content>
-      <router-view/>
-    </v-content>
+    <main-drawer />
+
+    <main-view />
+
+    <main-footer />
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
-  name: 'App',
-  data: () => ({
-    //
-  }),
+  components: {
+    MainDrawer: () => import('@/components/main/Drawer.vue'),
+    MainFooter: () => import('@/components/main/Footer.vue'),
+    MainToolbar: () => import('@/components/main/Toolbar.vue'),
+    MainView: () => import('@/components/main/View.vue'),
+  },
+  methods: {
+    ...mapActions(['fetchArticles']),
+  },
+  created() {
+    this.fetchArticles();
+  },
 });
 </script>

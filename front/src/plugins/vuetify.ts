@@ -6,10 +6,18 @@ import ru from 'vuetify/src/locale/ru';
 Vue.use(Vuetify);
 
 export default new Vuetify({
-    lang: {
-      locales: { ru },
-      current: 'ru',
+  lang: {
+    locales: { ru },
+    current: 'ru',
+  },
+  theme: {
+    themes: {
+      light: {
+        primary: '#CBAA5C',
+        secondary: '#083759',
+      },
     },
+  },
   icons: {
     iconfont: 'mdi',
   },
