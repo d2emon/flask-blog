@@ -12,6 +12,7 @@ export interface RootState {
   items: Link[],
   itemsOnPage: number,
   layout: number[],
+  messages?: string[],
   newest?: Article[],
   page: number,
   user?: {},

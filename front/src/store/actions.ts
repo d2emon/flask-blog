@@ -5,6 +5,8 @@ import {
   CategoryQuery, InstagramPost,
 } from '@/types';
 import articlesService from '@/services/articles';
+import messagesService from '@/services/messages';
+import messages from "@/services/messages";
 
 const action: ActionTree<RootState, any> = {
   fetchCategories: ({ commit, getters, state }, count?: number) => articlesService
@@ -22,6 +24,9 @@ const action: ActionTree<RootState, any> = {
       .getArticles(getters.articleOffset, state.itemsOnPage)
       .then((response: ArticleQuery) => commit('setArticles', response));
   },
+  fetchMessages: ({ commit }) => messagesService
+    .getMessages()
+    .then((messages: string[]) => commit('setMessages', messages)),
 };
 
 export default action;

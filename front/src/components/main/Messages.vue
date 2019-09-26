@@ -1,9 +1,34 @@
 <template>
   <v-container>
-    {% for message in get_flashed_messages() %}
-    <v-alert type="info">
-      { message }
+    <v-alert
+      v-for="message in messages"
+      type="info"
+      dismissible
+    >
+      {{ message }}
     </v-alert>
-    {% endfor %}
   </v-container>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import {
+  mapActions,
+  mapState,
+} from 'vuex';
+
+@Component({
+  computed: {
+    ...mapState(['messages']),
+  },
+  methods: {
+    ...mapActions(['fetchMessages']),
+  },
+})
+export default class MainToolbar extends Vue {
+  mounted() {
+      (this as any).fetchMessages();
+  }
+}
+</script>
