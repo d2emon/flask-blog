@@ -7,6 +7,7 @@ export interface Article {
 }
 
 export interface Link {
+  categoryId?: number,
   text?: string,
   icon?: string,
   to?: string,

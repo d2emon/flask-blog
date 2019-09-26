@@ -14,4 +14,5 @@ export interface RootState {
   layout: number[],
   newest?: Article[],
   page: number,
+  user?: {},
 }

@@ -25,6 +25,7 @@ export default {
       if (categories.find(category => category.text === text)) return categories;
 
       categories.push({
+        categoryId: categories.length + 1,
         text,
         to: `/category/${text}`,
       });

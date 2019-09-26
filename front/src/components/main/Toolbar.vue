@@ -28,6 +28,56 @@
     >
       {{ link.text }}
     </v-btn>
+    <v-menu offset-y>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          class="ml-0 hidden-sm-and-down"
+          text
+          v-on="on"
+        >
+          Categories
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="category in categories"
+          :key="`category-${category.categoryId}`"
+          :to="category.to"
+        >
+          <v-list-item-title>{{ category.text }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <v-btn
+      to="/about"
+      class="ml-0 hidden-sm-and-down"
+      text
+    >
+      About
+    </v-btn>
+    <v-btn
+      to="/rss_lastnews"
+      class="ml-0 hidden-sm-and-down"
+      text
+    >
+      RSS
+    </v-btn>
+    <v-btn
+      v-if="user"
+      to="/logout"
+      class="ml-0 hidden-sm-and-down"
+      text
+    >
+      log out
+    </v-btn>
+    <v-btn
+      v-else
+      to="/login"
+      class="ml-0 hidden-sm-and-down"
+      text
+    >
+      log in
+    </v-btn>
     <v-spacer></v-spacer>
     <v-text-field
       append-icon="mdi-magnify"
@@ -36,54 +86,6 @@
       solo-inverted
       style="max-width: 300px;"
     />
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle colapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Flask-Blog</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="/">Home</a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                Categories <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                {% for c in g.categories %}
-                <li>
-                  <a href="/category/{ c.id }">{ c.category_name }</a>
-                </li>
-                {% endfor %}
-              </ul>
-            </li>
-            <li>
-              <a href="/about">About</a>
-            </li>
-            <li>
-              <a href="/rss_lastnews">RSS</a>
-            </li>
-            {% if not g.user %}
-            <li>
-              <a href="{ url_for('login') }">log in</a>
-            </li>
-            {% else %}
-            <li>
-              <a href="{ url_for('logout') }">log out</a>
-            </li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
   </v-app-bar>
 </template>
 
@@ -93,11 +95,16 @@ import { Component } from 'vue-property-decorator';
 import {
   mapGetters,
   mapMutations,
+  mapState,
 } from 'vuex';
 import { Link } from '@/types';
 
 @Component({
   computed: {
+    ...mapState([
+      'user',
+      'categories',
+    ]),
     ...mapGetters(['links']),
   },
   methods: {
@@ -105,8 +112,6 @@ import { Link } from '@/types';
   },
 })
 export default class MainToolbar extends Vue {
-  // name: 'MainToolbar',
-
   onClick(item: Link) {
     if (item.to || !item.href) return;
 
