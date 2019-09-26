@@ -25,8 +25,6 @@
     </subscribe>
 
     <social />
-
-    <hello-world />
   </v-container>
 </template>
 

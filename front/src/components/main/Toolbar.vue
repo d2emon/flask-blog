@@ -1,5 +1,7 @@
 <template>
-  <v-app-bar app flat>
+  <v-app-bar
+    flat
+  >
     <v-app-bar-nav-icon
       class="hidden-md-and-up"
       @click="toggleDrawer"
@@ -22,7 +24,7 @@
       :to="link.to"
       class="ml-0 hidden-sm-and-down"
       text
-      @click.stop="onClick(item)"
+      @click.stop="onClick(link)"
     >
       {{ link.text }}
     </v-btn>

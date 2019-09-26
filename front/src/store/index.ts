@@ -17,7 +17,11 @@ const state: RootState = {
     },
     {
       text: 'About',
-      to: '#about',
+      href: '#about',
+    },
+    {
+      text: 'Hello',
+      to: '/hello',
     },
   ],
   itemsOnPage: 11,
