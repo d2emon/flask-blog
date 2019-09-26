@@ -29,9 +29,9 @@
         </v-flex>
       </v-layout>
     </template>
-    <div v-else>
+    <v-layout v-else>
       <h3>No posts yet!</h3>
-    </div>
+    </v-layout>
   </v-container>
 </template>
 

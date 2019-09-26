@@ -4,9 +4,12 @@
     grid-list-md
   >
     <article-header>On Instagram</article-header>
-    <v-layout wrap>
+    <v-layout
+      v-if="instagram"
+      wrap
+    >
       <v-flex
-        v-for="(post, postId) in posts"
+        v-for="(post, postId) in instagram"
         :key="postId"
         xs4
       >
@@ -19,10 +22,13 @@
           <v-img
             v-if="post.src"
             height="100%"
-            :src="`/img/instagram/${post.src}`"
+            :src="post.src"
           />
         </article-card>
       </v-flex>
+    </v-layout>
+    <v-layout v-else>
+      <h3>No instagram yet!</h3>
     </v-layout>
   </v-container>
 </template>
@@ -30,22 +36,23 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
+import {mapActions, mapState} from 'vuex';
 
 @Component({
   components: {
     ArticleCard: () => import('@/components/controls/ArticleCard.vue'),
     ArticleHeader: () => import('@/components/controls/ArticleHeader.vue'),
   },
-  data: () => ({
-    posts: [
-      { src: 'adventurealtitude.jpg' },
-      { src: 'garden.jpg' },
-      { src: 'pigduck.jpg' },
-      { src: 'rain.jpg' },
-      { src: 'spices.jpg' },
-      { src: 'sunset.jpg' },
-    ],
-  }),
+  computed: {
+    ...mapState(['instagram']),
+  },
+  methods: {
+    ...mapActions(['fetchInstagram']),
+  }
 })
-export default class Instagram extends Vue {}
+export default class Instagram extends Vue {
+  created() {
+    (this as any).fetchInstagram();
+  }
+}
 </script>

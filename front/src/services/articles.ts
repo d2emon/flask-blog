@@ -1,7 +1,7 @@
 import {
   Article,
   ArticleQuery,
-  CategoryQuery,
+  CategoryQuery, InstagramPost,
   Link,
 } from '@/types';
 import Articles from "@/components/Articles.vue";
@@ -38,4 +38,12 @@ export default {
       categories: count ? categories.slice(0, count) : categories,
       total: categories.length,
     })),
+  getInstagramPosts: (): Promise<InstagramPost[]> => Promise.resolve([
+      { src: 'adventurealtitude.jpg' },
+      { src: 'garden.jpg' },
+      { src: 'pigduck.jpg' },
+      { src: 'rain.jpg' },
+      { src: 'spices.jpg' },
+      { src: 'sunset.jpg' },
+  ]),
 };

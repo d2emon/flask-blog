@@ -4,7 +4,7 @@ import { RootState } from './types';
 import {
   Article,
   ArticleQuery,
-  CategoryQuery,
+  CategoryQuery, InstagramPost,
 } from '@/types';
 
 const mutations: MutationTree<RootState> = {
@@ -26,6 +26,12 @@ const mutations: MutationTree<RootState> = {
     Vue.set(state, 'categories', [...categories]);
     // state.articlesCount = total;
   },
+  setInstagram: (state, payload: InstagramPost[]) => Vue.set(state, 'instagram', payload.map(
+    (post: InstagramPost) => ({
+      ...post,
+      src: `/img/instagram/${post.src}`,
+    })
+  )),
   setNewest: (state, payload: Article[]) => Vue.set(state, 'newest', payload),
   setPage: (state, payload: number) => (state.page = payload),
 };

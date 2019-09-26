@@ -28,3 +28,8 @@ export interface CategoryQuery {
   categories: Link[],
   total: number,
 }
+
+export interface InstagramPost {
+  src: string,
+  href?: string,
+}
