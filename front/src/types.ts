@@ -4,6 +4,7 @@ export interface Article {
   category?: string,
   hero: string,
   prominent?: boolean,
+  layout?: number,
 }
 
 export interface Link {

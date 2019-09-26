@@ -8,9 +8,9 @@
       </v-flex>
 
       <feed-card
-        v-for="(article, articleId) in articles"
+        v-for="article in articles"
         :key="article.title"
-        :size="layout[articleId]"
+        :size="article.layout"
         :value="article"
       ></feed-card>
     </v-layout>
@@ -70,7 +70,6 @@ export default Vue.extend({
   computed: {
     ...mapState([
       'articles',
-      'layout',
       'page',
     ]),
     ...mapGetters([

@@ -25,7 +25,6 @@ const state: RootState = {
     },
   ],
   itemsOnPage: 11,
-  layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3],
   page: 1,
 };
 

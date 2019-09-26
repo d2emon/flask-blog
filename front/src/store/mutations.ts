@@ -15,7 +15,11 @@ const mutations: MutationTree<RootState> = {
       articles,
       total,
     } = payload;
-    Vue.set(state, 'articles', [...articles]);
+    const layouts = [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3];
+    Vue.set(state, 'articles', articles.map((article: Article, articleId: number) => ({
+      ...article,
+      layout: (articleId < layouts.length) ? layouts[articleId] : 3,
+    })));
     state.articlesCount = total;
   },
   setCategories: (state, payload: CategoryQuery) => {
