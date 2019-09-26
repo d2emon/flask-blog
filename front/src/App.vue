@@ -22,10 +22,14 @@ export default Vue.extend({
     MainView: () => import('@/components/main/View.vue'),
   },
   methods: {
-    ...mapActions(['fetchPage']),
+    ...mapActions([
+      'fetchPage',
+      'fetchCategories',
+    ]),
   },
   created() {
     this.fetchPage(1);
+    this.fetchCategories(10);
   },
 });
 </script>

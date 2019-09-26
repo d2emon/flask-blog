@@ -23,3 +23,8 @@ export interface ArticleQuery {
   articles: Article[],
   total: number,
 }
+
+export interface CategoryQuery {
+  categories: Link[],
+  total: number,
+}

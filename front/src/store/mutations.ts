@@ -4,6 +4,7 @@ import { RootState } from './types';
 import {
   Article,
   ArticleQuery,
+  CategoryQuery,
 } from '@/types';
 
 const mutations: MutationTree<RootState> = {
@@ -16,6 +17,14 @@ const mutations: MutationTree<RootState> = {
     } = payload;
     Vue.set(state, 'articles', [...articles]);
     state.articlesCount = total;
+  },
+  setCategories: (state, payload: CategoryQuery) => {
+    const {
+      categories,
+      // total,
+    } = payload;
+    Vue.set(state, 'categories', [...categories]);
+    // state.articlesCount = total;
   },
   setNewest: (state, payload: Article[]) => Vue.set(state, 'newest', payload),
   setPage: (state, payload: number) => (state.page = payload),

@@ -18,14 +18,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 @Component({
   components: {
     ArticleHeader: () => import('@/components/controls/ArticleHeader.vue'),
   },
   computed: {
-    ...mapGetters(['categories']),
+    ...mapState(['categories']),
   },
 })
 export default class Tags extends Vue {}

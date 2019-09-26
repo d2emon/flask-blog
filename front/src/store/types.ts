@@ -6,6 +6,7 @@ import {
 export interface RootState {
   articles?: Article[],
   articlesCount: number,
+  categories?: Link[],
   drawer: boolean,
   items: Link[],
   itemsOnPage: number,
