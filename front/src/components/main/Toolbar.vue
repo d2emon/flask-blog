@@ -36,6 +36,54 @@
       solo-inverted
       style="max-width: 300px;"
     />
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle colapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Flask-Blog</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Categories <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                {% for c in g.categories %}
+                <li>
+                  <a href="/category/{ c.id }">{ c.category_name }</a>
+                </li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li>
+              <a href="/rss_lastnews">RSS</a>
+            </li>
+            {% if not g.user %}
+            <li>
+              <a href="{ url_for('login') }">log in</a>
+            </li>
+            {% else %}
+            <li>
+              <a href="{ url_for('logout') }">log out</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
   </v-app-bar>
 </template>
 

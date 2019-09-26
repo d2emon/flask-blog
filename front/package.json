@@ -1,7 +1,23 @@
 {
-  "name": "front",
-  "version": "0.1.0",
+  "name": "flask-blog-front",
+  "version": "0.2.0",
+  "description": "Flask-based blog",
+  "main": "./src/main.ts",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d2emon/flask-blog.git"
+  },
+  "keywords": [
+    "blog",
+    "flask"
+  ],
+  "author": "Dmitry Kutsenko <d2emonium@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/d2emon/flask-blog/issues"
+  },
+  "homepage": "https://github.com/d2emon/flask-blog#readme",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

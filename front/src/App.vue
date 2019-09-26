@@ -1,8 +1,10 @@
 <template>
-  <v-app>
+  <v-app class="home blog custom-background single-author">
     <main-toolbar />
 
     <main-drawer />
+
+    <main-messages />
 
     <main-view />
 
@@ -18,6 +20,7 @@ export default Vue.extend({
   components: {
     MainDrawer: () => import('@/components/main/Drawer.vue'),
     MainFooter: () => import('@/components/main/Footer.vue'),
+    MainMessages: () => import('@/components/main/Messages.vue'),
     MainToolbar: () => import('@/components/main/Toolbar.vue'),
     MainView: () => import('@/components/main/View.vue'),
   },

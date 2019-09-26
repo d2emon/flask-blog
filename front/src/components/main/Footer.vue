@@ -30,6 +30,10 @@
         </social-button>
       </v-layout>
     </v-container>
+
+    <div id="site-generator">
+      include __foot.pug
+    </div>
   </v-footer>
 </template>
 

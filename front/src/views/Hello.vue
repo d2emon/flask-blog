@@ -1,6 +1,14 @@
 <template>
   <v-container id="hello">
     <hello-world />
+    <!-- iframe
+      scrolling="no"
+      frameborder="0"
+      src="http://yibo.iyiyun.com/js/yibo404"
+      width="735"
+      height="700"
+      style="display:block;margin:0 auto;"
+    ></iframe -->
   </v-container>
 </template>
 
