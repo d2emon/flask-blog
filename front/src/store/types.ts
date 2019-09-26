@@ -5,9 +5,11 @@ import {
 
 export interface RootState {
   articles?: Article[],
+  articlesCount: number,
   drawer: boolean,
   items: Link[],
+  itemsOnPage: number,
   layout: number[],
+  newest?: Article[],
   page: number,
-  itemsOnPage: 11,
 }

@@ -8,7 +8,7 @@
       </v-flex>
 
       <feed-card
-        v-for="(article, articleId) in paginated"
+        v-for="(article, articleId) in articles"
         :key="article.title"
         :size="layout[articleId]"
         :value="article"
@@ -22,7 +22,7 @@
           class="ml-0"
           title="Previous page"
           square
-          @click="setPage(page - 1)"
+          @click="fetchPage(page - 1)"
         >
           <v-icon>mdi-chevron-left</v-icon>
         </social-button>
@@ -45,7 +45,7 @@
           class="ml-0"
           title="Next page"
           square
-          @click="setPage(page + 1)"
+          @click="fetchPage(page + 1)"
         >
           <v-icon>mdi-chevron-right</v-icon>
         </social-button>
@@ -57,9 +57,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  mapState,
+  mapActions,
   mapGetters,
-  mapMutations,
+  mapState,
 } from 'vuex';
 
 export default Vue.extend({
@@ -75,11 +75,10 @@ export default Vue.extend({
     ]),
     ...mapGetters([
       'pages',
-      'paginated',
     ]),
   },
   methods: {
-    ...mapMutations(['setPage']),
+    ...mapActions(['fetchPage']),
   },
   watch: {
     page() {

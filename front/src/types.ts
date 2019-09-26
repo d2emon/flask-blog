@@ -18,3 +18,8 @@ export interface Contact {
   title: string,
   subtitle?: string,
 }
+
+export interface ArticleQuery {
+  articles: Article[],
+  total: number,
+}

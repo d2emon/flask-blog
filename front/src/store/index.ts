@@ -8,6 +8,7 @@ import actions from './actions';
 Vue.use(Vuex);
 
 const state: RootState = {
+  articlesCount: 0,
   drawer: false,
   items: [
     {
@@ -19,9 +20,9 @@ const state: RootState = {
       to: '#about',
     },
   ],
+  itemsOnPage: 11,
   layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3],
   page: 1,
-  itemsOnPage: 11,
 };
 
 const store: StoreOptions<RootState> = {

@@ -1,7 +1,17 @@
-import { Article } from '@/types';
+import {
+  Article,
+  ArticleQuery,
+} from '@/types';
 
-const articles: Article[] = require('@/services/data/articles.json');
+const articlesData: Article[] = require('@/services/data/articles.json');
 
 export default {
-  getArticles: () => Promise.resolve(articles),
+  getArticles: (
+    start: number = 0,
+    count: number = 10,
+  ): Promise<ArticleQuery> => Promise.resolve(articlesData.slice(start, start + count))
+    .then(articles => ({
+      articles,
+      total: articlesData.length,
+    })),
 };

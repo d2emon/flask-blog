@@ -7,6 +7,7 @@ import {
 
 const rootGetters: GetterTree<RootState, any> = {
   categories: (state): Link[] => {
+    // TODO: Make async
     const categories: Link[] = [];
 
     if (!state.articles) return categories;
@@ -25,13 +26,9 @@ const rootGetters: GetterTree<RootState, any> = {
   },
   links: (state, getters): Link[] => state.items.concat(getters.categories),
   pages: (state): number => state.articles
-    ? Math.ceil(state.articles.length / state.itemsOnPage)
+    ? Math.ceil(state.articlesCount / state.itemsOnPage)
     : 0,
-  paginated: (state, getters): Article[] => {
-    const start = (state.page - 1) * state.itemsOnPage;
-    const stop = state.page  * state.itemsOnPage;
-    return state.articles ? state.articles.slice(start, stop) : [];
-  },
+  articleOffset: (state): number => (state.page - 1) * state.itemsOnPage,
 };
 
 export default rootGetters;

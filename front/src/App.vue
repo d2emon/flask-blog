@@ -22,10 +22,10 @@ export default Vue.extend({
     MainView: () => import('@/components/main/View.vue'),
   },
   methods: {
-    ...mapActions(['fetchArticles']),
+    ...mapActions(['fetchPage']),
   },
   created() {
-    this.fetchArticles();
+    this.fetchPage(1);
   },
 });
 </script>
