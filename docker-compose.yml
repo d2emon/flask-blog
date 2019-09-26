@@ -39,3 +39,19 @@ services:
       - "./db:/db"
       - "./log:/log"
       - "./back/requirements.txt:/requirements.txt"
+    entrypoint:
+      - "flask"
+    command: ["run", "--host=0.0.0.0", "--port=80"]
+  front:
+    build: ./front
+    links:
+      - back
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./front/src:/app/src"
+      - "./front/public:/app/public"
+      - "./front/packages.json:/app/packages.json"
+    entrypoint:
+      - "npm"
+    command: ["run", "serve"]

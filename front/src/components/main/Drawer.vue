@@ -24,20 +24,20 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-    mapState,
-    mapGetters,
-    mapMutations, MutationMethod,
+  mapState,
+  mapGetters,
+  mapMutations, MutationMethod,
 } from 'vuex';
 import { Link } from '@/types';
 
 export default Vue.extend({
   computed: {
-    ...mapState({drawerState: 'drawer'}),
+    ...mapState({ drawerState: 'drawer' }),
     ...mapGetters(['links']),
     drawerModel: {
       get() { return (this as any).drawerState; },
-      set(value: boolean) { (this as any).setDrawer(value); }
-    }
+      set(value: boolean) { (this as any).setDrawer(value); },
+    },
   },
   methods: {
     ...mapMutations(['setDrawer']),

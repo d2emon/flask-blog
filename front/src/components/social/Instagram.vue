@@ -19,7 +19,7 @@
           <v-img
             v-if="post.src"
             height="100%"
-            :src="require(`@/assets/instagram/${post.src}`)"
+            :src="`/img/instagram/${post.src}`"
           />
         </article-card>
       </v-flex>
@@ -38,12 +38,12 @@ import { Component } from 'vue-property-decorator';
   },
   data: () => ({
     posts: [
-      {src: 'adventurealtitude.jpg'},
-      {src: 'garden.jpg'},
-      {src: 'pigduck.jpg'},
-      {src: 'rain.jpg'},
-      {src: 'spices.jpg'},
-      {src: 'sunset.jpg'},
+      { src: 'adventurealtitude.jpg' },
+      { src: 'garden.jpg' },
+      { src: 'pigduck.jpg' },
+      { src: 'rain.jpg' },
+      { src: 'spices.jpg' },
+      { src: 'sunset.jpg' },
     ],
   }),
 })

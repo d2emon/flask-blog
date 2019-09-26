@@ -14,7 +14,7 @@
         <v-img
           height="36"
           max-width="36"
-          :src="require(`@/assets/articles/${article.hero}`)"
+          :src="`/img/articles/${article.hero}`"
           class="mr-3"
         />
         <div>

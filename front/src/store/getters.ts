@@ -1,11 +1,8 @@
 import { GetterTree } from 'vuex';
 import { RootState } from './types';
-import {
-  Article,
-  Link,
-} from '@/types';
+import { Link } from '@/types';
 
-const getters: GetterTree<RootState, any> = {
+const rootGetters: GetterTree<RootState, any> = {
   categories: (state): Link[] => {
     const categories: Link[] = [];
 
@@ -19,11 +16,11 @@ const getters: GetterTree<RootState, any> = {
       categories.push({
         text,
         to: `/category/${text}`,
-      })
+      });
     }
     return categories.sort().slice(0, 4);
   },
   links: (state, getters): Link[] => state.items.concat(getters.categories),
 };
 
-export default getters;
+export default rootGetters;

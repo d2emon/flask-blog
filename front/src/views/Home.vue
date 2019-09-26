@@ -2,7 +2,7 @@
   <v-container id="home">
     <articles>
       <banner
-        :image="require('@/assets/articles/blurcamera.jpg')"
+        image="/img/articles/blurcamera.jpg"
         title="The Art of Travel"
         subtitle="Finding Beauty, One flight at a time"
       />
