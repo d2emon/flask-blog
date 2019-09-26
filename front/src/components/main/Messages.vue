@@ -26,7 +26,7 @@ import {
     ...mapActions(['fetchMessages']),
   },
 })
-export default class MainToolbar extends Vue {
+export default class Messages extends Vue {
   mounted() {
       (this as any).fetchMessages();
   }
