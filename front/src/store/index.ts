@@ -19,6 +19,9 @@ const state: RootState = {
       to: '#about',
     },
   ],
+  layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3],
+  page: 1,
+  itemsOnPage: 11,
 };
 
 const store: StoreOptions<RootState> = {

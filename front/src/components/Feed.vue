@@ -22,7 +22,7 @@
           class="ml-0"
           title="Previous page"
           square
-          @click="page--"
+          @click="setPage(page - 1)"
         >
           <v-icon>mdi-chevron-left</v-icon>
         </social-button>
@@ -45,7 +45,7 @@
           class="ml-0"
           title="Next page"
           square
-          @click="page++"
+          @click="setPage(page + 1)"
         >
           <v-icon>mdi-chevron-right</v-icon>
         </social-button>
@@ -56,28 +56,30 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapState } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+  mapMutations,
+} from 'vuex';
 
 export default Vue.extend({
   components: {
     SocialButton: () => import('@/components/controls/SocialButton.vue'),
     FeedCard: () => import('@/components/FeedCard.vue'),
   },
-  data: () => ({
-    layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3],
-    page: 1,
-  }),
   computed: {
-    ...mapState(['articles']),
-    pages() {
-      return Math.ceil((this as any).articles.length / 11);
-    },
-    paginated() {
-      const start = (this.page - 1) * 11;
-      const stop = this.page * 11;
-
-      return (this as any).articles.slice(start, stop);
-    },
+    ...mapState([
+      'articles',
+      'layout',
+      'page',
+    ]),
+    ...mapGetters([
+      'pages',
+      'paginated',
+    ]),
+  },
+  methods: {
+    ...mapMutations(['setPage']),
   },
   watch: {
     page() {
