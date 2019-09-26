@@ -32,7 +32,20 @@
     </v-container>
 
     <div id="site-generator">
-      include __foot.pug
+      <p class="foot-left">
+        &copy; Copyright Info 2013&nbsp;
+        <a href="/" title="">派森吧-pythonpub.com</a> &nbsp; <a href="http://flask.pocoo.org/">Powered By Flask</a>
+      </p>
+
+      <p class="foot-right">
+        <a href="/">Home</a> |
+        <a
+          class="back-to-top"
+          @click="$vuetify.goTo(0)"
+        >
+          Back to Top
+        </a>
+      </p>
     </div>
   </v-footer>
 </template>
