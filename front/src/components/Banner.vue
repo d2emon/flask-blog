@@ -1,5 +1,5 @@
 <template>
-  <aricle-card
+  <article-card
     dark
   >
     <v-img
@@ -34,7 +34,7 @@
         </v-flex>
       </v-layout>
     </v-img>
-  </aricle-card>
+  </article-card>
 </template>
 
 <script lang="ts">

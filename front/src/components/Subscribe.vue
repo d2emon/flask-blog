@@ -85,9 +85,7 @@ import { Contact } from '@/types';
     ArticleHeader: () => import('@/components/controls/ArticleHeader.vue'),
   },
   props: {
-    contacts: Array(
-      Object as () => Contact,
-    ),
+    contacts: Array as () => Contact[],
   },
 })
 export default class Subscribe extends Vue {}
