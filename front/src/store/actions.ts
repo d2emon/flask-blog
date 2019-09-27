@@ -15,9 +15,11 @@ const action: ActionTree<RootState, any> = {
   fetchInstagram: ({ commit, getters, state }) => articlesService
     .getInstagramPosts()
     .then((response: InstagramPost[]) => commit('setInstagram', response)),
-  fetchNewest: ({ commit, state }, count: number = 5) => articlesService
-    .getArticles(state.articlesCount - count, state.articlesCount)
-    .then(({ articles }) => commit('setNewest', articles)),
+  fetchNewest: ({ commit, state }, count: number = 5, force: boolean = false) => (
+    force || !state.newest
+  ) && articlesService
+      .getArticles(state.articlesCount - count, state.articlesCount)
+      .then(({ articles }) => commit('setNewest', articles)),
   fetchPage: ({ commit, getters, state }, page: number = 1) => {
     commit('setPage', page);
     articlesService

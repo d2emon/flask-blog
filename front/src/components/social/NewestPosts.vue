@@ -3,7 +3,7 @@
     <article-header>Newest Blog Posts</article-header>
     <template v-if="newest">
       <v-layout
-        v-for="(article, articleId) in newest"
+        v-for="(article, articleId) in newest.slice(0, 3)"
         :key="articleId"
         align-center
         mb-2
@@ -56,7 +56,7 @@ import {
 })
 export default class NewestPosts extends Vue {
   mounted() {
-      (this as any).fetchNewest(3);
+      (this as any).fetchNewest(3, true);
   }
 }
 </script>

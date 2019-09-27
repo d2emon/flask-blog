@@ -4,14 +4,14 @@
   >
     <v-list>
       <v-list-item
-        v-for="post in hotArticles"
-        :key="`hot-${post.postId}`"
-        :title="post.title"
-        :href="`/article/${post.postId}`"
+        v-for="article in newest"
+        :key="`hot-${article.articleId}`"
+        :title="article.title"
+        :href="`/article/${article.articleId}`"
       >
         <v-list-item-content>
           <v-list-item-title>
-            {{post.title}}
+            {{article.title}}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -24,19 +24,23 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import {
   mapState,
+  mapActions,
 } from 'vuex';
 
 @Component({
   components: {
     BaseWidget: () => import('@/components/widgets/BaseWidget.vue'),
   },
+  computed: {
+    ...mapState(['newest']),
+  },
+  methods: {
+    ...mapActions(['fetchNewest']),
+  },
 })
 export default class HotPosts extends Vue {
-  hotArticles = [
-    {
-      postId: 1,
-      title: 'Title',
-    },
-  ];
+  mounted() {
+      (this as any).fetchNewest();
+  }
 }
 </script>
