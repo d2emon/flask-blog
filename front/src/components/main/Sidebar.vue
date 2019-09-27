@@ -1,5 +1,9 @@
 <template>
-  <div id="sidebar" class="widget-area col300" role="complementary">
+  <v-navigation-drawer
+    permanent
+    id="sidebar"
+    class="widget-area"
+  >
     <div id="sidebar-wrap" class="clearfix">
       <aside id="recent-posts-2" class="widget widget_recent_entries">
         <h2 class="widget-title">Errors</h2>
@@ -103,7 +107,7 @@
         </ul>
       </aside>
     </div>
-  </div>
+  </v-navigation-drawer>
 </template>
 
 <script lang="ts">

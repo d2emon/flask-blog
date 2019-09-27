@@ -1,5 +1,5 @@
 <template>
-  <v-app class="home blog custom-background single-author">
+  <v-app>
     <main-toolbar />
 
     <main-drawer />

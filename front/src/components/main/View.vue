@@ -1,14 +1,19 @@
 <template>
   <v-content id="content">
-    <div
-      id="main"
-      class="col620 clearfix"
-      role="main"
-    >
-      <router-view />
-    </div>
-
-    <sidebar />
+    <v-container>
+      <v-row>
+        <v-flex md2>
+          <sidebar />
+        </v-flex>
+        <v-flex
+          id="main"
+          role="main"
+          md10
+        >
+          <router-view />
+        </v-flex>
+      </v-row>
+    </v-container>
   </v-content>
 </template>
 
