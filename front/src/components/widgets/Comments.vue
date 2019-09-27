@@ -7,16 +7,15 @@
         three-line
         v-for="comment in comments"
         :key="`comment-${comment.commentId}`"
+        :title="comment.postId"
+        :to="`/article/${comment.postId}#comments`"
       >
         <v-list-item-content>
-          <v-list-item-title
-            :title="comment.postId"
-            :to="`/article/${comment.postId}#comments`"
-          >
-            {{comment.authorName}}
+          <v-list-item-title>
+            {{comment.author}}
           </v-list-item-title>
           <v-list-item-subtitle>
-            {{ comment.brief }}&hellip;
+            <span v-html="comment.brief"></span>&hellip;
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -35,15 +34,9 @@ import {
   components: {
     BaseWidget: () => import('@/components/widgets/BaseWidget.vue'),
   },
+  computed: {
+    ...mapState(['comments'])
+  },
 })
-export default class Comments extends Vue {
-  comments = [
-    {
-      commentId: 1,
-      postId: 1,
-      authorName: 'author',
-      brief: '(comment.content|safe)[:30]',
-    },
-  ];
-}
+export default class Comments extends Vue {}
 </script>

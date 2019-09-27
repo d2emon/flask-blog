@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-1">
+  <v-card class="mb-2">
     <v-card-title>
       <h2>{{ title }}</h2>
     </v-card-title>

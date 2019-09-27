@@ -9,6 +9,29 @@ Vue.use(Vuex);
 
 const state: RootState = {
   articlesCount: 0,
+  comments: [
+    {
+      commentId: 1,
+      postId: 1,
+      author: 'author',
+      brief: '<h4>Brief</h4>',
+      body: '<h4>Brief</h4>\n<div>Body</div>',
+    },
+    {
+      commentId: 2,
+      postId: 1,
+      author: 'author',
+      brief: '<h4>Brief</h4>',
+      body: '<h4>Brief</h4>\n<div>Body</div>',
+    },
+    {
+      commentId: 3,
+      postId: 2,
+      author: 'author',
+      brief: '<h4>Brief</h4>',
+      body: '<h4>Brief</h4>\n<div>Body</div>',
+    },
+  ],
   drawer: false,
   items: [
     {
