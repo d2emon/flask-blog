@@ -23,6 +23,18 @@ const state: RootState = {
       text: 'Hello',
       to: '/hello',
     },
+    {
+      text: 'About Page',
+      to: '/about',
+    },
+    {
+      text: 'RSS',
+      to: '/rss_lastnews',
+    },
+    {
+      text: 'Skip to content',
+      href: '#content',
+    },
   ],
   itemsOnPage: 11,
   page: 1,

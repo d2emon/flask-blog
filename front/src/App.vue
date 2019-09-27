@@ -6,8 +6,6 @@
 
     <main-messages />
 
-    <main-header />
-
     <main-view />
 
     <main-footer />
@@ -22,7 +20,6 @@ export default Vue.extend({
   components: {
     MainDrawer: () => import('@/components/main/Drawer.vue'),
     MainFooter: () => import('@/components/main/Footer.vue'),
-    MainHeader: () => import('@/components/main/Header.vue'),
     MainMessages: () => import('@/components/main/Messages.vue'),
     MainToolbar: () => import('@/components/main/Toolbar.vue'),
     MainView: () => import('@/components/main/View.vue'),

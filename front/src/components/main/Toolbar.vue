@@ -49,20 +49,6 @@
       </v-list>
     </v-menu>
     <v-btn
-      to="/about"
-      class="ml-0 hidden-sm-and-down"
-      text
-    >
-      About
-    </v-btn>
-    <v-btn
-      to="/rss_lastnews"
-      class="ml-0 hidden-sm-and-down"
-      text
-    >
-      RSS
-    </v-btn>
-    <v-btn
       v-if="user"
       to="/logout"
       class="ml-0 hidden-sm-and-down"
