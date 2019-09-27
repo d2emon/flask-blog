@@ -4,6 +4,7 @@ import {
   Category,
   CategoryQuery,
   InstagramPost,
+  Tag,
 } from '@/types';
 
 const articlesData: Article[] = require('@/services/data/articles.json');
@@ -51,5 +52,22 @@ export default {
       { src: 'rain.jpg' },
       { src: 'spices.jpg' },
       { src: 'sunset.jpg' },
+  ]),
+  getTags: (): Promise<Tag[]> => Promise.resolve([
+    { tagId: 1, name: 'Tag1' },
+    { tagId: 2, name: 'Tag2' },
+    { tagId: 3, name: 'Tag3' },
+    { tagId: 4, name: 'Tag4' },
+    { tagId: 5, name: 'Tag5' },
+    { tagId: 6, name: 'Tag6' },
+    { tagId: 7, name: 'Tag7' },
+    { tagId: 8, name: 'Tag8' },
+    { tagId: 9, name: 'Tag9' },
+    { tagId: 10, name: 'Tag10' },
+    { tagId: 11, name: 'Tag11' },
+    { tagId: 12, name: 'Tag12' },
+    { tagId: 13, name: 'Tag13' },
+    { tagId: 14, name: 'Tag14' },
+    { tagId: 15, name: 'Tag15' },
   ]),
 };

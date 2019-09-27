@@ -4,7 +4,9 @@ import { RootState } from './types';
 import {
   Article,
   ArticleQuery,
-  CategoryQuery, InstagramPost,
+  CategoryQuery,
+  InstagramPost,
+  Tag,
 } from '@/types';
 
 const mutations: MutationTree<RootState> = {
@@ -39,6 +41,7 @@ const mutations: MutationTree<RootState> = {
   setMessages: (state, payload: string[]) => Vue.set(state, 'messages', payload),
   setNewest: (state, payload: Article[]) => Vue.set(state, 'newest', payload),
   setPage: (state, payload: number) => (state.page = payload),
+  setTags: (state, payload: Tag[]) => Vue.set(state, 'tags', payload),
 };
 
 export default mutations;

@@ -4,6 +4,7 @@ import {
   Comment,
   InstagramPost,
   Link,
+  Tag,
 } from '@/types';
 
 export interface RootState {
@@ -18,5 +19,6 @@ export interface RootState {
   messages?: string[],
   newest?: Article[],
   page: number,
+  tags?: Tag[],
   user?: {},
 }

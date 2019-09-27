@@ -7,7 +7,7 @@
         v-for="article in newest"
         :key="`new-post-${article.articleId}`"
         :title="article.title"
-        :href="`/article/${article.articleId}`"
+        :to="`/article/${article.articleId}`"
       >
         <v-list-item-content>
           <v-list-item-title>

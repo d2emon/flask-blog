@@ -2,18 +2,18 @@
   <base-widget
     title="Tags"
   >
-    <div class="tagcloud">
-      <a
+    <v-container>
+      <v-chip
         v-for="(tag, tagId) in tags"
         :key="`tag-${tag.tagId}`"
-        class="tag-link-17"
+        class="ma-1"
         :style="`${colorClass[tagId]}${rowClass[tagId]}`"
-        :href="`/tag/${tag.tagId}`"
+        :to="`/tag/${tag.tagId}`"
+        label
       >
         {{ tag.name }}
-      </a>
-
-    </div>
+      </v-chip>
+    </v-container>
   </base-widget>
 </template>
 
@@ -22,22 +22,21 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import {
   mapState,
+  mapActions,
 } from 'vuex';
 
 @Component({
   components: {
     BaseWidget: () => import('@/components/widgets/BaseWidget.vue'),
   },
+  computed: {
+    ...mapState(['tags']),
+  },
+  methods: {
+    ...mapActions(['fetchTags']),
+  },
 })
 export default class Tags extends Vue {
-  tags = [
-    { tagId: 1, name: 'Tag1' },
-    { tagId: 2, name: 'Tag2' },
-    { tagId: 3, name: 'Tag3' },
-    { tagId: 4, name: 'Tag4' },
-    { tagId: 5, name: 'Tag5' },
-  ];
-
   rowClass = [
     'font-size:12.656565656pt;',
     'font-size:8pt;',
@@ -83,5 +82,9 @@ export default class Tags extends Vue {
     'color:#367d29;',
     'color:#cccd29;',
   ];
+
+  mounted() {
+      (this as any).fetchTags();
+  }
 }
 </script>

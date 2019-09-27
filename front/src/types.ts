@@ -52,4 +52,11 @@ export interface Link {
   href?: string,
 }
 
+export interface Tag {
+  tagId: number,
+  name: string,
+  fontSize?: string,
+  color?: string,
+}
+
 export type MenuLink = Category | Link;

@@ -8,7 +8,7 @@
         v-for="comment in comments"
         :key="`comment-${comment.commentId}`"
         :title="comment.postId"
-        :to="`/article/${comment.postId}#comments`"
+        :to="`/article/${comment.postId}/comments`"
       >
         <v-list-item-content>
           <v-list-item-title>
