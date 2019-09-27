@@ -11,7 +11,7 @@
       >
         <v-list-item-content>
           <v-list-item-title>
-            {{ category.text }}({{ category.postsCount || 0 }})
+            {{ category.text }}({{ category.postsCount }})
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

@@ -7,13 +7,23 @@ export interface Article {
   layout?: number,
 }
 
+export interface Category {
+  categoryId: number,
+  text: string,
+  icon?: string,
+  to?: string,
+  href?: string,
+  postsCount: number,
+}
+
 export interface Link {
-  categoryId?: number,
-  text?: string,
+  text: string,
   icon?: string,
   to?: string,
   href?: string,
 }
+
+export type MenuLink = Category | Link;
 
 export interface Contact {
   icon: string,
@@ -27,7 +37,7 @@ export interface ArticleQuery {
 }
 
 export interface CategoryQuery {
-  categories: Link[],
+  categories: Category[],
   total: number,
 }
 

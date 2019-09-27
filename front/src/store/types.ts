@@ -1,12 +1,14 @@
 import {
-  Article, InstagramPost,
+  Article,
+  Category,
+  InstagramPost,
   Link,
 } from '@/types';
 
 export interface RootState {
   articles?: Article[],
   articlesCount: number,
-  categories?: Link[],
+  categories?: Category[],
   drawer: boolean,
   instagram?: InstagramPost[],
   items: Link[],
