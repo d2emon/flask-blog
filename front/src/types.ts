@@ -66,3 +66,9 @@ export interface Tag {
 }
 
 export type MenuLink = Category | Link;
+
+export interface LoginRequest {
+  username: string,
+  password: string,
+  remember_me?: boolean,
+}

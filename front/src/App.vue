@@ -26,13 +26,15 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions([
-      'fetchPage',
       'fetchCategories',
+      'fetchPage',
+      'fetchToken',
     ]),
   },
   created() {
-    this.fetchPage(1);
     this.fetchCategories(10);
+    this.fetchPage(1);
+    // this.fetchToken();
   },
 });
 </script>
