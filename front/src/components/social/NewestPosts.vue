@@ -15,7 +15,7 @@
           <v-img
             height="36"
             max-width="36"
-            :src="`/img/articles/${article.hero}`"
+            :src="`/img/articles/${article.img}`"
             class="mr-3"
           />
           <div>

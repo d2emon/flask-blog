@@ -1,9 +1,10 @@
 from app import db
 from app.models import User
-from flask import jsonify, request, url_for
+from flask import current_app, jsonify, request, url_for
 from . import blueprint
 from .auth import token_auth
 from .errors import bad_request
+from .articles import articles_data
 
 
 @blueprint.route('/users/<user_id>', methods=['GET'])
@@ -75,3 +76,63 @@ def update_user(user_id=None):
     user.from_dict(data, new_user=False)
     db.session.commit()
     return jsonify(user.to_dict())
+
+
+@blueprint.route('/articles', methods=['GET'])
+def get_articles():
+    start = request.args.get('start', 0, type=int)
+    count = request.args.get('count', 10, type=int)
+    articles = articles_data[start:start + count]
+    return jsonify({
+        'articles': articles,
+        'total': len(articles_data),
+    })
+
+
+@blueprint.route('/categories', methods=['GET'])
+def get_categories():
+    count = request.args.get('count', 10, type=int)
+    categories = []
+    for article in articles_data:
+        text = article.get('category')
+        if not text:
+            continue
+
+        category = next((category for category in categories if category.get('text') == text), None)
+        if category:
+            category['postsCount'] = category.get('postsCount', 0) + 1
+            continue
+        categories.append({
+            'categoryId': len(categories) + 1,
+            'text': text,
+            'to': "/category/{}".format(text),
+            'postsCount': 1,
+        })
+    categories.sort(key=lambda c: c.get('text', ''))
+    return jsonify({
+        'categories': categories[0:count],
+        'total': len(categories),
+    })
+
+
+@blueprint.route('/instagram', methods=['GET'])
+def instagram():
+    return jsonify([
+        {'src': src}
+        for src in [
+            'adventurealtitude.jpg',
+            'garden.jpg',
+            'pigduck.jpg',
+            'rain.jpg',
+            'spices.jpg',
+            'sunset.jpg',
+        ]
+    ])
+
+
+@blueprint.route('/tags', methods=['GET'])
+def tags():
+    return jsonify([
+        {'tagId': tag_id + 1, 'name': "Tag {}".format(tag_id + 1)}
+        for tag_id in range(35)
+    ])

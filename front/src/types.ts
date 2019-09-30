@@ -1,8 +1,9 @@
 export interface Article {
+  articleId: string,
   title: string,
   author?: string,
   category?: string,
-  hero: string,
+  img?: string,
   prominent?: boolean,
   layout?: number,
 }

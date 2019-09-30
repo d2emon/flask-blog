@@ -1,85 +1,101 @@
-[
+import uuid
+
+articles_data = [
   {
+    'articleId': uuid.uuid4(),
     "title": "Moroccan Days",
     "author": "John L",
     "category": "Travel",
-    "hero": "moroccandays.jpg"
+    "img": "moroccandays.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Swedish Fishing",
     "author": "Rachel L",
     "category": "Leisure",
-    "hero": "autumnclouds.jpg"
+    "img": "autumnclouds.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "The Adventure Begins",
-    "hero": "snowcup.jpg",
-    "prominent": true
+    "img": "snowcup.jpg",
+    "prominent": True,
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Paris in Spring",
     "author": "John L",
     "category": "Travel",
-    "hero": "christmas.jpg"
+    "img": "christmas.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Youthful Independence",
     "author": "Rachel L",
     "category": "Political",
-    "hero": "july4.jpg"
+    "img": "july4.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Trial By Fire",
     "author": "Anthony R",
     "category": "Cooking",
-    "hero": "firepots.jpg"
+    "img": "firepots.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Water Ventures",
     "author": "Rachel L",
     "category": "Leisure",
-    "hero": "jellyfish.jpg"
+    "img": "jellyfish.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Mt. Zekial",
     "author": "Rachel L",
     "category": "Travel",
-    "hero": "mountaincabin.jpg"
+    "img": "mountaincabin.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Cozumel Caves",
     "author": "Rachel L",
     "category": "Travel",
-    "hero": "lightcave.jpg"
+    "img": "lightcave.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Amazing Ireland",
     "author": "Rachel L",
     "category": "Travel",
-    "hero": "greengrass.jpg"
+    "img": "greengrass.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Cabin Fever",
     "author": "Rachel L",
     "category": "Travel",
-    "hero": "snowcabin.jpg"
+    "img": "snowcabin.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "To the ancient ruins",
     "author": "Rachel L",
     "category": "Travel",
-    "hero": "ruins.jpg"
+    "img": "ruins.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "New fashion trends",
     "author": "Rachel L",
     "category": "Travel",
-    "hero": "umbrella.jpg"
+    "img": "umbrella.jpg",
   },
   {
+    'articleId': uuid.uuid4(),
     "title": "Go on a vacation",
     "author": "Rachel L",
     "category": "Travel",
-    "hero": "adventurecave.jpg"
-  }
+    "img": "adventurecave.jpg",
+  },
 ]

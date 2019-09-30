@@ -7,7 +7,7 @@
         v-for="(tag, tagId) in tags"
         :key="`tag-${tag.tagId}`"
         class="ma-1"
-        :style="`${colorClass[tagId]}${rowClass[tagId]}`"
+        :style="`${colorClass(tagId)}${rowClass(tagId)}`"
         :to="`/tag/${tag.tagId}`"
         label
       >
@@ -37,7 +37,7 @@ import {
   },
 })
 export default class Tags extends Vue {
-  rowClass = [
+  rowClassItems = [
     'font-size:12.656565656pt;',
     'font-size:8pt;',
     'font-size:21.0567465745647pt;',
@@ -60,7 +60,7 @@ export default class Tags extends Vue {
     'font-size:15.0567465745647pt;',
   ];
 
-  colorClass = [
+  colorClassItems = [
     'color:#ac1dfe;',
     'color:#bcb46e;',
     'color:#4298e7;',
@@ -83,8 +83,18 @@ export default class Tags extends Vue {
     'color:#cccd29;',
   ];
 
+  rowClass(tagId: number) {
+    const classId = tagId % this.rowClassItems.length;
+    return this.rowClassItems[classId];
+  }
+
+  colorClass(tagId: number) {
+    const classId = tagId % this.colorClassItems.length;
+    return this.colorClassItems[classId];
+  }
+
   mounted() {
-      (this as any).fetchTags();
+    (this as any).fetchTags();
   }
 }
 </script>
