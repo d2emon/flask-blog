@@ -51,7 +51,7 @@ services:
     volumes:
       - "./front/src:/app/src"
       - "./front/public:/app/public"
-      - "./front/packages.json:/app/packages.json"
+      - "./front/package.json:/app/package.json"
     entrypoint:
       - "npm"
     command: ["run", "serve"]
