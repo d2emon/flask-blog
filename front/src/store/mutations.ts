@@ -38,7 +38,11 @@ const mutations: MutationTree<RootState> = {
       src: `/img/instagram/${post.src}`,
     })
   )),
-  setMessages: (state, payload: string[]) => Vue.set(state, 'messages', payload),
+  setMessages: (state, payload: string[]) => Vue.set(
+    state,
+    'messages',
+    state.messages ? state.messages.concat(payload) : payload,
+  ),
   setNewest: (state, payload: Article[]) => Vue.set(state, 'newest', payload),
   setPage: (state, payload: number) => (state.page = payload),
   setTags: (state, payload: Tag[]) => Vue.set(state, 'tags', payload),

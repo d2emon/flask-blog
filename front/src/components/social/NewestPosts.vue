@@ -20,10 +20,10 @@
           />
           <div>
             <div class="subtitle-1">
-              Article Title
+              {{ article.title }}
             </div>
-            <div class="Caption">
-              Date
+            <div class="caption">
+              {{ article.createdAt }}
             </div>
           </div>
         </v-flex>

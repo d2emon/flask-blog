@@ -28,7 +28,10 @@ import {
 })
 export default class Messages extends Vue {
   mounted() {
-      (this as any).fetchMessages();
+    setInterval(
+      () => (this as any).fetchMessages(),
+      10000,
+    )
   }
 }
 </script>

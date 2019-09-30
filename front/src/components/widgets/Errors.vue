@@ -6,7 +6,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>
-            Show <a target="_blank" href="/404">404 error</a> page！
+            Show <router-link target="_blank" to="/404">404 error</router-link> page！
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

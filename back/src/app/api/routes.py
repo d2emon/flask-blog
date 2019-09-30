@@ -1,6 +1,7 @@
+import random
 from app import db
 from app.models import User
-from flask import current_app, jsonify, request, url_for
+from flask import jsonify, request, url_for
 from . import blueprint
 from .auth import token_auth
 from .errors import bad_request
@@ -136,3 +137,11 @@ def tags():
         {'tagId': tag_id + 1, 'name': "Tag {}".format(tag_id + 1)}
         for tag_id in range(35)
     ])
+
+
+@blueprint.route('/notifications', methods=['GET'])
+def notifications():
+    return jsonify([
+        "Message {}".format(message_id)
+        for message_id in range(random.randrange(5))
+    ] if random.randrange(10) > 8 else [])

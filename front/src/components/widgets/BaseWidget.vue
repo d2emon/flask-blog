@@ -1,7 +1,7 @@
 <template>
   <v-card class="mb-2">
     <v-card-title>
-      <h2>{{ title }}</h2>
+      <article-header>{{ title }}</article-header>
     </v-card-title>
     <slot />
   </v-card>
@@ -12,6 +12,9 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 
 @Component({
+  components: {
+    ArticleHeader: () => import('@/components/controls/ArticleHeader.vue'),
+  },
   props: {
     title: String,
   },

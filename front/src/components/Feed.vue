@@ -156,21 +156,23 @@
             {{article.category}}
           </a>
         </span>
-        <span class="sep">|</span>
-        <span class="tag-links">
-          Tagged:
-          <span
-            v-for="(tag, tagId) in article.tags"
-            :key="`tag-${tagId}`"
-          >
-            <a
-              rel="tag"
-              :href="`/tag/${tag.tagId}`"
+        <template v-if="article.tags && article.tags.length">
+          <span class="sep">|</span>
+          <span class="tag-links">
+            Tagged:
+            <span
+              v-for="tag in article.tags"
+              :key="`tag-${tag.tagId}`"
             >
-              {{tag.name}}
-            </a>
+              <a
+                rel="tag"
+                :href="`/tag/${tag.tagId}`"
+              >
+                {{tag.name}}
+              </a>
+            </span>
           </span>
-        </span>
+        </template>
       </footer>
     </article>
 

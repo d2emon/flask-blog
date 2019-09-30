@@ -1,7 +1,7 @@
+import api from '@/helpers/api';
+
 export default {
-  getMessages: (): Promise<string[]> => Promise.resolve([
-    'Message 1',
-    'Message 2',
-    'Message 3',
-  ]),
+  getMessages: (): Promise<string[]> => api
+    .get('/notifications')
+    .then(({ data }) => data),
 };

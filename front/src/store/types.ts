@@ -16,7 +16,7 @@ export interface RootState {
   instagram?: InstagramPost[],
   items: Link[],
   itemsOnPage: number,
-  messages?: string[],
+  messages: string[],
   newest?: Article[],
   page: number,
   tags?: Tag[],

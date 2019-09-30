@@ -60,6 +60,7 @@ const state: RootState = {
     },
   ],
   itemsOnPage: 11,
+  messages: [],
   page: 1,
 };
 

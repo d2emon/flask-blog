@@ -5,7 +5,12 @@ export interface Article {
   category?: string,
   img?: string,
   prominent?: boolean,
+  createdAt: string,
   layout?: number,
+  tags?: [],
+  views: number,
+  comments?: [],
+  commentsCount?: number,
 }
 
 export interface ArticleQuery {

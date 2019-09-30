@@ -1,4 +1,14 @@
+import random
 import uuid
+from datetime import datetime
+
+tags = [
+  {
+    'tagId': tag_id + 1,
+    'name': "Tag {}".format(tag_id + 1),
+  }
+  for tag_id in range(5)
+]
 
 articles_data = [
   {
@@ -7,6 +17,11 @@ articles_data = [
     "author": "John L",
     "category": "Travel",
     "img": "moroccandays.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -14,12 +29,22 @@ articles_data = [
     "author": "Rachel L",
     "category": "Leisure",
     "img": "autumnclouds.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
     "title": "The Adventure Begins",
     "img": "snowcup.jpg",
     "prominent": True,
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -27,6 +52,11 @@ articles_data = [
     "author": "John L",
     "category": "Travel",
     "img": "christmas.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -34,6 +64,11 @@ articles_data = [
     "author": "Rachel L",
     "category": "Political",
     "img": "july4.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -41,6 +76,11 @@ articles_data = [
     "author": "Anthony R",
     "category": "Cooking",
     "img": "firepots.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -48,6 +88,11 @@ articles_data = [
     "author": "Rachel L",
     "category": "Leisure",
     "img": "jellyfish.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -55,6 +100,11 @@ articles_data = [
     "author": "Rachel L",
     "category": "Travel",
     "img": "mountaincabin.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -62,6 +112,11 @@ articles_data = [
     "author": "Rachel L",
     "category": "Travel",
     "img": "lightcave.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -69,6 +124,11 @@ articles_data = [
     "author": "Rachel L",
     "category": "Travel",
     "img": "greengrass.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -76,6 +136,11 @@ articles_data = [
     "author": "Rachel L",
     "category": "Travel",
     "img": "snowcabin.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -83,6 +148,11 @@ articles_data = [
     "author": "Rachel L",
     "category": "Travel",
     "img": "ruins.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -90,6 +160,11 @@ articles_data = [
     "author": "Rachel L",
     "category": "Travel",
     "img": "umbrella.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
   {
     'articleId': uuid.uuid4(),
@@ -97,5 +172,10 @@ articles_data = [
     "author": "Rachel L",
     "category": "Travel",
     "img": "adventurecave.jpg",
+    'createdAt': datetime.now(),
+    'tags': [random.choice(tags) for _ in range(random.randrange(3))],
+    'views': random.randrange(512),
+    'comments': [],
+    'commentsCount': random.randrange(128),
   },
 ]
