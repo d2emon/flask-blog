@@ -62,6 +62,9 @@ const state: RootState = {
   itemsOnPage: 11,
   messages: [],
   page: 1,
+  user: localStorage.getItem('token')
+    ? { token: localStorage.getItem('token') }
+    : undefined,
 };
 
 const store: StoreOptions<RootState> = {

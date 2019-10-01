@@ -28,16 +28,11 @@ export default Vue.extend({
     ...mapActions([
       'fetchCategories',
       'fetchPage',
-      'fetchToken',
     ]),
   },
   created() {
     this.fetchCategories(10);
     this.fetchPage(1);
-    this.fetchToken({
-      username: '1',
-      password: '1',
-    });
   },
 });
 </script>

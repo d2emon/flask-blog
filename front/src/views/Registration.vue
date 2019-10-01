@@ -39,7 +39,6 @@ export default class Registration extends Vue {
   errors?: {[field: string]: string} = {};
 
   onSubmit(data: RegistrationFormData) {
-    console.log('Submit', data);
     (this as any).registerUser(data)
       .then((response) => {
         this.errors = response.errors;

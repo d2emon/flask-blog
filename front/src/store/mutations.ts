@@ -46,7 +46,14 @@ const mutations: MutationTree<RootState> = {
   setNewest: (state, payload: Article[]) => Vue.set(state, 'newest', payload),
   setPage: (state, payload: number) => (state.page = payload),
   setTags: (state, payload: Tag[]) => Vue.set(state, 'tags', payload),
-  setToken: (state, payload?: string) => (state.token = payload),
+  setToken: (state, payload: string) => {
+    localStorage.setItem('token', payload);
+    Vue.set(state, 'user', { token: payload });
+  },
+  removeToken: (state) => {
+    localStorage.removeItem('token');
+    Vue.set(state, 'user', null);
+  },
   setUser: (state, payload?: {}) => Vue.set(state, 'user', payload),
 };
 
