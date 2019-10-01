@@ -50,9 +50,9 @@
     </v-menu>
     <v-btn
       v-if="user"
-      to="/logout"
       class="ml-0 hidden-sm-and-down"
       text
+      @click="logoutUser"
     >
       log out
     </v-btn>
@@ -87,6 +87,7 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import {
+  mapActions,
   mapGetters,
   mapMutations,
   mapState,
@@ -103,6 +104,7 @@ import { Link } from '@/types';
   },
   methods: {
     ...mapMutations(['toggleDrawer']),
+    ...mapActions(['logoutUser']),
   },
 })
 export default class MainToolbar extends Vue {

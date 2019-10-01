@@ -20,5 +20,6 @@ export interface RootState {
   newest?: Article[],
   page: number,
   tags?: Tag[],
+  token?: string,
   user?: {},
 }

@@ -1,3 +1,4 @@
+import { AxiosBasicCredentials } from 'axios';
 import { ActionTree } from 'vuex';
 import { RegistrationFormData } from '@/forms/types';
 import articlesService from '@/services/articles';
@@ -10,20 +11,38 @@ import {
 import { RootState } from './types';
 
 const action: ActionTree<RootState, any> = {
-  registerUser: ({ commit }, payload: RegistrationFormData) => tokensService
+  processAuthResponse: ({ commit }, payload: {messages: string}) => {
+    const {
+      messages,
+    } = payload;
+    commit('setMessages', messages);
+    return payload;
+  },
+
+  registerUser: ({ dispatch }, payload: RegistrationFormData) => tokensService
     .registerUser(payload)
+    .then(data => dispatch('processAuthResponse', data)),
+  loginUser: ({ commit, dispatch }, payload: LoginRequest) => tokensService
+    .authUser(payload)
+    .then(data => dispatch('processAuthResponse', data))
     .then((data) => {
-      const {
-        messages,
-      } = data;
-      commit('setMessages', messages);
-      console.log(data);
+      const { token } = data;
+      commit('setToken', token);
+      commit('setUser', { token });
       return data;
     }),
-  userLogin: (context, payload: LoginRequest) => tokensService
-    .authUser(payload),
-  fetchToken: () => tokensService
-    .getToken(),
+  logoutUser: ({ commit, state }) => tokensService
+    .logoutUser(state.token)
+    .then(() => {
+      commit('setToken');
+      commit('setUser');
+    }),
+  fetchToken: ({ commit }, payload: AxiosBasicCredentials) => tokensService
+    .getToken(payload)
+    .then((token: string) => {
+      commit('setToken', token);
+      commit('setUser', token);
+    }),
   fetchCategories: ({ commit, getters, state }, count?: number) => articlesService
     .getCategories(count)
     .then((response: CategoryQuery) => commit('setCategories', response)),

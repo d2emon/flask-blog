@@ -46,6 +46,8 @@ const mutations: MutationTree<RootState> = {
   setNewest: (state, payload: Article[]) => Vue.set(state, 'newest', payload),
   setPage: (state, payload: number) => (state.page = payload),
   setTags: (state, payload: Tag[]) => Vue.set(state, 'tags', payload),
+  setToken: (state, payload?: string) => (state.token = payload),
+  setUser: (state, payload?: {}) => Vue.set(state, 'user', payload),
 };
 
 export default mutations;

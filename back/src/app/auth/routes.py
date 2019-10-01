@@ -9,6 +9,27 @@ from .forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPassword
 from .mail import send_password_reset_email
 
 
+def do_login(form):
+    messages = []
+    success = current_user.is_authenticated
+    user = current_user if current_user.is_authenticated else None
+
+    if not success and form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        success = user is not None and user.check_password(form.password.data)
+        if success:
+            login_user(user, remember=form.remember_me.data)
+        else:
+            messages.append(_('Invalid username or password'))
+
+    return {
+        'errors': form.errors,
+        'messages': messages,
+        'success': success,
+        'token': user and user.get_token(),
+    }
+
+
 def do_register(form):
     messages = []
     success = current_user.is_authenticated
@@ -30,12 +51,15 @@ def do_register(form):
         'errors': form.errors,
         'messages': messages,
         'success': success,
-        'user': user and user.get_token(),
+        'token': user and user.get_token(),
     }
 
 
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST' and request.json.get('api'):
+        return jsonify(do_login(LoginForm(csrf_enabled=False)))
+
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 

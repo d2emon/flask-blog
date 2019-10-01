@@ -33,7 +33,7 @@ import {
     LoginForm: () => import('@/forms/LoginForm.vue'),
   },
   methods: {
-    ...mapActions(['userLogin']),
+    ...mapActions(['loginUser']),
   },
 })
 export default class Login extends Vue {
@@ -41,8 +41,13 @@ export default class Login extends Vue {
     username: string,
     password: string,
   }) {
-    console.log('Submit');
-    (this as any).userLogin(credentials);
+    (this as any).loginUser(credentials)
+      .then((data) => {
+        const { success } = data;
+        if (success) {
+          this.$router.push('/');
+        }
+      });
   }
 }
 </script>

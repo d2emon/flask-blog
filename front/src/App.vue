@@ -34,7 +34,10 @@ export default Vue.extend({
   created() {
     this.fetchCategories(10);
     this.fetchPage(1);
-    // this.fetchToken();
+    this.fetchToken({
+      username: '1',
+      password: '1',
+    });
   },
 });
 </script>
