@@ -17,6 +17,30 @@
           v-text="link.text"
         ></v-list-item-title>
       </v-list-item>
+      <v-list-item
+        v-if="user"
+        to="/logout"
+      >
+        <v-list-item-title>
+          Log Out
+        </v-list-item-title>
+      </v-list-item>
+      <template v-else>
+        <v-list-item
+          to="/login"
+        >
+          <v-list-item-title>
+            Log In
+          </v-list-item-title>
+        </v-list-item>
+        <v-list-item
+          to="/registration"
+        >
+          <v-list-item-title>
+            Registration
+          </v-list-item-title>
+        </v-list-item>
+      </template>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -32,7 +56,10 @@ import { Link } from '@/types';
 
 export default Vue.extend({
   computed: {
-    ...mapState({ drawerState: 'drawer' }),
+    ...mapState({
+      user: 'user',
+      drawerState: 'drawer',
+    }),
     ...mapGetters(['links']),
     drawerModel: {
       get() { return (this as any).drawerState; },

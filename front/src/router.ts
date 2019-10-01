@@ -10,11 +10,18 @@ export default new Router({
       name: 'home',
       component: () => import('@/views/Home.vue'),
     },
+    // Auth
+    {
+      path: '/registration',
+      name: 'registration',
+      component: () => import('@/views/Registration.vue'),
+    },
     {
       path: '/login',
       name: 'login',
       component: () => import('@/views/Login.vue'),
     },
+    // Other
     {
       path: '/hello',
       name: 'hello',

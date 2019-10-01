@@ -56,14 +56,22 @@
     >
       log out
     </v-btn>
-    <v-btn
-      v-else
-      to="/login"
-      class="ml-0 hidden-sm-and-down"
-      text
-    >
-      log in
-    </v-btn>
+    <template v-else>
+      <v-btn
+        to="/login"
+        class="ml-0 hidden-sm-and-down"
+        text
+      >
+        Log In
+      </v-btn>
+      <v-btn
+        to="/registration"
+        class="ml-0 hidden-sm-and-down"
+        text
+      >
+        Registration
+      </v-btn>
+    </template>
     <v-spacer></v-spacer>
     <v-text-field
       append-icon="mdi-magnify"

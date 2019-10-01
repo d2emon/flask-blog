@@ -2,7 +2,7 @@ import random
 from app import db
 from app.models import User
 from app.auth.forms import LoginForm
-from flask import current_app, jsonify, request, url_for
+from flask import jsonify, request, url_for
 from flask_login import current_user, login_user
 from . import blueprint
 from .auth import token_auth
@@ -156,15 +156,14 @@ def login():
 
     form = LoginForm(csrf_enabled=False)
     if form.validate_on_submit():
-        current_app.logger.debug(form)
-        current_app.logger.debug(form.errors)
-        current_app.logger.debug(form.username.data)
-        current_app.logger.debug(form.password.data)
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             return jsonify({'errors': ['Invalid username or password']})
 
         login_user(user, remember=form.remember_me.data)
-        return jsonify({'errors': False})
+        return jsonify({
+            'errors': False,
+            'token': current_user.get_token() if current_user.is_authenticated else None,
+        })
 
     return jsonify({'errors': form.errors})

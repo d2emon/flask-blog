@@ -1,14 +1,25 @@
 import { ActionTree } from 'vuex';
-import { RootState } from './types';
+import { RegistrationFormData } from '@/forms/types';
+import articlesService from '@/services/articles';
+import messagesService from '@/services/messages';
+import tokensService from '@/services/tokens';
 import {
   ArticleQuery,
   CategoryQuery, InstagramPost, LoginRequest, Tag,
 } from '@/types';
-import articlesService from '@/services/articles';
-import messagesService from '@/services/messages';
-import tokensService from '@/services/tokens';
+import { RootState } from './types';
 
 const action: ActionTree<RootState, any> = {
+  registerUser: ({ commit }, payload: RegistrationFormData) => tokensService
+    .registerUser(payload)
+    .then((data) => {
+      const {
+        messages,
+      } = data;
+      commit('setMessages', messages);
+      console.log(data);
+      return data;
+    }),
   userLogin: (context, payload: LoginRequest) => tokensService
     .authUser(payload),
   fetchToken: () => tokensService

@@ -30,7 +30,7 @@ import {
 
 @Component({
   components: {
-    LoginForm: () => import('@/components/forms/LoginForm.vue'),
+    LoginForm: () => import('@/forms/LoginForm.vue'),
   },
   methods: {
     ...mapActions(['userLogin']),
