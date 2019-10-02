@@ -1,4 +1,3 @@
-import { AxiosBasicCredentials } from 'axios';
 import { ActionTree } from 'vuex';
 import { RegistrationFormData } from '@/forms/types';
 import articlesService from '@/services/articles';
@@ -8,48 +7,11 @@ import {
   ArticleQuery,
   CategoryQuery,
   InstagramPost,
-  LoginRequest,
   Tag,
 } from '@/types';
 import { RootState } from './types';
 
-const action: ActionTree<RootState, any> = {
-  processAuthResponse: ({ commit }, payload: {messages: string}) => {
-    const {
-      messages,
-    } = payload;
-    commit('setMessages', messages);
-    return payload;
-  },
-
-  registerUser: ({ dispatch }, payload: RegistrationFormData): Promise<void> => authService
-    .registerUser(payload)
-    .then(data => dispatch('processAuthResponse', data)),
-  loginUser: ({ commit, dispatch }, payload: LoginRequest): Promise<void> => authService
-    .authUser(payload)
-    .then(data => dispatch('processAuthResponse', data))
-    .then((data) => {
-      const { token } = data;
-      commit('setToken', token);
-      return data;
-    }),
-  logoutUser: ({ commit, getters }): Promise<void> => authService
-    .logoutUser(getters.token)
-    .then(() => commit('removeToken')),
-  fetchToken: ({ commit }, {
-    auth,
-    rememberMe,
-  }): Promise<void> => authService
-    .getToken(auth)
-    .then((token: string) => {
-      if (rememberMe) commit('setToken', token);
-      commit('setUser', { token });
-    })
-    .catch((e: Error) => {
-      console.error(e);
-      commit('removeToken');
-      commit('setMessages', e.message);
-    }),
+const actions: ActionTree<RootState, any> = {
   fetchCategories: ({ commit, getters, state }, count?: number): Promise<void> => articlesService
     .getCategories(count)
     .then((response: CategoryQuery) => commit('setCategories', response)),
@@ -75,4 +37,4 @@ const action: ActionTree<RootState, any> = {
     .then((tags: Tag[]) => commit('setTags', tags)),
 };
 
-export default action;
+export default actions;

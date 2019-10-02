@@ -41,32 +41,17 @@ import { LoginFormData } from '@/forms/types';
     LoginForm: () => import('@/forms/LoginForm.vue'),
   },
   computed: {
-    ...mapState(['user']),
+    ...mapState('auth', ['user']),
   },
   methods: {
-    ...mapActions([
-      'loginUser',
-      'fetchToken',
-    ]),
+    ...mapActions('auth', ['loginUser']),
   },
 })
 export default class Login extends Vue {
   onSubmit(data: LoginFormData) {
-    console.log(data);
-    const {
-      username,
-      password,
-      rememberMe,
-    } = data;
-    (this as any).fetchToken({
-      auth: {
-        username,
-        password,
-      },
-      rememberMe,
-    })
+    (this as any).loginUser(data)
       .then(() => {
-        if (!(this as any).user) return;
+        if (!(this as any).user.isAuthorized) return;
         this.$router.push('/');
       });
   }

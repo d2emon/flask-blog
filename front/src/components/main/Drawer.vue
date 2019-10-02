@@ -18,7 +18,7 @@
         ></v-list-item-title>
       </v-list-item>
       <v-list-item
-        v-if="user"
+        v-if="user.isAuthorized"
         to="/logout"
       >
         <v-list-item-title>
@@ -56,8 +56,8 @@ import { Link } from '@/types';
 
 export default Vue.extend({
   computed: {
+    ...mapState('auth', ['user']),
     ...mapState({
-      user: 'user',
       drawerState: 'drawer',
     }),
     ...mapGetters(['links']),

@@ -1,7 +1,9 @@
-import {AxiosBasicCredentials, AxiosError} from 'axios';
-import { RegistrationFormData } from '@/forms/types';
+import {
+  AxiosBasicCredentials,
+  AxiosError,
+} from 'axios';
 import api, { auth } from '@/helpers/api';
-import { LoginRequest } from '@/types';
+import { RegistrationData } from '@/store/auth/types';
 
 const postAuth = (url: string, payload: {}): Promise<any> => auth
   .post(url, { ...payload, api: true })
@@ -16,11 +18,9 @@ const authError = (e: AxiosError): Promise<any> => (
 export default {
   getToken: (credentials: AxiosBasicCredentials): Promise<string> => api
     .post('/tokens', null, { auth: credentials })
-    .then(({ data }) => data)
-    .then(({ token }) => token || Promise.reject(new Error('No token!')))
+    .then(({ data }) => data.token || Promise.reject(new Error('No token!')))
     .catch(authError),
-  authUser: (payload: LoginRequest) => postAuth('/login', payload),
-  registerUser: (payload: RegistrationFormData) => postAuth('/register', payload),
+  registerUser: (payload: RegistrationData) => postAuth('/register', payload),
   logoutUser: (token: string | null): Promise<any> => (
     token
       ? Promise.resolve()

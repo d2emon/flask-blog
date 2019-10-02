@@ -65,10 +65,9 @@ export interface Tag {
   color?: string,
 }
 
-export type MenuLink = Category | Link;
-
-export interface LoginRequest {
-  username: string,
-  password: string,
-  remember_me?: boolean,
+export interface User {
+  isAuthorized: boolean,
+  token?: string,
 }
+
+export type MenuLink = Category | Link;

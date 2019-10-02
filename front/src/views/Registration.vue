@@ -32,7 +32,7 @@ import { RegistrationFormData } from '@/forms/types';
     RegistrationForm: () => import('@/forms/RegistrationForm.vue'),
   },
   methods: {
-    ...mapActions(['registerUser']),
+    ...mapActions('auth', ['registerUser']),
   },
 })
 export default class Registration extends Vue {

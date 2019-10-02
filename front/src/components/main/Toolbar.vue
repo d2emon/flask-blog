@@ -49,7 +49,7 @@
       </v-list>
     </v-menu>
     <v-btn
-      v-if="user"
+      v-if="user.isAuthorized"
       class="ml-0 hidden-sm-and-down"
       text
       @click="logoutUser"
@@ -96,15 +96,13 @@ import { Link } from '@/types';
 
 @Component({
   computed: {
-    ...mapState([
-      'user',
-      'categories',
-    ]),
+    ...mapState('auth', ['user']),
+    ...mapState(['categories']),
     ...mapGetters(['links']),
   },
   methods: {
     ...mapMutations(['toggleDrawer']),
-    ...mapActions(['logoutUser']),
+    ...mapActions('auth', ['logoutUser']),
   },
 })
 export default class MainToolbar extends Vue {
