@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-form
+    ref="newLoginForm"
+  >
     <v-text-field
       label="By what name shall I call you?"
       v-model="username"
@@ -9,16 +11,11 @@
       :size="15"
     />
     <v-btn
-      to="/confirm-username"
+      @click="login"
     >
-      New
+      Log In
     </v-btn>
-    <v-btn
-      to="/ask-password"
-    >
-      Old
-    </v-btn>
-  </v-card>
+  </v-form>
 </template>
 
 <script lang="ts">
@@ -44,11 +41,16 @@ import {
   },
 })
 export default class NewLogin extends Vue {
-  username: string = (this as any).defaultUsername;
+  username: string = (this as any).defaultUsername || '';
 
   rules = [
     isRequired('Username is required'),
-    (v: string) => !v || v.replace(/[^a-zA-Z]/g, '') === v || 'Wrong username',
+    (v: string) => !v || v.replace(/[^a-zA-Z]/g, '') === v || 'Illegal characters in username',
   ];
+
+  login() {
+    this.$refs.newLoginForm.validate();
+    (this as any).onUsername(this.username);
+  }
 }
 </script>

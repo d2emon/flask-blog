@@ -7,6 +7,7 @@ import actions from './actions';
 
 const state: NewAuthState = {
   tries: 3,
+  isNew: false,
 };
 
 const namespaced: boolean = true;

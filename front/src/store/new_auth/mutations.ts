@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { MutationTree } from 'vuex';
+import { User } from '@/services/login/types';
 import { NewAuthState } from './types';
 
 /**
@@ -43,6 +44,9 @@ const mutations: MutationTree<NewAuthState> = {
   setTries: (state, payload?: number) => Vue.set(state, 'tries', payload),
   setUser: (state, payload?: User) => Vue.set(state, 'user', payload),
   setMotd: (state, payload?: string) => Vue.set(state, 'motd', payload),
+
+  setUsername: (state, payload?: string) => Vue.set(state, 'username', payload),
+  setNew: (state, payload?: boolean) => Vue.set(state, 'isNew', payload),
 };
 
 export default mutations;

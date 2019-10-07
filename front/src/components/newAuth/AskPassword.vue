@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-form>
     <v-text-field
       type="password"
       label="This persona already exists, what is the password?"
@@ -14,7 +14,7 @@
     >
       Next
     </v-btn>
-  </v-card>
+  </v-form>
 </template>
 
 <script lang="ts">
@@ -24,22 +24,35 @@ import {
   mapActions,
   mapState,
 } from 'vuex';
+import {
+  isRequired,
+} from '@/helpers/validators';
 
 @Component({
   computed: {
-    ...mapState('newAuth', {
-      error: 'error',
-      defaultUsername: 'username',
-    }),
+    ...mapState('newAuth', [
+      'error',
+      'username',
+    ]),
   },
   methods: {
-    ...mapActions('newAuth', ['onUsername']),
+    ...mapActions('newAuth', ['authUser']),
   },
 })
 export default class AskPassword extends Vue {
   password: string = '';
 
   rules = [
+    isRequired('Password is required'),
+    (v: string) => !v || v.indexOf('.') < 0 || 'Illegal characters in password',
   ];
+
+  auth() {
+    this.$refs.newUserForm.validate();
+    (this as any).authUser({
+      username: (this as any).username,
+      password: this.password,
+    });
+  }
 }
 </script>

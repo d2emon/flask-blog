@@ -2,7 +2,7 @@
   <v-card>
     <div>{{ motd }}</div>
     <v-btn
-      to="/new-login"
+      @click="startMain"
     >
       Next
     </v-btn>
@@ -24,7 +24,10 @@ import {
     ...mapState('newAuth', ['motd']),
   },
   methods: {
-    ...mapActions('newAuth', ['fetchMotd']),
+    ...mapActions('newAuth', [
+      'fetchMotd',
+      'startMain',
+    ]),
   },
 })
 export default class Motd extends Vue {

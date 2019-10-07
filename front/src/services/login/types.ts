@@ -1,53 +1,37 @@
-export type Lock = 'LOCK_SH' | 'LOCK_EX' | 'LOCK_UN';
-
-export interface DataServiceInterface {
-  name: string;
-  connect(permissions: string): Promise<DataServiceInterface>;
-  setLock(lock: Lock): Promise<DataServiceInterface>;
+export interface ClientData {
+  userId: string,
+  hostname: string,
 }
 
-export interface Item {
-  name: string;
-  desc: string[];
-  maxState: number;
-  value: number;
-  flannel: number;
+export interface ServiceStats {
+  createdAt?: string;
 }
 
-export class DataService implements DataServiceInterface {
-  name: string;
+// User
+export interface User {
+  userId?: number,
+  username: string,
+  password: string,
+}
 
-  permissions?: string;
+// Response interfaces
+export interface FileResponse {
+  success?: boolean,
+  error?: string | null,
+}
 
-  lock?: string;
+export interface ExeFileResponse extends FileResponse {
+  stats?: ServiceStats,
+}
 
-  constructor(name: string) {
-    this.name = name;
-  }
+export interface MotdFileResponse extends FileResponse {
+  message: string,
+}
 
-  async connect(permissions: string): Promise<DataServiceInterface> {
-    this.permissions = permissions;
-    return this;
-  }
+export interface ResetNFileResponse extends FileResponse {
+  started?: number,
+}
 
-  async setLock(lock: Lock): Promise<DataServiceInterface> {
-    switch (lock) {
-      case 'LOCK_SH':
-        this.lock = 'F_RDLCK';
-        break;
-      case 'LOCK_EX':
-        this.lock = 'F_WRLCK';
-        break;
-      case 'LOCK_UN':
-        this.lock = 'F_UNLCK';
-        break;
-      default:
-        throw new Error('EINVAL');
-    }
-
-    // this.l_whence = 'SEEK_SET';
-    // this.l_start = this.l_len = 0;
-    // fcntl(this, lock ? 'F_SETLK' : 'F_SETLKW', this.lock);
-    return this;
-  }
+export interface PflFileResponse extends FileResponse {
+  userId?: number,
 }

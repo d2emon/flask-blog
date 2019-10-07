@@ -1,3 +1,5 @@
+import { User } from '@/services/login/types';
+
 export interface NewAuthState {
   error?: string,
   createdAt?: string,
@@ -7,6 +9,7 @@ export interface NewAuthState {
   tries: number,
   user?: User,
   motd?: string,
+  isNew: boolean,
 }
 
 export interface NewAuthData {

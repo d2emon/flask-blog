@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-form
+    ref="newUserForm"
+  >
     <div>Creating new persona...</div>
     <v-text-field
       type="password"
@@ -11,11 +13,11 @@
       :size="15"
     />
     <v-btn
-      to="/motd"
+      @click="auth"
     >
       Next
     </v-btn>
-  </v-card>
+  </v-form>
 </template>
 
 <script lang="ts">
@@ -31,21 +33,29 @@ import {
 
 @Component({
   computed: {
-    ...mapState('newAuth', {
-      error: 'error',
-      defaultUsername: 'username',
-    }),
+    ...mapState('newAuth', [
+      'error',
+      'username',
+    ]),
   },
   methods: {
-    ...mapActions('newAuth', ['onUsername']),
+    ...mapActions('newAuth', ['newUser']),
   },
 })
 export default class AskPassword extends Vue {
   password: string = '';
 
   rules = [
-    isRequired('Username is required'),
-    (v: string) => !v || v.replace(/[^a-zA-Z]/g, '') === v || 'Wrong username',
+    isRequired('Password is required'),
+    (v: string) => !v || v.indexOf('.') < 0 || 'Illegal characters in password',
   ];
+
+  auth() {
+    this.$refs.newUserForm.validate();
+    (this as any).newUser({
+      username: (this as any).username,
+      password: this.password,
+    });
+  }
 }
 </script>
