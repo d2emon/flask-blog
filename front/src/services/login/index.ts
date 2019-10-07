@@ -91,14 +91,11 @@ export const resetNService = {
 };
 
 export const userService = {
-  getValidateUsername: (username: string): Promise<boolean> => pflService
-    .validateUsername(username)
-    .then((response: FileResponse) => checkResponse(response)),
-  postUser: (user: User): Promise<boolean> => pflService
-    .save(user)
-    .then((response: FileResponse) => checkResponse(response)),
   getUser: (username: string): Promise<number | null> => pflService
     .findUser(username)
+    .then((response: PflFileResponse) => checkResponse(response, response.userId || null)),
+  postUser: (user: User): Promise<number | null> => pflService
+    .newUser(user)
     .then((response: PflFileResponse) => checkResponse(response, response.userId || null)),
   getAuth: (user: User): Promise<number | null> => pflService
     .authUser(user)

@@ -60,53 +60,56 @@ const validatePassword = async (password: string): Promise<boolean> => applyRule
   passwordRules,
 );
 
+const save = async (user: User): Promise<User> => Promise
+  .all([
+    validateUsername(user.username),
+    validatePassword(user.password),
+  ])
+  .then((res: boolean[]) => {
+    if (!res.every(v => v)) {
+      throw new Error();
+    }
+    const newUser: User = {
+      ...user,
+      userId: users.length,
+    };
+    users.push(newUser);
+    return newUser;
+  });
+
+const findUser = async (username: string): Promise<User | undefined> => users
+  .find((value: User) => (value.username.toLowerCase() === username.toLowerCase()));
+
 export default {
-  /**
-   * Check for legality of names
-   * @param username
-   */
-  validateUsername: (username: string): Promise<FileResponse> => validateUsername(username)
-    .then((success: boolean) => ({ success }))
-    .catch((e: Error) => ({ error: e.message })),
-
-  save: async (user: User): Promise<FileResponse> => Promise
-    .all([
-      validateUsername(user.username),
-      validatePassword(user.password),
-    ])
-    .then((res: boolean[]) => {
-      const success = res.every(v => v);
-      if (success) {
-        users.push({
-          ...user,
-          userId: users.length,
-        });
-      }
-      return { success };
+  findUser: async (username: string): Promise<PflFileResponse> => findUser(username)
+    .then((user: User | undefined) => {
+      console.log(user);
+      return user;
     })
-    .catch((e: Error) => ({ error: e.message })),
-
-  findUser: async (username: string): Promise<PflFileResponse> => Promise.resolve(
-    (users as User[])
-      .find(
-        (value: User) => value.username.toLowerCase() === username.toLowerCase(),
-      ),
-  )
-    .then((user?: User) => ({
+    .then((user: User | undefined) => ({
       success: true,
       userId: user ? user.userId : undefined,
     }))
-    .catch(() => ({ error: 'No persona file' })),
+    .catch((e: Error) => ({ error: e.message })),
 
-  authUser: async (user: User): Promise<PflFileResponse> => Promise.resolve(
-    (users as User[])
-      .find(
-        (value: User) => (
-          value.username.toLowerCase() === user.username.toLowerCase()
-            && value.password === user.password
-        ),
-      ),
-  )
-    .then((u?: User) => ({ success: !!u, userId: u ? u.userId : undefined }))
-    .catch(() => ({ error: 'No persona file' })),
+  newUser: async (user: User): Promise<PflFileResponse> => {
+    const found: User | undefined = await findUser(user.username);
+    if (found) return { error: 'User already exists' };
+    return save(user)
+      .then((newUser: User) => ({
+        success: true,
+        userId: newUser.userId,
+      }))
+      .catch((e: Error) => ({ error: e.message }));
+  },
+
+  authUser: async (user: User): Promise<PflFileResponse> => {
+    const found: User | undefined = await findUser(user.username);
+    if (!found) return { error: 'User doesn\'t exists' };
+    if (user.password !== found.password) return { error: 'Wrong password!' };
+    return {
+      success: !!found,
+      userId: found.userId,
+    };
+  },
 };

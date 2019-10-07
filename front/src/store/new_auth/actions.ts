@@ -35,45 +35,16 @@ const actions: ActionTree<NewAuthState, RootState> = {
       commit('setCreatedAt', stats.createdAt);
       commit('setStartedAt', startedAt);
     }),
-  validateUsername: ({ commit }, payload: string): Promise<any> => {
-    // Gets name tidied up
-    commit('setError');
-    return userService.getValidateUsername(payload)
-      .catch((e: Error) => commit('setError', e.message));
-  },
-  submitUsername: ({ commit }): void => {
-    commit('setNew', false);
-  },
-  resetUsername: ({ commit }): void => {
-    commit('setUsername');
-    commit('setNew', false);
-  },
-  onUsername: async ({ commit, dispatch }, payload: string): Promise<any> => {
-    await dispatch('resetUsername');
-    await dispatch('validateUsername', payload);
-    const userId: number | null = await userService.getUser(payload);
-
-    /* If he/she doesnt exist */
-    // if (!user) return 'confirmUsername';
-
-    // Password checking
-    // return dispatch('auth', user);
-    commit('setUsername', payload);
-    commit('setNew', userId === null);
-    return userId;
-  },
-  newUser: async ({ commit, state }, payload: User): Promise<any> => userService
+  findUser: async ({ commit, dispatch, state }, payload: string): Promise<any> => userService
+    .getUser(payload),
+  newUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => userService
     .postUser(payload)
     .then(() => commit('setUser', payload))
     .catch((e: Error) => commit('setError', e.message)),
-  authUser: async ({ commit, state }, payload: User): Promise<any> => userService
+  authUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => userService
     .getAuth(payload)
-    .then((userId: number | null) => commit('setUser', payload))
-    .catch((e: Error) => (
-      (state.tries <= 0)
-        ? commit('setError', '\nNo!\n\n')
-        : commit('setTries', state.tries - 1)
-    )),
+    .then(() => commit('setUser', payload))
+    .catch((e: Error) => commit('setError', e.message)),
   fetchMotd: ({ commit }): Promise<any> => motdService
     .getMessage()
     .then((message: string) => commit('setMotd', message)),

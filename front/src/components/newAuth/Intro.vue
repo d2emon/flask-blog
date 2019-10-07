@@ -19,13 +19,13 @@
         <div v-else>Blog has yet to ever start!!!</div>
       </v-card-text>
 
-      <template v-if="!user">
-        <new-login />
-        <confirm-username v-if="isNew" />
-        <new-user v-if="isNew" />
-        <ask-password v-else />
-      </template>
-      <motd v-else />
+      <auth-form
+        v-if="!user"
+        @auth="onAuth"
+      />
+      <motd
+        v-model="showMotd"
+      />
     </v-container>
   </v-card>
 </template>
@@ -40,10 +40,7 @@ import {
 
 @Component({
   components: {
-    NewLogin: () => import('@/components/newAuth/NewLogin.vue'),
-    ConfirmUsername: () => import('@/components/newAuth/ConfirmUsername.vue'),
-    NewUser: () => import('@/components/newAuth/NewUser.vue'),
-    AskPassword: () => import('@/components/newAuth/AskPassword.vue'),
+    AuthForm: () => import('@/components/newAuth/AuthForm.vue'),
     Motd: () => import('@/components/newAuth/Motd.vue'),
   },
   computed: {
@@ -51,7 +48,6 @@ import {
       'error',
       'createdAt',
       'startedAt',
-      'isNew',
       'user',
     ]),
   },
@@ -60,6 +56,12 @@ import {
   },
 })
 export default class Intro extends Vue {
+  showMotd: boolean = false;
+
+  onAuth() {
+    this.showMotd = true;
+  }
+
   created() {
     (this as any).startNewAuth();
   }
