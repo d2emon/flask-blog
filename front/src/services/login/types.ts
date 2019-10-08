@@ -5,6 +5,7 @@ export interface ClientData {
 
 export interface ServiceStats {
   createdAt?: string;
+  startedAt?: number;
 }
 
 // User
@@ -20,18 +21,8 @@ export interface FileResponse {
   error?: string | null,
 }
 
-export interface ExeFileResponse extends FileResponse {
-  stats?: ServiceStats,
-}
-
-export interface MotdFileResponse extends FileResponse {
-  message: string,
-}
-
-export interface ResetNFileResponse extends FileResponse {
-  started?: number,
-}
-
-export interface PflFileResponse extends FileResponse {
+export interface UserResponse {
   userId?: number,
+  errors?: { [field: string]: string | null },
+  messageOfTheDay?: string,
 }

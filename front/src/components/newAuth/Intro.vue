@@ -7,24 +7,19 @@
       <h2>By D2emon</h2>
     </v-card-title>
     <v-container>
-      <v-card-text>
-        <v-alert
-          v-if="error"
-          type="error"
-        >
-          {{ error }}
-        </v-alert>
-        <div>This blog was created: <span>{{ createdAt || '&lt;unknown&gt;' }}</span></div>
-        <div v-if="startedAt">Time elapsed: <span>{{ startedAt }}</span></div>
-        <div v-else>Blog has yet to ever start!!!</div>
-      </v-card-text>
-
-      <auth-form
-        v-if="!user"
-        @auth="onAuth"
-      />
+      <v-alert
+        v-if="error"
+        type="error"
+      >
+        {{ error }}
+      </v-alert>
       <motd
-        v-model="showMotd"
+        v-model="showMessageOfTheDay"
+        :message="motd"
+      />
+      <auth-form
+        v-if="!isAuthorized"
+        @auth="onAuth"
       />
     </v-container>
   </v-card>
@@ -41,6 +36,7 @@ import {
 @Component({
   components: {
     AuthForm: () => import('@/components/newAuth/AuthForm.vue'),
+    NewLoginForm: () => import('@/forms/NewLoginForm.vue'),
     Motd: () => import('@/components/newAuth/Motd.vue'),
   },
   computed: {
@@ -48,22 +44,27 @@ import {
       'error',
       'createdAt',
       'startedAt',
-      'user',
+      'motd',
     ]),
   },
   methods: {
-    ...mapActions('newAuth', ['startNewAuth']),
+    ...mapActions('newAuth', ['checkNewAuth']),
   },
 })
 export default class Intro extends Vue {
-  showMotd: boolean = false;
+  isAuthorized: boolean = false;
+
+  showMessageOfTheDay: boolean = false;
 
   onAuth() {
-    this.showMotd = true;
+    if (!(this as any).error) {
+      this.showMessageOfTheDay = true;
+      this.isAuthorized = true;
+    }
   }
 
   created() {
-    (this as any).startNewAuth();
+    (this as any).checkNewAuth();
   }
 }
 </script>

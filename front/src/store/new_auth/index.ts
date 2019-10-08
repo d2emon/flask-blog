@@ -6,7 +6,7 @@ import mutations from './mutations';
 import actions from './actions';
 
 const state: NewAuthState = {
-  tries: 3,
+  errors: {},
   isNew: false,
 };
 

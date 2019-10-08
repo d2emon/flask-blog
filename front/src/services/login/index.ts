@@ -1,59 +1,55 @@
 import {
+  AxiosError,
+  AxiosResponse,
+} from 'axios';
+import api from '@/helpers/api';
+import {
+  NewAuthData,
+} from '@/store/new_auth/types';
+import {
   User,
   ServiceStats,
   FileResponse,
-  ExeFileResponse,
-  MotdFileResponse,
-  PflFileResponse,
-  ResetNFileResponse,
+  UserResponse,
 } from './types';
 import {
-  banFile,
-  exeFile,
-  hostFile,
   logFile,
-  motdFile,
-  noLoginFile,
-  resetNFile,
 } from './services';
-import pflService from './userService';
 
-const checkResponse = (response: FileResponse, value: any = true) => (
+const checkResponse = (response: FileResponse, value?: any): Promise<any> => (
   response.success
-    ? (response.success && value)
+    ? (response.success && (value || response))
     : Promise.reject(new Error(response.error || 'Unknown error')));
 
-export const banService = {
-  /**
-   * Check if banned first
-   * Check to see if UID in banned list
-   * @param userId {string}
-   * @returns {Promise<boolean>} User is banned
-   */
-  getBanned: (userId: string): Promise<boolean> => banFile.getBanned(userId)
-    .then(checkResponse),
-};
+const apiError = (e: AxiosError): Promise<any> => (
+  (e.response && e.response.data && e.response.data.error)
+    ? Promise.reject(new Error(e.response.data.error))
+    : Promise.reject(new Error(e.message))
+);
 
-export const exeService = {
-  /**
-   * Check for all the created at stuff
-   * We use stats for this which is a UN*X system call
-   * @returns {Promise<ServiceStats>} Stats of service
-   */
-  getStats: (): Promise<ServiceStats> => exeFile.getStats()
-    .then((response: ExeFileResponse) => checkResponse(response, response.stats))
-    .catch(() => ({})),
-};
+const apiResponse = ({ data }: AxiosResponse): any => (
+  (data && data.error)
+    ? Promise.reject(new Error(data.error))
+    : data
+);
 
-export const hostService = {
-  /**
-   * Check we are running on the correct host
-   * see the notes about the use of flock();
-   * and the affects of lockf();
-   * @param hostname {string}
-   */
-  getHost: (hostname: string): Promise<boolean> => hostFile.getHost(hostname)
-    .then(checkResponse),
+const apiRequest = (promise: Promise<AxiosResponse>): Promise<any> => promise
+  .then(apiResponse)
+  .catch(apiError);
+
+export const blogService = {
+  check: async (params: NewAuthData): Promise<ServiceStats> => apiRequest(
+    api.get('/check', { params }),
+  ),
+  postUser: (user: User): Promise<UserResponse> => apiRequest(
+    api.post('/new-user', user),
+  ),
+  getUser: (username: string): Promise<UserResponse> => apiRequest(
+    api.get(`/new-user/${username}`),
+  ),
+  putUser: (user: User): Promise<UserResponse> => apiRequest(
+    api.put('/new-user', user),
+  ),
 };
 
 export const logService = {
@@ -63,41 +59,4 @@ export const logService = {
    */
   postLog: (message: string): Promise<boolean> => logFile.postLog(message)
     .then(checkResponse),
-};
-
-export const motdService = {
-  /**
-   * Show message of the day
-   */
-  getMessage: (): Promise<string> => motdFile.getMessage()
-    .then((response: MotdFileResponse) => checkResponse(response, response.message)),
-};
-
-export const noLoginService = {
-  /**
-   * Check if there is a no login file active
-   */
-  getNoLogin: (): Promise<boolean> => noLoginFile.getNoLogin()
-    .then(checkResponse),
-};
-
-export const resetNService = {
-  /**
-   * Get started date
-   */
-  getStarted: (): Promise<number | undefined> => resetNFile.getStarted()
-    .then((response: ResetNFileResponse) => checkResponse(response, response.started))
-    .catch(() => undefined),
-};
-
-export const userService = {
-  getUser: (username: string): Promise<number | null> => pflService
-    .findUser(username)
-    .then((response: PflFileResponse) => checkResponse(response, response.userId || null)),
-  postUser: (user: User): Promise<number | null> => pflService
-    .newUser(user)
-    .then((response: PflFileResponse) => checkResponse(response, response.userId || null)),
-  getAuth: (user: User): Promise<number | null> => pflService
-    .authUser(user)
-    .then((response: PflFileResponse) => checkResponse(response, response.userId || null)),
 };

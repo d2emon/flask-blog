@@ -2,11 +2,9 @@ import { User } from '@/services/login/types';
 
 export interface NewAuthState {
   error?: string,
+  errors: { [field: string]: string | null },
   createdAt?: string,
   startedAt?: string,
-  username?: string,
-  password?: string,
-  tries: number,
   user?: User,
   motd?: string,
   isNew: boolean,

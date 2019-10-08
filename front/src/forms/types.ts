@@ -17,6 +17,11 @@ export interface LoginFormData {
   rememberMe: FormField<boolean>,
 }
 
+export interface NewLoginFormData {
+  username: FormField<string>,
+  password: FormField<string>,
+}
+
 export interface RegistrationFormData {
   username: FormField<string>,
   email: FormField<string>,

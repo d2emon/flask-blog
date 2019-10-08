@@ -5,7 +5,7 @@
     persistent
   >
     <v-card>
-      <v-card-title>Did I get the name right {{username}}?</v-card-title>
+      <v-card-title>{{ message }}</v-card-title>
       <v-card-actions>
         <v-btn
           color="success"
@@ -27,20 +27,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
-import {
-  mapState,
-  mapActions,
-} from 'vuex';
 
 @Component({
-  methods: {
-    ...mapActions('newAuth', [
-      // 'submitUsername',
-      // 'resetUsername',
-    ]),
-  },
   props: {
-    username: String,
+    message: String,
     value: Boolean,
   },
 })

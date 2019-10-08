@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import { MutationTree } from 'vuex';
-import { User } from '@/services/login/types';
+import {
+  ServiceStats,
+  User, UserResponse,
+} from '@/services/login/types';
 import { NewAuthState } from './types';
 
 /**
@@ -29,24 +32,29 @@ const timestampToString = (timestamp: number): string => {
 
 const mutations: MutationTree<NewAuthState> = {
   setError: (state, payload?: string) => Vue.set(state, 'error', payload),
-  setCreatedAt: (state, payload?: string) => Vue.set(state, 'createdAt', payload),
-  setStartedAt: (state, payload?: number) => {
+  setErrors: (state, payload: {}) => Vue.set(state, 'errors', payload),
+  setStats: (state, payload: ServiceStats) => {
     const now = new Date();
+    const {
+      createdAt,
+      startedAt,
+    } = payload;
 
+    Vue.set(state, 'createdAt', createdAt);
     Vue.set(
       state,
       'startedAt',
-      payload
-        ? `Game time elapsed: ${timestampToString(now.getTime() - payload)}\n`
-        : 'AberMUD has yet to ever start!!!',
+      startedAt
+        ? timestampToString(now.getTime() - startedAt)
+        : undefined,
     );
   },
-  setTries: (state, payload?: number) => Vue.set(state, 'tries', payload),
   setUser: (state, payload?: User) => Vue.set(state, 'user', payload),
-  setMotd: (state, payload?: string) => Vue.set(state, 'motd', payload),
-
-  setUsername: (state, payload?: string) => Vue.set(state, 'username', payload),
-  setNew: (state, payload?: boolean) => Vue.set(state, 'isNew', payload),
+  setUserResponse: (state, payload: UserResponse) => {
+    Vue.set(state, 'error', undefined);
+    Vue.set(state, 'errors', payload.errors);
+    Vue.set(state, 'motd', payload.messageOfTheDay);
+  },
 };
 
 export default mutations;

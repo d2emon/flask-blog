@@ -8,6 +8,8 @@ from . import blueprint
 from .auth import token_auth
 from .errors import bad_request
 from .articles import articles_data
+from .check import check_all
+from .users import find_user, save_user, validate_username, validate_password, get_motd
 
 
 @blueprint.route('/users/<user_id>', methods=['GET'])
@@ -167,3 +169,103 @@ def login():
         })
 
     return jsonify({'errors': form.errors})
+
+
+@blueprint.route('/check', methods=['GET'])
+def check():
+    user_id = request.args.get('userId')
+    hostname = request.args.get('hostname')
+
+    try:
+        return jsonify({
+            'success': check_all(user_id, hostname),
+            'createdAt': None,
+            'startedAt': None,
+        })
+    except Exception as e:
+        return jsonify({
+            'error':  str(e)
+        })
+
+
+@blueprint.route('/new-user', methods=['POST'])
+def post_new_user():
+    try:
+        username = request.json.get('username', '').lower()
+        password = request.json.get('password', '')
+
+        validation_errors = {
+            'username': validate_username(username),
+        }
+        if any(validation_errors.values()):
+            return jsonify({
+                'success': False,
+                'errors': validation_errors,
+            })
+
+        found = find_user(username)
+        if found:
+            raise Exception("User already exists")
+        user = save_user(username, password)
+        return jsonify({
+            'success': True,
+            'userId': user.get('user_id'),
+            'messageOfTheDay': get_motd(),
+        })
+    except Exception as e:
+        return jsonify({
+            'error':  str(e)
+        })
+
+
+@blueprint.route('/new-user', methods=['PUT'])
+def put_new_user():
+    try:
+        username = request.json.get('username', '').lower()
+        password = request.json.get('password', '')
+
+        validation_errors = {
+            'username': validate_username(username),
+            'password': validate_password(password),
+        }
+        if any(validation_errors.values()):
+            return jsonify({
+                'success': False,
+                'errors': validation_errors,
+            })
+
+        user = find_user(username)
+        if not user or (password != user.get('password')):
+            raise Exception("Wrong username or password")
+        return jsonify({
+            'success': True,
+            'userId': user.get('user_id'),
+            'messageOfTheDay': get_motd(),
+        })
+    except Exception as e:
+        return jsonify({
+            'error':  str(e)
+        })
+
+
+@blueprint.route('/new-user/<username>', methods=['GET'])
+def get_new_user(username):
+    try:
+        validation_errors = {
+            'username': validate_username(username),
+        }
+        if any(validation_errors.values()):
+            return jsonify({
+                'success': False,
+                'errors': validation_errors,
+            })
+
+        user = find_user(username)
+        return jsonify({
+            'success': True,
+            'userId': user.get('userId') if user else None,
+        })
+    except Exception as e:
+        return jsonify({
+            'error':  str(e)
+        })

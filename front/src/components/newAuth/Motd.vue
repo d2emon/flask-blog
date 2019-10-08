@@ -5,7 +5,7 @@
     persistent
   >
     <v-card>
-      <v-card-text>{{ motd }}</v-card-text>
+      <v-card-text>{{ message }}</v-card-text>
       <v-card-actions>
         <v-btn
           @click="$emit('input', false)"
@@ -23,25 +23,11 @@ import {
   Component,
   Watch,
 } from 'vue-property-decorator';
-import {
-  mapActions,
-  mapState,
-} from 'vuex';
-
-// !defaultUsername
 
 @Component({
-  computed: {
-    ...mapState('newAuth', ['motd']),
-  },
-  methods: {
-    ...mapActions('newAuth', [
-      'fetchMotd',
-      'startMain',
-    ]),
-  },
   props: {
     value: Boolean,
+    message: String,
   },
 })
 export default class Motd extends Vue {
@@ -50,9 +36,6 @@ export default class Motd extends Vue {
   @Watch('value')
   onValue(newValue: boolean) {
     this.show = newValue;
-    if (newValue) {
-      (this as any).fetchMotd();
-    }
   }
 }
 </script>

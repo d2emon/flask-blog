@@ -1,16 +1,13 @@
 import { ActionTree } from 'vuex';
 import config from '@/helpers/config';
 import {
-  banService,
-  exeService,
-  hostService,
-  logService,
-  motdService,
-  noLoginService,
-  resetNService,
-  userService,
+  blogService,
 } from '@/services/login';
-import { User } from '@/services/login/types';
+import {
+  ServiceStats,
+  User,
+  UserResponse,
+} from '@/services/login/types';
 import { RootState } from '@/store/types';
 import {
   NewAuthState,
@@ -18,36 +15,35 @@ import {
 // import talker from "@/services/login/talker";
 
 const actions: ActionTree<NewAuthState, RootState> = {
-  startNewAuth: ({ commit }): Promise<any> => Promise.all([
-    banService.getBanned(config.newAuth.userId),
-    hostService.getHost(config.newAuth.hostname),
-    noLoginService.getNoLogin(),
-  ])
-    .catch((e: Error) => commit('setError', e.message))
-    .then(() => Promise.all([
-      exeService.getStats(),
-      resetNService.getStarted(),
-    ]))
-    .then(([
-      stats,
-      startedAt,
-    ]) => {
-      commit('setCreatedAt', stats.createdAt);
-      commit('setStartedAt', startedAt);
+  checkNewAuth: ({ commit }): Promise<void> => blogService
+    .check(config.newAuth)
+    .then((stats: ServiceStats) => commit('setStats', stats))
+    .catch((e: Error) => commit('setError', e.message)),
+
+  fetchUser: async ({ commit }, payload: string): Promise<number | null> => blogService
+    .getUser(payload)
+    .then((user: UserResponse) => {
+      commit('setUserResponse', user);
+      return user.userId || null;
+    })
+    .catch((e: Error) => {
+      commit('setError', e.message);
+      return null;
     }),
-  findUser: async ({ commit, dispatch, state }, payload: string): Promise<any> => userService
-    .getUser(payload),
-  newUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => userService
+  newUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => blogService
     .postUser(payload)
-    .then(() => commit('setUser', payload))
+    .then((user: UserResponse) => {
+      commit('setUserResponse', user);
+      commit('setUser', payload);
+    })
     .catch((e: Error) => commit('setError', e.message)),
-  authUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => userService
-    .getAuth(payload)
-    .then(() => commit('setUser', payload))
+  authUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => blogService
+    .putUser(payload)
+    .then((user: UserResponse) => {
+      commit('setUserResponse', user);
+      commit('setUser', payload);
+    })
     .catch((e: Error) => commit('setError', e.message)),
-  fetchMotd: ({ commit }): Promise<any> => motdService
-    .getMessage()
-    .then((message: string) => commit('setMotd', message)),
   startMain: ({ state }): Promise<any> => Promise.all([
     // Log entry
     // logService.postLog(`Game entry by ${state.user && state.user.username} : UID ${state.user && state.user.userId}`),

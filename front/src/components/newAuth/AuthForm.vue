@@ -1,45 +1,28 @@
 <template>
-  <v-form
-    ref="authForm"
-  >
+  <v-layout row>
     <confirm-username
       v-model="showConfirm"
-      :username="usernameValue"
-      :password="password"
-      @confirm="save"
+      :message="`Did I get the name right ${user.username}?`"
+      @confirm="save(true)"
     />
 
-    <v-alert
-      v-if="error"
-      type="error"
-    >
-      {{ error }}
-    </v-alert>
-
-    <v-text-field
-      label="By what name shall I call you?"
-      v-model="usernameValue"
-      :rules="rules.username"
-      :error-messages="error"
-      required
-      :size="15"
-    />
-    <div v-if="exists">Creating new persona...</div>
-    <v-text-field
-      type="password"
-      :label="passwordLabel"
-      v-model="password"
-      :rules="rules.password"
-      :error-messages="error"
-      required
-      :size="15"
-    />
-    <v-btn
-      @click="login"
-    >
-      Log In
-    </v-btn>
-  </v-form>
+    <v-flex xs6>
+      <v-card-text>
+        <div>This blog was created: <span>{{ createdAt || '&lt;unknown&gt;' }}</span></div>
+        <div v-if="startedAt">Time elapsed: <span>{{ startedAt }}</span></div>
+        <div v-else>Blog has yet to ever start!!!</div>
+      </v-card-text>
+    </v-flex>
+    <v-flex xs6>
+      <v-container>
+        <new-login-form
+          :default-username="defaultUsername"
+          :errors="errors"
+          @submit="login"
+        />
+      </v-container>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script lang="ts">
@@ -52,33 +35,37 @@ import {
 import {
   isRequired,
 } from '@/helpers/validators';
+import { User } from '@/services/login/types';
 
 @Component({
   components: {
     ConfirmUsername: () => import('@/components/newAuth/ConfirmUsername.vue'),
+    NewLoginForm: () => import('@/forms/NewLoginForm.vue'),
   },
   computed: {
-    ...mapState('newAuth', {
-      error: 'error',
-    }),
+    ...mapState('newAuth', [
+      'errors',
+
+      'createdAt',
+      'startedAt',
+    ]),
   },
   methods: {
     ...mapActions('newAuth', [
-      'findUser',
+      'fetchUser',
       'newUser',
       'authUser',
     ]),
   },
   props: {
-    username: String,
+    defaultUsername: String,
   },
 })
 export default class AuthForm extends Vue {
-  usernameValue: string = (this as any).username || '';
-
-  password: string = '';
-
-  exists: boolean = false;
+  user: User = {
+    username: '',
+    password: '',
+  };
 
   showConfirm: boolean = false;
 
@@ -93,32 +80,23 @@ export default class AuthForm extends Vue {
     ],
   };
 
-  get passwordLabel() {
-    return this.exists
-      ? 'Give me a password for this persona'
-      : 'This persona already exists, what is the password?';
+  async login(user: User) {
+    this.user = user;
+    const userId: number | null = await (this as any).fetchUser(user.username);
+    if ((this as any).errors) return;
+    if (!userId) {
+      this.showConfirm = true;
+      return;
+    }
+    await this.save(false);
   }
 
-  login() {
-    if (!this.$refs.authForm.validate()) return;
-    (this as any).findUser(this.usernameValue)
-      .then((userId: number | null) => {
-        this.exists = !!userId;
-        this.showConfirm = !userId;
-        if (!userId) return;
-        (this as any).authUser({
-          username: (this as any).usernameValue,
-          password: this.password,
-        });
-        this.$emit('auth');
-      });
-  }
-
-  save() {
-    (this as any).newUser({
-      username: (this as any).usernameValue,
-      password: this.password,
-    });
+  async save(isNew: boolean = false) {
+    if (isNew) {
+      await (this as any).newUser(this.user);
+    } else {
+      await (this as any).authUser(this.user);
+    }
     this.$emit('auth');
   }
 }
