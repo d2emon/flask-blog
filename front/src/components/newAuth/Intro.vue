@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <h1>New  Auth</h1>
+      <h1>Blog</h1>
     </v-card-title>
     <v-card-title>
       <h2>By D2emon</h2>
@@ -21,6 +21,9 @@
         v-if="!isAuthorized"
         @auth="onAuth"
       />
+      <user-menu
+        v-else
+      />
     </v-container>
   </v-card>
 </template>
@@ -32,12 +35,14 @@ import {
   mapActions,
   mapState,
 } from 'vuex';
+import * as roles from '@/services/login/roles';
 
 @Component({
   components: {
     AuthForm: () => import('@/components/newAuth/AuthForm.vue'),
     NewLoginForm: () => import('@/forms/NewLoginForm.vue'),
     Motd: () => import('@/components/newAuth/Motd.vue'),
+    UserMenu: () => import('@/components/newAuth/UserMenu.vue'),
   },
   computed: {
     ...mapState('newAuth', [
@@ -45,6 +50,7 @@ import {
       'createdAt',
       'startedAt',
       'motd',
+      'role',
     ]),
   },
   methods: {
@@ -52,14 +58,19 @@ import {
   },
 })
 export default class Intro extends Vue {
-  isAuthorized: boolean = false;
-
   showMessageOfTheDay: boolean = false;
+
+  get isAuthorized(): boolean {
+    return (this as any).role !== roles.UNAUTHORIZED;
+  }
+
+  get isAdmin(): boolean {
+    return (this as any).role === roles.ADMIN;
+  }
 
   onAuth() {
     if (!(this as any).error) {
       this.showMessageOfTheDay = true;
-      this.isAuthorized = true;
     }
   }
 

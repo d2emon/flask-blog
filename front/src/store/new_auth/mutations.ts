@@ -32,7 +32,6 @@ const timestampToString = (timestamp: number): string => {
 
 const mutations: MutationTree<NewAuthState> = {
   setError: (state, payload?: string) => Vue.set(state, 'error', payload),
-  setErrors: (state, payload: {}) => Vue.set(state, 'errors', payload),
   setStats: (state, payload: ServiceStats) => {
     const now = new Date();
     const {
@@ -51,9 +50,13 @@ const mutations: MutationTree<NewAuthState> = {
   },
   setUser: (state, payload?: User) => Vue.set(state, 'user', payload),
   setUserResponse: (state, payload: UserResponse) => {
+    const { user } = payload;
     Vue.set(state, 'error', undefined);
     Vue.set(state, 'errors', payload.errors);
-    Vue.set(state, 'motd', payload.messageOfTheDay);
+    if (user) {
+      Vue.set(state, 'motd', user.messageOfTheDay);
+      Vue.set(state, 'role', user.role);
+    }
   },
 };
 

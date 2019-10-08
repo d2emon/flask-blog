@@ -9,7 +9,7 @@ from .auth import token_auth
 from .errors import bad_request
 from .articles import articles_data
 from .check import check_all
-from .users import find_user, save_user, validate_username, validate_password, get_motd
+from .users import User as NewUser
 
 
 @blueprint.route('/users/<user_id>', methods=['GET'])
@@ -195,7 +195,7 @@ def post_new_user():
         password = request.json.get('password', '')
 
         validation_errors = {
-            'username': validate_username(username),
+            'username': NewUser.validate_username(username),
         }
         if any(validation_errors.values()):
             return jsonify({
@@ -203,14 +203,9 @@ def post_new_user():
                 'errors': validation_errors,
             })
 
-        found = find_user(username)
-        if found:
-            raise Exception("User already exists")
-        user = save_user(username, password)
         return jsonify({
             'success': True,
-            'userId': user.get('user_id'),
-            'messageOfTheDay': get_motd(),
+            'user': NewUser(username, password).save().as_dict(),
         })
     except Exception as e:
         return jsonify({
@@ -225,8 +220,8 @@ def put_new_user():
         password = request.json.get('password', '')
 
         validation_errors = {
-            'username': validate_username(username),
-            'password': validate_password(password),
+            'username': NewUser.validate_username(username),
+            'password': NewUser.validate_password(password),
         }
         if any(validation_errors.values()):
             return jsonify({
@@ -234,13 +229,12 @@ def put_new_user():
                 'errors': validation_errors,
             })
 
-        user = find_user(username)
-        if not user or (password != user.get('password')):
+        user = NewUser.find(username)
+        if not user or (password != user.password):
             raise Exception("Wrong username or password")
         return jsonify({
             'success': True,
-            'userId': user.get('user_id'),
-            'messageOfTheDay': get_motd(),
+            'user': user.as_dict(),
         })
     except Exception as e:
         return jsonify({
@@ -252,7 +246,7 @@ def put_new_user():
 def get_new_user(username):
     try:
         validation_errors = {
-            'username': validate_username(username),
+            'username': NewUser.validate_username(username),
         }
         if any(validation_errors.values()):
             return jsonify({
@@ -260,10 +254,10 @@ def get_new_user(username):
                 'errors': validation_errors,
             })
 
-        user = find_user(username)
+        user = NewUser.find(username)
         return jsonify({
             'success': True,
-            'userId': user.get('userId') if user else None,
+            'user': user and user.as_dict(),
         })
     except Exception as e:
         return jsonify({

@@ -1,9 +1,3 @@
-import {
-  cls,
-  getUserId,
-} from '@/services/login/utils';
-import inOut from '@/services/login/stdinout';
-
 const execl = (args: string[]): Promise<void> => Promise.resolve();
 
 const EXE: string = '';

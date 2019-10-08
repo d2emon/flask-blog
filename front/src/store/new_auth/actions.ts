@@ -22,9 +22,10 @@ const actions: ActionTree<NewAuthState, RootState> = {
 
   fetchUser: async ({ commit }, payload: string): Promise<number | null> => blogService
     .getUser(payload)
-    .then((user: UserResponse) => {
-      commit('setUserResponse', user);
-      return user.userId || null;
+    .then((response: UserResponse) => {
+      commit('setUserResponse', response);
+      const { user } = response;
+      return user ? user.userId : null;
     })
     .catch((e: Error) => {
       commit('setError', e.message);
@@ -32,15 +33,15 @@ const actions: ActionTree<NewAuthState, RootState> = {
     }),
   newUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => blogService
     .postUser(payload)
-    .then((user: UserResponse) => {
-      commit('setUserResponse', user);
+    .then((response: UserResponse) => {
+      commit('setUserResponse', response);
       commit('setUser', payload);
     })
     .catch((e: Error) => commit('setError', e.message)),
   authUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => blogService
     .putUser(payload)
-    .then((user: UserResponse) => {
-      commit('setUserResponse', user);
+    .then((response: UserResponse) => {
+      commit('setUserResponse', response);
       commit('setUser', payload);
     })
     .catch((e: Error) => commit('setError', e.message)),

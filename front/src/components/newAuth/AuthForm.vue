@@ -7,12 +7,17 @@
     />
 
     <v-flex xs6>
-      <v-card-text>
-        <div>This blog was created: <span>{{ createdAt || '&lt;unknown&gt;' }}</span></div>
-        <div v-if="startedAt">Time elapsed: <span>{{ startedAt }}</span></div>
-        <div v-else>Blog has yet to ever start!!!</div>
-      </v-card-text>
+      <v-container>
+        <v-card flat>
+          <v-card-text>
+            <div>This blog was created: <span>{{ createdAt || '&lt;unknown&gt;' }}</span></div>
+            <div v-if="startedAt">Time elapsed: <span>{{ startedAt }}</span></div>
+            <div v-else>Blog has yet to ever start!!!</div>
+          </v-card-text>
+        </v-card>
+      </v-container>
     </v-flex>
+
     <v-flex xs6>
       <v-container>
         <new-login-form
