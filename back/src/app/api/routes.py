@@ -2,22 +2,21 @@ import random
 from app import db
 from app.models import User
 from app.auth.forms import LoginForm
-from flask import current_app, jsonify, request, url_for
+from flask import jsonify, request, url_for
 from flask_login import current_user, login_user
 from . import blueprint
 from .auth import token_auth
 from .errors import bad_request
 from .articles import articles_data
-from .check import check_all
 
 
-def enter_blog(user):
-    current_app.logger.info(
-        "Blog entry by {} : UID {}".format(
-            user.username,
-            user.user_id,
-        ),
-    )
+# TODO: Add check api token
+# - Is userId banned
+# - Is no login message
+# - Is hostname valid
+# TODO: Add api to password change
+# TODO: Log user entry
+# - "Blog entry by {username} : UID {user_id}"
 
 
 @blueprint.route('/users/<user_id>', methods=['GET'])
@@ -179,23 +178,3 @@ def login():
         })
 
     return jsonify({'errors': form.errors})
-
-
-# TODO: Add api to password change
-
-
-@blueprint.route('/check', methods=['GET'])
-def check():
-    user_id = request.args.get('userId')
-    hostname = request.args.get('hostname')
-
-    try:
-        return jsonify({
-            'success': check_all(user_id, hostname),
-            'createdAt': None,
-            'startedAt': None,
-        })
-    except Exception as e:
-        return jsonify({
-            'error':  str(e)
-        })
