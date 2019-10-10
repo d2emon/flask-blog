@@ -1,15 +1,15 @@
 import {
+  AxiosBasicCredentials,
   AxiosError,
   AxiosInstance,
   AxiosResponse,
 } from 'axios';
 import {
-  AuthData,
-  ServiceStats,
   User,
   ChangePassword,
   AuthResponse,
-} from './types';
+  RegistrationData,
+} from '../types';
 
 export default class AuthService {
   static defaultErrorMessage: string = 'Unknown error';
@@ -45,16 +45,38 @@ export default class AuthService {
   }
    */
 
+  // TODO: Auto-check API token on each request
   private static fetchRequest = (request: Promise<AxiosResponse>): Promise<any> => request
     .then(AuthService.onSuccess)
     .catch(AuthService.onError);
 
-  check(params: AuthData): Promise<ServiceStats> {
-    return AuthService.fetchRequest(
-      this.api.get('/check', { params }),
+  // Tokens
+  getToken(credentials: AxiosBasicCredentials): Promise<string> {
+    return this.api
+      .post('/tokens', null, { auth: credentials })
+      .then(({ data }: AxiosResponse) => data.token || Promise.reject(new Error('No token!')))
+      .catch(AuthService.onError);
+  }
+
+  registerUser(payload: RegistrationData): Promise<any> {
+    return this.api
+      .post('/register', { ...payload, api: true })
+      .then(({ data }: AxiosResponse) => data);
+  }
+
+  async logoutUser(token: string | null): Promise<void> {
+    if (!token) return;
+    await this.api.delete(
+      '/tokens',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
   }
 
+  // User
   getUser(username: string): Promise<AuthResponse> {
     return AuthService.fetchRequest(
       this.api.get(`/new-user/${username}`),

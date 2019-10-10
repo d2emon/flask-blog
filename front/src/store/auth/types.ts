@@ -16,17 +16,10 @@ export default class User implements UserInterface {
 
 export interface AuthState {
   user: User,
-}
 
-export interface LoginData {
-  username: string,
-  password: string,
-  rememberMe: boolean,
-}
-
-export interface RegistrationData {
-  username: string,
-  email: string,
-  password: string,
-  password2: string,
+  // error?: string,
+  errors: { [field: string]: string | null },
+  // user?: User,
+  // viewUser?: User,
+  // isNew: boolean,
 }

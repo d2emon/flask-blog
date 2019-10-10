@@ -34,7 +34,7 @@ import {
   mapActions,
   mapState,
 } from 'vuex';
-import { User } from '@/d2auth/services/login/types';
+import { User } from '@/auth/types';
 
 @Component({
   components: {

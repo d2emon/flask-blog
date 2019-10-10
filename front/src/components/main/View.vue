@@ -30,7 +30,7 @@ import { Link } from '@/types';
 @Component({
   components: {
     Sidebar: () => import('@/components/main/Sidebar.vue'),
-    Intro: () => import('@/components/newAuth/Intro.vue'),
+    Intro: () => import('@/components/admin/Intro.vue'),
   },
 })
 export default class MainView extends Vue {}

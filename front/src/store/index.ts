@@ -6,7 +6,6 @@ import mutations from './mutations';
 import actions from './actions';
 // Modules
 import auth from './auth';
-import newAuth from './new_auth';
 
 Vue.use(Vuex);
 
@@ -74,7 +73,6 @@ const store: StoreOptions<RootState> = {
   actions,
   modules: {
     auth,
-    newAuth,
   },
 };
 

@@ -1,39 +1,13 @@
 <template>
   <v-card>
     <v-card-title>
-      <h1>Welcome To Blog</h1>
+      <h1>Welcome To Admin</h1>
     </v-card-title>
 
     <v-alert
       v-if="message"
       type="info"
     >{{ message }}</v-alert>
-
-    <v-dialog
-      v-model="showDialog"
-      max-width="512"
-    >
-      <v-card>
-        <v-card-title>{{ dialogTitle }}</v-card-title>
-        <v-container>
-          <v-card-text>
-            <h3>The Hallway</h3>
-            <div>
-              You stand in a long dark hallway, which echoes to the tread of your
-              booted feet. You stride on down the hall, choose your masque and enter the
-              worlds beyond the known......
-            </div>
-          </v-card-text>
-        </v-container>
-        <v-card-actions>
-          <v-btn
-            @click="showDialog = false"
-          >
-            Ok
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <v-dialog
       v-model="showChangePassword"
@@ -125,30 +99,12 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog
-      v-model="show"
-      max-width="512"
-    >
-      <v-card>
-        <v-card-title></v-card-title>
-        <v-card-text></v-card-text>
-        <v-card-actions></v-card-actions>
-      </v-card>
-    </v-dialog>
-
     <v-list
       one-line
       subheader
     >
-      <v-subheader>Options</v-subheader>
+      <v-subheader>Main Menu</v-subheader>
 
-      <v-list-item
-        @click="start"
-      >
-        <v-list-item-content>
-          Enter Blog
-        </v-list-item-content>
-      </v-list-item>
       <v-list-item
         @click="showChangePassword = true"
       >
@@ -157,10 +113,10 @@
         </v-list-item-content>
       </v-list-item>
       <v-list-item
-        @click="logout"
+        @click="logoutUser"
       >
         <v-list-item-content>
-          Exit
+          Logout
         </v-list-item-content>
       </v-list-item>
 
@@ -168,31 +124,24 @@
         <v-divider />
 
         <v-list-item
-          @click="testVersion"
-        >
-          <v-list-item-content>
-            Run TEST game
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
           @click="askShowUser"
         >
           <v-list-item-content>
-            Show persona
+            Show user
           </v-list-item-content>
         </v-list-item>
         <v-list-item
           @click="askEditUser"
         >
           <v-list-item-content>
-            Edit persona
+            Edit user
           </v-list-item-content>
         </v-list-item>
         <v-list-item
           @click="removeUser"
         >
           <v-list-item-content>
-            Delete persona
+            Delete user
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -207,9 +156,11 @@ import {
   mapActions,
   mapState,
 } from 'vuex';
-import * as roles from '@/d2auth/services/login/roles';
-import { ChangePassword } from '@/store/new_auth/types';
-import { User } from '@/d2auth/services/login/types';
+import * as roles from '@/auth/roles';
+import {
+  ChangePassword,
+  User,
+} from '@/auth/types';
 
 @Component({
   components: {
@@ -218,15 +169,15 @@ import { User } from '@/d2auth/services/login/types';
     EditUserForm: () => import('@/forms/EditUserForm.vue'),
   },
   computed: {
-    ...mapState('newAuth', [
-      'role',
+    ...mapState('auth', [
       'user',
       'errors',
       'viewUser',
+      'logoutUser',
     ]),
   },
   methods: {
-    ...mapActions('newAuth', [
+    ...mapActions('auth', [
       'changePassword',
       'showUser',
     ]),
@@ -234,8 +185,6 @@ import { User } from '@/d2auth/services/login/types';
 })
 export default class UserMenu extends Vue {
   message: string | null = null;
-
-  showDialog: boolean = false;
 
   showChangePassword: boolean = false;
 
@@ -245,23 +194,14 @@ export default class UserMenu extends Vue {
 
   editUserDialog: boolean = false;
 
-  show: boolean = false;
-
-  dialogTitle: string = `   --}----- ABERMUD -----{--    Playing as ${this.username}`;
-
   onAskUser = (user: User) => {};
 
   get isAdmin(): boolean {
-    return (this as any).role === roles.ADMIN;
+    return (this as any).user && ((this as any).user.role === roles.ADMIN);
   }
 
   get username(): string {
     return (this as any).user ? (this as any).user.username : 'Guest';
-  }
-
-  start() {
-    this.dialogTitle = `   --{----- ABERMUD -----}--      Playing as ${this.username}`;
-    this.showDialog = true;
   }
 
   onChangePassword(values: ChangePassword) {
@@ -301,18 +241,9 @@ export default class UserMenu extends Vue {
     this.askUser = true;
   }
 
-  logout() {
-
-  }
-
-  testVersion() {
-    if (!(this as any).isAdmin) return;
-    this.dialogTitle = 'Entering Test Version';
-    this.showDialog = true;
-  }
-
   removeUser() {
     if (!(this as any).isAdmin) return;
+    console.log('Remove user');
   }
 }
 </script>

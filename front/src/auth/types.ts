@@ -5,11 +5,6 @@ export interface ServiceStats {
   startedAt?: number;
 }
 
-export interface AuthData {
-  userId: string,
-  hostname: string,
-}
-
 // User
 export interface User {
   userId?: number,
@@ -33,4 +28,18 @@ export interface BasicResponse {
 export interface AuthResponse extends BasicResponse{
   user?: User,
   errors?: { [field: string]: string | null },
+}
+
+// Form data
+export interface LoginData {
+  username: string,
+  password: string,
+  rememberMe: boolean,
+}
+
+export interface RegistrationData {
+  username: string,
+  email: string,
+  password: string,
+  password2: string,
 }

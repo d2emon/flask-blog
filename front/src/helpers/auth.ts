@@ -1,4 +1,4 @@
 import api from '@/helpers/api';
-import AuthService from '@/d2auth/services/login';
+import AuthService from '@/auth/services';
 
 export default new AuthService(api);

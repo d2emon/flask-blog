@@ -7,10 +7,6 @@ const config: Config = {
   auth: {
     baseURL: '//127.0.0.1:5000/auth',
   },
-  newAuth: {
-    userId: 'userId',
-    hostname: 'HOST_MACHINE',
-  },
 };
 
 export default config;
