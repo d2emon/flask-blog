@@ -1,7 +1,7 @@
 import random
 from app import db
 from app.models import User
-from app.auth.forms import LoginForm
+from auth.forms import LoginForm
 from flask import jsonify, request, url_for
 from flask_login import current_user, login_user
 from . import blueprint

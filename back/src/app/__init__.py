@@ -66,7 +66,7 @@ def create_app(config_class=Config):
     from .errors import blueprint as errors_blueprint
     app.register_blueprint(errors_blueprint)
 
-    from .auth import blueprint as auth_blueprint
+    from auth import blueprint as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     from .main import blueprint as main_blueprint
