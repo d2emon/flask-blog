@@ -78,8 +78,8 @@ def create_app(config_class=Config):
     from api import blueprint as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
-    from .blog import blueprint as blog_blueprint
-    app.register_blueprint(blog_blueprint, url_prefix='/blog')
+    from blog_blueprint import blueprint as blog_blueprint
+    app.register_blueprint(blog_blueprint, url_prefix='/blog_blueprint')
 
     # # from .admin import admin as admin_blueprint
     # # app.register_blueprint(admin_blueprint, url_prefix='/admin')
@@ -91,7 +91,7 @@ def create_app(config_class=Config):
 
 # Models
 # # from execom import models
-# from blog import models
+# from blog_blueprint import models
 
 
 @babel.localeselector

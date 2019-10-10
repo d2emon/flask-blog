@@ -1,7 +1,7 @@
 from flask import Blueprint
 
 
-blueprint = Blueprint('blog', __name__)
+blueprint = Blueprint('blog_blueprint', __name__)
 
 
 from . import routes

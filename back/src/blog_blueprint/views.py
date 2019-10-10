@@ -2,7 +2,7 @@ from flask import current_app, g, request, render_template, redirect, flash, url
 from flask_login import login_required, current_user, login_user, logout_user
 from app import db
 from __blog.models import Category, Tag, Post, User
-from app.blog.forms import PostForm, EForm
+from blog_blueprint.forms import PostForm, EForm
 
 
 import random
