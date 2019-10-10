@@ -14,7 +14,7 @@ def find_item(name):
 
 
 class User:
-    users = []
+    __users = []
     __valid_string = re.compile("^([a-z]+)$")
     __reserved_words = [
         'the',
@@ -32,9 +32,9 @@ class User:
         if self.find(username):
             raise Exception("User already exists")
 
-        self.user_id = len(self.users) + 1
-        self.__username = (self.validate_username(username) is None) and username
-        self.password = (self.validate_password(password) is None) and password
+        self.user_id = len(self.__users) + 1
+        self.username = username
+        self.password = password
         self.is_admin = is_admin
 
     @classmethod
@@ -72,7 +72,7 @@ class User:
     @classmethod
     def find(cls, username):
         return next(
-            (user for user in cls.users if user.username == username),
+            (user for user in cls.__users if user.username == username),
             None,
         )
 
@@ -80,9 +80,39 @@ class User:
     def username(self):
         return self.__username.lower() if self.__username else ''
 
+    @username.setter
+    def username(self, value):
+        if self.validate_username(value) is not None:
+            return
+        self.__username = value
+
+    @property
+    def password(self):
+        raise PermissionError()
+
+    @password.setter
+    def password(self, value):
+        if self.validate_password(value) is not None:
+            return
+        self.__password = value
+
     @property
     def message_of_the_day(self):
         return "[Cannot Find -> MOTD]"
+
+    def check_password(self, password):
+        try:
+            if password != self.__password:
+                raise ValueError("Incorrect Password")
+            return None
+        except ValueError as e:
+            return str(e)
+
+    def set_password(self, password):
+        self.password = password
+        # delete me and tack me on end!
+        self.__users.remove(self)
+        return self.save()
 
     def as_dict(self):
         return {
@@ -94,7 +124,7 @@ class User:
         }
 
     def save(self):
-        self.users.append(self)
+        self.__users.append(self)
         return self
 
 

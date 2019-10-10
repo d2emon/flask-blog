@@ -11,6 +11,13 @@ export interface FormField<T> {
   value?: T,
 }
 
+export type FormData = { [field: string]: FormField<any> };
+
+export interface ChangePasswordFormData {
+  oldPassword: FormField<string>,
+  newPassword: FormField<string>,
+}
+
 export interface LoginFormData {
   username: FormField<string>,
   password: FormField<string>,

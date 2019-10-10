@@ -11,6 +11,7 @@ import {
 import { RootState } from '@/store/types';
 import {
   NewAuthState,
+  ChangePassword,
 } from './types';
 // import talker from "@/services/login/talker";
 
@@ -20,7 +21,7 @@ const actions: ActionTree<NewAuthState, RootState> = {
     .then((stats: ServiceStats) => commit('setStats', stats))
     .catch((e: Error) => commit('setError', e.message)),
 
-  fetchUser: async ({ commit }, payload: string): Promise<number | null> => blogService
+  fetchUser: ({ commit }, payload: string): Promise<number | null> => blogService
     .getUser(payload)
     .then((response: UserResponse) => {
       commit('setUserResponse', response);
@@ -31,26 +32,30 @@ const actions: ActionTree<NewAuthState, RootState> = {
       commit('setError', e.message);
       return null;
     }),
-  newUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => blogService
+  newUser: ({ commit, dispatch, state }, payload: User): Promise<any> => blogService
     .postUser(payload)
     .then((response: UserResponse) => {
       commit('setUserResponse', response);
       commit('setUser', payload);
     })
     .catch((e: Error) => commit('setError', e.message)),
-  authUser: async ({ commit, dispatch, state }, payload: User): Promise<any> => blogService
+  authUser: ({ commit, dispatch, state }, payload: User): Promise<any> => blogService
     .putUser(payload)
     .then((response: UserResponse) => {
       commit('setUserResponse', response);
       commit('setUser', payload);
     })
     .catch((e: Error) => commit('setError', e.message)),
-  startMain: ({ state }): Promise<any> => Promise.all([
-    // Log entry
-    // logService.postLog(`Game entry by ${state.user && state.user.username} : UID ${state.user && state.user.userId}`),
-    // Run system
-    // talker(state.user.username || '', !state.username),
-  ]),
+
+  changePassword: ({ commit, state }, payload: ChangePassword): Promise<boolean> => blogService
+    .putPassword(state.user as User, payload)
+    .then((response: UserResponse) => {
+      commit('setUserResponse', response);
+      return !!response.success;
+    }),
+  showUser: ({ commit, state }, payload: string): Promise<void> => blogService
+    .getUser(payload)
+    .then((response: UserResponse) => commit('setViewUser', response)),
 };
 
 export default actions;

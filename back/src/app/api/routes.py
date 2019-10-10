@@ -2,7 +2,7 @@ import random
 from app import db
 from app.models import User
 from app.auth.forms import LoginForm
-from flask import jsonify, request, url_for
+from flask import current_app, jsonify, request, url_for
 from flask_login import current_user, login_user
 from . import blueprint
 from .auth import token_auth
@@ -171,6 +171,19 @@ def login():
     return jsonify({'errors': form.errors})
 
 
+def enter_blog(user):
+    current_app.logger.info(
+        "Blog entry by {} : UID {}".format(
+            user.username,
+            user.user_id,
+        ),
+    )
+    return jsonify({
+        'success': True,
+        'user': user.as_dict(),
+    })
+
+
 @blueprint.route('/check', methods=['GET'])
 def check():
     user_id = request.args.get('userId')
@@ -202,11 +215,7 @@ def post_new_user():
                 'success': False,
                 'errors': validation_errors,
             })
-
-        return jsonify({
-            'success': True,
-            'user': NewUser(username, password).save().as_dict(),
-        })
+        return enter_blog(NewUser(username, password).save())
     except Exception as e:
         return jsonify({
             'error':  str(e)
@@ -232,10 +241,7 @@ def put_new_user():
         user = NewUser.find(username)
         if not user or (password != user.password):
             raise Exception("Wrong username or password")
-        return jsonify({
-            'success': True,
-            'user': user.as_dict(),
-        })
+        return enter_blog(user)
     except Exception as e:
         return jsonify({
             'error':  str(e)
@@ -258,6 +264,36 @@ def get_new_user(username):
         return jsonify({
             'success': True,
             'user': user and user.as_dict(),
+        })
+    except Exception as e:
+        return jsonify({
+            'error':  str(e)
+        })
+
+
+@blueprint.route('/new-change-password/<username>', methods=['PUT'])
+def change_password(username):
+    try:
+        old_password = request.json.get('oldPassword', '')
+        new_password = request.json.get('newPassword', '')
+
+        user = NewUser.find(username)
+        if not user:
+            raise Exception("Wrong user")
+
+        validation_errors = {
+            'oldPassword': user.check_password(old_password),
+            'newPassword': user.validate_password(new_password),
+        }
+        if any(validation_errors.values()):
+            return jsonify({
+                'success': False,
+                'errors': validation_errors,
+            })
+
+        return jsonify({
+            'success': True,
+            'user': user.set_password(new_password).as_dict(),
         })
     except Exception as e:
         return jsonify({

@@ -4,6 +4,7 @@ import {
 } from 'axios';
 import api from '@/helpers/api';
 import {
+  ChangePassword,
   NewAuthData,
 } from '@/store/new_auth/types';
 import {
@@ -49,6 +50,9 @@ export const blogService = {
   ),
   putUser: (user: User): Promise<UserResponse> => apiRequest(
     api.put('/new-user', user),
+  ),
+  putPassword: (user: User, passwords: ChangePassword): Promise<UserResponse> => apiRequest(
+    api.put(`/new-change-password/${user.username}`, passwords),
   ),
 };
 

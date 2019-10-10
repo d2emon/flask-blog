@@ -58,6 +58,10 @@ const mutations: MutationTree<NewAuthState> = {
       Vue.set(state, 'role', user.role);
     }
   },
+  setViewUser: (state, payload: UserResponse) => {
+    Vue.set(state, 'error', undefined);
+    Vue.set(state, 'viewUser', payload.user);
+  },
 };
 
 export default mutations;

@@ -8,6 +8,7 @@ export interface NewAuthState {
   startedAt?: string,
   role: Role,
   user?: User,
+  viewUser?: User,
   motd?: string,
   isNew: boolean,
 }
@@ -15,4 +16,9 @@ export interface NewAuthState {
 export interface NewAuthData {
   userId: string,
   hostname: string,
+}
+
+export interface ChangePassword {
+  oldPassword: string,
+  newPassword: string,
 }
