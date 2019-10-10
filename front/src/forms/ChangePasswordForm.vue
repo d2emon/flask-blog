@@ -1,30 +1,16 @@
 <template>
-  <v-form
-    ref="changePasswordForm"
-    v-model="valid"
-  >
-    <template v-for="field in Object.keys(formData)">
-      <base-field
-        :key="field"
-        v-model="formData[field]"
-        @input="fieldInput(field)"
-      />
-    </template>
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      @click="validate"
-    >
-      Submit
-    </v-btn>
-  </v-form>
+  <base-form
+    :form-name="formName"
+    :fields="formData"
+    :errors="errors"
+    @submit="formSubmit"
+  />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import {
   Component,
-  Watch,
 } from 'vue-property-decorator';
 import {
   FormData,
@@ -35,14 +21,14 @@ import {
 
 @Component({
   components: {
-    BaseField: () => import('./BaseField.vue'),
+    BaseForm: () => import('./BaseForm.vue'),
   },
   props: {
     errors: Object,
   },
 })
 export default class ChangePassword extends Vue {
-  valid: boolean = true;
+  formName: string = 'changePasswordForm';
 
   formData: FormData = {
     oldPassword: {
@@ -76,38 +62,8 @@ export default class ChangePassword extends Vue {
     },
   };
 
-  @Watch('errors')
-  watchErrors(errors: {[field: string]: string[]}) {
-    if (!errors) return;
-
-    Object.keys(errors).forEach(
-      (key: string) => {
-        this.$set((this as any).formData, key, {
-          ...(this as any).formData[key],
-          errors: errors[key],
-        });
-      },
-    );
-  }
-
-  fieldInput(field: string) {
-    (this as any).formData[field].errors = [];
-  }
-
-  submit() {
-    this.$emit('submit', Object.keys(this.formData).reduce(
-      (res, key: string) => ({
-        ...res,
-        [key]: (this as any).formData[key].value,
-      }),
-      {},
-    ));
-  }
-
-  validate() {
-    if (!this.$refs.changePasswordForm.validate()) return;
-
-    this.submit();
+  formSubmit(values: {}) {
+    this.$emit('submit', values);
   }
 }
 </script>

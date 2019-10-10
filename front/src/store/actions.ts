@@ -1,7 +1,5 @@
 import { ActionTree } from 'vuex';
-import { RegistrationFormData } from '@/forms/types';
 import articlesService from '@/services/articles';
-import authService from '@/services/auth';
 import messagesService from '@/services/messages';
 import {
   ArticleQuery,

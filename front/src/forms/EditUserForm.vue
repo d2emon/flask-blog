@@ -1,24 +1,10 @@
 <template>
-  <v-form
-    :ref="formName"
-    v-model="valid"
-    lazy
-  >
-    <template v-for="field in Object.keys(formData)">
-      <base-field
-        :key="field"
-        v-model="formData[field]"
-        @input="fieldInput(field)"
-      />
-    </template>
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      @click="validate"
-    >
-      Submit
-    </v-btn>
-  </v-form>
+  <base-form
+    :form-name="formName"
+    :fields="formData"
+    :errors="errors"
+    @submit="formSubmit"
+  />
 </template>
 
 <script lang="ts">
@@ -36,7 +22,7 @@ import {
 
 @Component({
   components: {
-    BaseField: () => import('./BaseField.vue'),
+    BaseForm: () => import('./BaseForm.vue'),
   },
   props: {
     username: String,
@@ -44,9 +30,7 @@ import {
   },
 })
 export default class EditUser extends Vue {
-  formName: string = 'askUserForm';
-
-  valid: boolean = true;
+  formName: string = 'editUserForm';
 
   formData: FormData = {
     username: {
@@ -56,7 +40,7 @@ export default class EditUser extends Vue {
       ],
       required: true,
       size: 15,
-      value: username,
+      value: (this as any).username,
     },
   };
 
@@ -68,39 +52,8 @@ export default class EditUser extends Vue {
     });
   }
 
-  @Watch('errors')
-  watchErrors(errors: {[field: string]: string[]}) {
-    if (!errors) return;
-
-    Object.keys(errors).forEach(
-      (key: string) => {
-        this.$set((this as any).formData, key, {
-          ...(this as any).formData[key],
-          errors: errors[key],
-        });
-      },
-    );
-  }
-
-  fieldInput(field: string) {
-    (this as any).formData[field].errors = [];
-  }
-
-  submit() {
-    this.$emit('submit', Object.keys(this.formData).reduce(
-      (res, key: string) => ({
-        ...res,
-        [key]: (this as any).formData[key].value,
-      }),
-      {},
-    ));
-    (this.$refs[this.formName] as any).reset();
-  }
-
-  validate() {
-    if (!(this.$refs[this.formName] as any).validate()) return;
-
-    this.submit();
+  formSubmit(values: {}) {
+    this.$emit('submit', values);
   }
 }
 </script>
