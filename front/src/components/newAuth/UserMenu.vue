@@ -207,9 +207,9 @@ import {
   mapActions,
   mapState,
 } from 'vuex';
-import * as roles from '@/services/login/roles';
+import * as roles from '@/d2auth/services/login/roles';
 import { ChangePassword } from '@/store/new_auth/types';
-import { User } from '@/services/login/types';
+import { User } from '@/d2auth/services/login/types';
 
 @Component({
   components: {

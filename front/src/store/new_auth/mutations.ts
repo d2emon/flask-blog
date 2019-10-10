@@ -2,8 +2,9 @@ import Vue from 'vue';
 import { MutationTree } from 'vuex';
 import {
   ServiceStats,
-  User, UserResponse,
-} from '@/services/login/types';
+  User,
+  AuthResponse,
+} from '@/d2auth/services/login/types';
 import { NewAuthState } from './types';
 
 /**
@@ -49,7 +50,7 @@ const mutations: MutationTree<NewAuthState> = {
     );
   },
   setUser: (state, payload?: User) => Vue.set(state, 'user', payload),
-  setUserResponse: (state, payload: UserResponse) => {
+  setUserResponse: (state, payload: AuthResponse) => {
     const { user } = payload;
     Vue.set(state, 'error', undefined);
     Vue.set(state, 'errors', payload.errors);
@@ -58,7 +59,7 @@ const mutations: MutationTree<NewAuthState> = {
       Vue.set(state, 'role', user.role);
     }
   },
-  setViewUser: (state, payload: UserResponse) => {
+  setViewUser: (state, payload: AuthResponse) => {
     Vue.set(state, 'error', undefined);
     Vue.set(state, 'viewUser', payload.user);
   },

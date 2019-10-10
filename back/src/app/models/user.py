@@ -23,6 +23,26 @@ followers = db.Table(
 )
 
 
+# TODO: Add username validation
+# - Required
+#   Username is required
+# - /^([a-z]+)$/
+#   Illegal characters in username
+# - Reserved words: the, me, myself, it, them, him, her, someone, there
+#   Sorry I cant call you that
+# - Length > 10
+#   Username string is too long
+# - Item
+#   I can't call you that, It would be confused with an object
+# TODO: Add password validation
+# - Required
+#   Username is required
+# - '.'
+#   Illegal characters in password
+# TODO: Add message of the day
+# TODO: Add role
+
+
 class User(PaginatedAPIMixin, UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)

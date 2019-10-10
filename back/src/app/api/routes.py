@@ -9,12 +9,21 @@ from .auth import token_auth
 from .errors import bad_request
 from .articles import articles_data
 from .check import check_all
-from .users import User as NewUser
+
+
+def enter_blog(user):
+    current_app.logger.info(
+        "Blog entry by {} : UID {}".format(
+            user.username,
+            user.user_id,
+        ),
+    )
 
 
 @blueprint.route('/users/<user_id>', methods=['GET'])
-@token_auth.login_required
 def get_user(user_id):
+    # TODO: Find by Username
+    # TODO: Validate Username
     return jsonify(User.query.get_or_404(user_id).to_dict())
 
 
@@ -64,6 +73,7 @@ def create_user():
     response = jsonify(user.to_dict())
     response.status_code = 201
     response.headers['Location'] = url_for('api.get_user', user_id=user.user_id)
+    # TODO: Enter system on registration
     return response
 
 
@@ -171,17 +181,7 @@ def login():
     return jsonify({'errors': form.errors})
 
 
-def enter_blog(user):
-    current_app.logger.info(
-        "Blog entry by {} : UID {}".format(
-            user.username,
-            user.user_id,
-        ),
-    )
-    return jsonify({
-        'success': True,
-        'user': user.as_dict(),
-    })
+# TODO: Add api to password change
 
 
 @blueprint.route('/check', methods=['GET'])
@@ -194,106 +194,6 @@ def check():
             'success': check_all(user_id, hostname),
             'createdAt': None,
             'startedAt': None,
-        })
-    except Exception as e:
-        return jsonify({
-            'error':  str(e)
-        })
-
-
-@blueprint.route('/new-user', methods=['POST'])
-def post_new_user():
-    try:
-        username = request.json.get('username', '').lower()
-        password = request.json.get('password', '')
-
-        validation_errors = {
-            'username': NewUser.validate_username(username),
-        }
-        if any(validation_errors.values()):
-            return jsonify({
-                'success': False,
-                'errors': validation_errors,
-            })
-        return enter_blog(NewUser(username, password).save())
-    except Exception as e:
-        return jsonify({
-            'error':  str(e)
-        })
-
-
-@blueprint.route('/new-user', methods=['PUT'])
-def put_new_user():
-    try:
-        username = request.json.get('username', '').lower()
-        password = request.json.get('password', '')
-
-        validation_errors = {
-            'username': NewUser.validate_username(username),
-            'password': NewUser.validate_password(password),
-        }
-        if any(validation_errors.values()):
-            return jsonify({
-                'success': False,
-                'errors': validation_errors,
-            })
-
-        user = NewUser.find(username)
-        if not user or (password != user.password):
-            raise Exception("Wrong username or password")
-        return enter_blog(user)
-    except Exception as e:
-        return jsonify({
-            'error':  str(e)
-        })
-
-
-@blueprint.route('/new-user/<username>', methods=['GET'])
-def get_new_user(username):
-    try:
-        validation_errors = {
-            'username': NewUser.validate_username(username),
-        }
-        if any(validation_errors.values()):
-            return jsonify({
-                'success': False,
-                'errors': validation_errors,
-            })
-
-        user = NewUser.find(username)
-        return jsonify({
-            'success': True,
-            'user': user and user.as_dict(),
-        })
-    except Exception as e:
-        return jsonify({
-            'error':  str(e)
-        })
-
-
-@blueprint.route('/new-change-password/<username>', methods=['PUT'])
-def change_password(username):
-    try:
-        old_password = request.json.get('oldPassword', '')
-        new_password = request.json.get('newPassword', '')
-
-        user = NewUser.find(username)
-        if not user:
-            raise Exception("Wrong user")
-
-        validation_errors = {
-            'oldPassword': user.check_password(old_password),
-            'newPassword': user.validate_password(new_password),
-        }
-        if any(validation_errors.values()):
-            return jsonify({
-                'success': False,
-                'errors': validation_errors,
-            })
-
-        return jsonify({
-            'success': True,
-            'user': user.set_password(new_password).as_dict(),
         })
     except Exception as e:
         return jsonify({

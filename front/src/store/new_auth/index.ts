@@ -1,5 +1,5 @@
 import { Module } from 'vuex';
-import * as roles from '@/services/login/roles';
+import * as roles from '@/d2auth/services/login/roles';
 import { RootState } from '@/store/types';
 import { NewAuthState } from './types';
 // import getters from './getters';

@@ -40,7 +40,7 @@ import {
 import {
   isRequired,
 } from '@/helpers/validators';
-import { User } from '@/services/login/types';
+import { User } from '@/d2auth/services/login/types';
 
 @Component({
   components: {

@@ -35,7 +35,7 @@ import {
   mapActions,
   mapState,
 } from 'vuex';
-import * as roles from '@/services/login/roles';
+import * as roles from '@/d2auth/services/login/roles';
 
 @Component({
   components: {

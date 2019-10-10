@@ -1,5 +1,5 @@
-import { User } from '@/services/login/types';
-import { Role } from '@/services/login/roles';
+import { User } from '@/d2auth/services/login/types';
+import { Role } from '@/d2auth/services/login/roles';
 
 export interface NewAuthState {
   error?: string,
@@ -11,14 +11,4 @@ export interface NewAuthState {
   viewUser?: User,
   motd?: string,
   isNew: boolean,
-}
-
-export interface NewAuthData {
-  userId: string,
-  hostname: string,
-}
-
-export interface ChangePassword {
-  oldPassword: string,
-  newPassword: string,
 }
