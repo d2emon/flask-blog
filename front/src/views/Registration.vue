@@ -25,7 +25,7 @@ import { Component } from 'vue-property-decorator';
 import {
   mapActions,
 } from 'vuex';
-import { RegistrationFormData } from '@/forms/types';
+import { FormData } from '@/forms/types';
 
 @Component({
   components: {
@@ -38,7 +38,7 @@ import { RegistrationFormData } from '@/forms/types';
 export default class Registration extends Vue {
   errors?: {[field: string]: string} = {};
 
-  onSubmit(data: RegistrationFormData) {
+  onSubmit(data: FormData) {
     (this as any).registerUser(data)
       .then((response) => {
         this.errors = response.errors;

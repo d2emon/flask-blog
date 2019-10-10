@@ -27,32 +27,17 @@ import {
     errors: Object,
   },
 })
-export default class Login extends Vue {
-  formName: string = 'loginForm';
+export default class AskUser extends Vue {
+  formName: string = 'askUserForm';
 
   formData: FormData = {
     username: {
-      label: 'Username',
+      label: 'Username:',
       rules: [
         isRequired('Username is required'),
       ],
       required: true,
-      size: 20,
-    },
-    password: {
-      label: 'Password',
-      rules: [
-        isRequired('Password is required'),
-      ],
-      required: true,
-      size: 20,
-      type: 'password',
-    },
-    rememberMe: {
-      label: 'Remember Me',
-      value: true,
-      rules: [],
-      isCheckBox: true,
+      size: 15,
     },
   };
 

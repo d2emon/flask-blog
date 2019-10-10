@@ -1,11 +1,15 @@
 import { Module } from 'vuex';
+import User from '@/auth/user';
 import { RootState } from '@/store/types';
-import User, { AuthState } from './types';
+import { AuthState } from './types';
 import getters from './getters';
 import mutations from './mutations';
 import actions from './actions';
 
 const state: AuthState = {
+  errors: {},
+  // isNew: false,
+
   user: new User(localStorage.getItem('token')),
 };
 

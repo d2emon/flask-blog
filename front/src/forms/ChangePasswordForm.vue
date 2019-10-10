@@ -27,20 +27,12 @@ import {
     errors: Object,
   },
 })
-export default class Login extends Vue {
-  formName: string = 'loginForm';
+export default class ChangePassword extends Vue {
+  formName: string = 'changePasswordForm';
 
   formData: FormData = {
-    username: {
-      label: 'Username',
-      rules: [
-        isRequired('Username is required'),
-      ],
-      required: true,
-      size: 20,
-    },
-    password: {
-      label: 'Password',
+    oldPassword: {
+      label: 'Old Password',
       rules: [
         isRequired('Password is required'),
       ],
@@ -48,11 +40,25 @@ export default class Login extends Vue {
       size: 20,
       type: 'password',
     },
-    rememberMe: {
-      label: 'Remember Me',
-      value: true,
-      rules: [],
-      isCheckBox: true,
+    newPassword: {
+      label: 'New Password',
+      rules: [
+        isRequired('Password is required'),
+        (v: string) => v.indexOf('.') < 0 || 'Illegal characters in password',
+      ],
+      required: true,
+      size: 20,
+      type: 'password',
+    },
+    verifyPassword: {
+      label: 'Verify Password',
+      rules: [
+        isRequired('Password is required'),
+        (v: string) => v === this.formData.newPassword.value || 'Password not verified',
+      ],
+      required: true,
+      size: 20,
+      type: 'password',
     },
   };
 

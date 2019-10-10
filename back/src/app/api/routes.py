@@ -10,9 +10,19 @@ from .errors import bad_request
 from .articles import articles_data
 
 
+# TODO: Add check api token
+# - Is userId banned
+# - Is no login message
+# - Is hostname valid
+# TODO: Add api to password change
+# TODO: Log user entry
+# - "Blog entry by {username} : UID {user_id}"
+
+
 @blueprint.route('/users/<user_id>', methods=['GET'])
-@token_auth.login_required
 def get_user(user_id):
+    # TODO: Find by Username
+    # TODO: Validate Username
     return jsonify(User.query.get_or_404(user_id).to_dict())
 
 
@@ -62,6 +72,7 @@ def create_user():
     response = jsonify(user.to_dict())
     response.status_code = 201
     response.headers['Location'] = url_for('api.get_user', user_id=user.user_id)
+    # TODO: Enter system on registration
     return response
 
 

@@ -34,7 +34,7 @@ import {
   mapActions,
   mapState,
 } from 'vuex';
-import { LoginFormData } from '@/forms/types';
+import { User } from '@/auth/types';
 
 @Component({
   components: {
@@ -48,7 +48,7 @@ import { LoginFormData } from '@/forms/types';
   },
 })
 export default class Login extends Vue {
-  onSubmit(data: LoginFormData) {
+  onSubmit(data: User) {
     (this as any).loginUser(data)
       .then(() => {
         if (!(this as any).user.isAuthorized) return;

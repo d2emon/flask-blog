@@ -10,6 +10,7 @@
           role="main"
           md10
         >
+          <intro />
           <router-view />
         </v-flex>
       </v-row>
@@ -29,6 +30,7 @@ import { Link } from '@/types';
 @Component({
   components: {
     Sidebar: () => import('@/components/main/Sidebar.vue'),
+    Intro: () => import('@/components/admin/Intro.vue'),
   },
 })
 export default class MainView extends Vue {}
