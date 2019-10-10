@@ -1,5 +1,5 @@
 from app import db
-from app.api.errors import error_response as api_error_response
+from api.errors import error_response as api_error_response
 from flask import render_template, request
 from . import blueprint
 

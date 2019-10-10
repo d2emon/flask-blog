@@ -75,7 +75,7 @@ def create_app(config_class=Config):
     from .translate import blueprint as translate_blueprint
     app.register_blueprint(translate_blueprint, url_prefix='/translate')
 
-    from .api import blueprint as api_blueprint
+    from api import blueprint as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
     from .blog import blueprint as blog_blueprint
