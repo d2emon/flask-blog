@@ -1,7 +1,11 @@
 from app.models import User
 
 
-def add_users():
+def __users():
+    yield User(
+        username='user',
+        email='user@example.com',
+    )
     yield User(
         username='usera',
         email='usera@example.com',
@@ -14,3 +18,9 @@ def add_users():
         username='userc',
         email='userc@example.com',
     )
+
+
+def add_users():
+    for user in __users():
+        user.set_password('password')
+        yield user
