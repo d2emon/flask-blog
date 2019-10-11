@@ -261,8 +261,7 @@ class UserModelCase(ApiTestCase):
         self.assertEqual(2, payload['key'])
 
     def test_tasks(self):
-        self.app.redis.return_value = {'data': {}}
-
+        self.redis_server.connected = True
         user_generator = user_factory()
         user = next(user_generator)
         db.session.add(user)
@@ -284,18 +283,17 @@ class UserModelCase(ApiTestCase):
         ])
         db.session.commit()
 
-        user.launch_task('export_posts', 'description')
+        task = user.launch_task('export_posts', 'description')
         db.session.commit()
 
         self.assertEqual(1, len(user.get_tasks_in_progress()))
 
-        task = user.get_task_in_progress('export_posts')
         self.assertIsInstance(task, Task)
-        self.assertEqual('export_posts', task.name)
-        self.assertEqual('description', task.description)
+        self.assertEqual(task, user.get_task_in_progress('export_posts'))
+        self.assertLess(task.get_progress(), 100)
 
-        self.assertIsNone(task.get_rq_job())
-        self.assertEqual(100, task.get_progress())
+        self.redis_server.connected = False
+        self.assertEqual(task.get_progress(), 100)
 
     def test_to_dict(self):
         user_generator = user_factory()

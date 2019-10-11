@@ -1,4 +1,5 @@
 import unittest
+import fakeredis
 import rq
 from base64 import b64encode
 from app import create_app, db
@@ -15,8 +16,8 @@ class ApiTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
 
-        redis_mock = mock.MagicMock()
-        self.app.redis = redis_mock
+        self.redis_server = fakeredis.FakeServer()
+        self.app.redis = fakeredis.FakeStrictRedis(server=self.redis_server)
         self.app.task_queue = rq.Queue('blog-tasks', connection=self.app.redis)
 
         self.users = list(add_users())
