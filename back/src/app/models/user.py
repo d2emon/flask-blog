@@ -114,15 +114,15 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(
+            user_id = jwt.decode(
                 token,
                 current_app.config['SECRET_KEY'],
                 algorithms=['HS256']
             )['reset_password']
-        except jwt.exceptions.InvalidSignatureError:
+        except (jwt.exceptions.InvalidSignatureError, jwt.exceptions.DecodeError):
             return
 
-        return User.query.get(id)
+        return User.query.get(user_id)
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()

@@ -1,6 +1,5 @@
 import json
 import sys
-import time
 from app import create_app, db
 from app.models import Post, Task, User
 from flask import render_template
@@ -46,7 +45,6 @@ def export_posts(user_id):
                 'body': post.body,
                 'timestamp': post.timestamp.isoformat() + 'Z',
             })
-            time.sleep(5)
             i += 1
             _set_task_progress(100 * i // total_posts)
         send_mail(
