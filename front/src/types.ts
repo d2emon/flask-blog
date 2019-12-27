@@ -51,12 +51,22 @@ export interface InstagramPost {
   href?: string,
 }
 
-export interface Link {
-  text: string,
-  icon?: string,
+interface BaseLink {
   to?: string,
   href?: string,
 }
+
+interface TextLink extends BaseLink {
+  text: string,
+  icon?: string,
+}
+
+interface IconLink extends BaseLink {
+  icon: string,
+  text?: string,
+}
+
+export type Link = TextLink | IconLink;
 
 export interface Tag {
   tagId: number,

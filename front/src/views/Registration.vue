@@ -40,7 +40,7 @@ export default class Registration extends Vue {
 
   onSubmit(data: FormData) {
     (this as any).registerUser(data)
-      .then((response) => {
+      .then((response: { errors: any }) => {
         this.errors = response.errors;
         console.log(response, this.errors);
       });
