@@ -4,6 +4,7 @@ import os
 
 
 class Config:
+    FRONT_URL = os.environ.get('STATIC_URL', 'http://127.0.0.1/')
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
     ADMINS = ['admin@example.com']

@@ -69,9 +69,6 @@ def create_app(config_class=Config):
     from auth import blueprint as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-    from .main import blueprint as main_blueprint
-    app.register_blueprint(main_blueprint)
-
     from .translate import blueprint as translate_blueprint
     app.register_blueprint(translate_blueprint, url_prefix='/translate')
 
@@ -83,6 +80,9 @@ def create_app(config_class=Config):
 
     # # from .admin import admin as admin_blueprint
     # # app.register_blueprint(admin_blueprint, url_prefix='/admin')
+
+    from .main import blueprint as main_blueprint
+    app.register_blueprint(main_blueprint)
 
     register_handlers(app)
 

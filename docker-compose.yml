@@ -24,6 +24,7 @@ services:
     environment:
       - FLASK_DEBUG=1
       - FLASK_ENV=development
+      - STATIC_URL=http://front-static:8080/
       - ELASTICSEARCH_URL=search:9200
       - MAIL_SERVER=mail
       - MAIL_PORT=1025
@@ -55,3 +56,13 @@ services:
     entrypoint:
       - "npm"
     command: ["run", "serve"]
+  front-static:
+    build: ./front
+    links:
+      - back
+    ports:
+      - "8082:8080"
+    volumes:
+      - "./front/src:/app/src"
+      - "./front/public:/app/public"
+      - "./front/package.json:/app/package.json"
