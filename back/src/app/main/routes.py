@@ -1,10 +1,11 @@
 from app import db
 from app.models import Message, Notification, Post, User
 from datetime import datetime
-from flask import current_app, flash, g, jsonify, render_template, redirect, request, url_for
+from flask import current_app, flash, g, jsonify, render_template, redirect, request, url_for, Response
 from flask_babel import _, get_locale
 from flask_login import current_user, login_required
 from guess_language import guess_language
+from requests import get
 from . import blueprint
 from .forms import EditProfileForm, MessageForm, PostForm, SearchForm
 
@@ -19,10 +20,10 @@ def before_request():
     g.locale = str(get_locale())
 
 
-@blueprint.route('/', methods=['GET', 'POST'])
-@blueprint.route('/index', methods=['GET', 'POST'])
+@blueprint.route('/old', methods=['GET', 'POST'])
+@blueprint.route('/old-index', methods=['GET', 'POST'])
 @login_required
-def index():
+def old_index():
     form = PostForm()
     if form.validate_on_submit():
         language = guess_language(form.post.data)
@@ -266,3 +267,13 @@ def export_posts():
         current_user.launch_task('export_posts', _('Exporting posts...'))
         db.session.commit()
     return redirect(url_for('main.user_profile', username=current_user.username))
+
+
+@blueprint.route('/', defaults={'path': ''})
+@blueprint.route('/<path:path>')
+def proxy(path):
+    req = get(f"{current_app.config['FRONT_URL']}{path}")
+    return Response(
+        req.content,
+        mimetype=req.headers["content-type"]
+    )

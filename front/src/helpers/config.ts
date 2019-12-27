@@ -1,11 +1,15 @@
 import { Config } from './types';
 
+const rootURL = (process.env.NODE_ENV === 'development')
+  ? '//127.0.0.1:5000'
+  : '';
+
 const config: Config = {
   api: {
-    baseURL: '//127.0.0.1:5000/api',
+    baseURL: `${rootURL}/api`,
   },
   auth: {
-    baseURL: '//127.0.0.1:5000/auth',
+    baseURL: `${rootURL}/auth`,
   },
 };
 
